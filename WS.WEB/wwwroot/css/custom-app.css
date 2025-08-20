@@ -231,9 +231,8 @@ body .pwa-updater[b-pwa-updater] {
 }
 
 .custom-h3 {
-    font-size: 14px !important;
-    text-transform: uppercase !important;
-    line-height: 1.75 !important;
+    font-size: 1.25rem !important;
+    line-height: 1.6 !important;
 }
 
 .custom-h3-list {

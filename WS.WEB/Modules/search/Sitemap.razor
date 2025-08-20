@@ -1,0 +1,119 @@
+﻿@page "/sitemap"
+<SeoHeader Title="Home" Description="Lists site pages in XML. Ensures search engines find and index content faster, critical for large or poorly linked websites." Url="/"></SeoHeader>
+@using System.Xml.Linq
+@inherits PageCore<Sitemap>
+
+@inject IJSRuntime JsRuntime
+@inject IHttpClientFactory HttpClientFactory
+
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Main"></GoogleAdSense>
+
+<MudGrid Justify="Justify.Center">
+    <MudItem xs="12" sm="8">
+        <MudAlert Severity="Severity.Info" Variant="Variant.Filled" NoIcon="true" Class="mb-4" ContentAlignment="HorizontalAlignment.Center" Style="text-align: center;">
+            <MudText Typo="Typo.h4">The only 100% free and unlimited platform</MudText>
+            <MudText Typo="Typo.body1">It runs 100% in your environment, so you may need to enable CORS for this domain: https://www.web-standards.com/</MudText>
+        </MudAlert>
+    </MudItem>
+    <MudItem xs="12" sm="8">
+        <MudTextField T="string" Label="Type your domain" @bind-Text="@Search" Immediate="true" OnKeyDown="@KeyPress" Class="mb-2"
+                      Variant="Variant.Outlined">
+        </MudTextField>
+    </MudItem>
+    <MudItem xs="12" sm="8">
+        <MudToolBar Gutters="false" WrapContent="true">
+            <MudNumericField @bind-Value="MaxDepth" Label="Page Depth" Min="1" Max="10" Variant="Variant.Outlined" Class="me-3" />
+            <MudSelect @bind-Value="IgnoreRel" Label="Ignore Rel" Clearable="true" MultiSelection="true" Variant="Variant.Outlined" Class="me-3">
+                <MudSelectItem Value="@("alternate")">alternate</MudSelectItem>
+                <MudSelectItem Value="@("author")">author</MudSelectItem>
+                <MudSelectItem Value="@("bookmark")">bookmark</MudSelectItem>
+                <MudSelectItem Value="@("external")">external</MudSelectItem>
+                <MudSelectItem Value="@("help")">help</MudSelectItem>
+                <MudSelectItem Value="@("license")">license</MudSelectItem>
+                <MudSelectItem Value="@("next")">next</MudSelectItem>
+                <MudSelectItem Value="@("nofollow")">nofollow</MudSelectItem>
+                <MudSelectItem Value="@("noreferrer")">noreferrer</MudSelectItem>
+                <MudSelectItem Value="@("noopener")">noopener</MudSelectItem>
+                <MudSelectItem Value="@("prev")">prev</MudSelectItem>
+                <MudSelectItem Value="@("search")">search</MudSelectItem>
+                <MudSelectItem Value="@("tag")">tag</MudSelectItem>
+            </MudSelect>
+            <MudSelect @bind-Value="IgnoreTarget" Label="Ignore Target" Clearable="true" MultiSelection="true" Variant="Variant.Outlined" Class="me-3">
+                <MudSelectItem Value="@("_blank")">_blank</MudSelectItem>
+                <MudSelectItem Value="@("_parent")">_parent</MudSelectItem>
+                <MudSelectItem Value="@("_self")">_self</MudSelectItem>
+                <MudSelectItem Value="@("_top")">_top</MudSelectItem>
+            </MudSelect>
+            <MudIconButton Icon="@Icons.Material.Outlined.Search" Color="Color.Primary" OnClick="StartCrawling" />
+        </MudToolBar>
+    </MudItem>
+</MudGrid>
+
+@code {
+
+    [Parameter][SupplyParameterFromQuery(Name = "language")] public string? Language { get; set; }
+    [Parameter][SupplyParameterFromQuery(Name = "platform")] public string? Platform { get; set; }
+
+    public string? Search { get; set; }
+
+    private int MaxDepth { get; set; } = 2;
+    private string? IgnoreRel { get; set; } = "nofollow";
+    private string? IgnoreTarget { get; set; } = null;
+
+    private Uri? _baseUri { get; set; } = new Uri("https://dev.streamingdiscovery.com/");
+    private string? ResultXml { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if (Platform.NotEmpty())
+            {
+                await JsRuntime.InvokeAsync<string>("SetLocalStorage", "platform", Platform);
+            }
+            else
+            {
+                await JsRuntime.InvokeAsync<string>("TryDetectPlatform");
+            }
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task KeyPress(KeyboardEventArgs args)
+    {
+        if (Search.Empty()) return;
+
+        if (args.Key == "Enter")
+        {
+            await StartCrawling();
+        }
+    }
+
+    private async Task StartCrawling()
+    {
+        try
+        {
+            if (!Uri.TryCreate(Search, UriKind.Absolute, out var uri))
+            {
+                Snackbar.Add("Invalid URL", Severity.Error);
+                return;
+            }
+
+            _baseUri = uri;
+            ResultXml = null;
+
+            var http = HttpClientFactory.CreateClient();
+            var helper = new SitemapHelper(http, Search, true, null, 2);
+
+            ResultXml = await helper.RunAsync();
+
+            await JsRuntime.InvokeVoidAsync("downloadFile", "sitemap.xml", "application/xml", ResultXml);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
+        }
+    }
+
+}

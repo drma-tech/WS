@@ -61,7 +61,7 @@ namespace WS.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Manage your streaming platforms, track your watch progress, and discover what to watch next with ease. Browse expert-curated lists like award winners and critic picks - all in one place..
+        ///   Looks up a localized string similar to A toolkit that helps developers set up essential web standards like sitemaps, manifests, icons, SEO tags, and security files for modern websites and PWAs..
         /// </summary>
         public static string AppDescription {
             get {

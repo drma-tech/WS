@@ -1,22 +1,68 @@
 {
-  "name": "WS.WEB",
-  "short_name": "WS.WEB",
-  "id": "./",
-  "start_url": "./",
-  "display": "standalone",
+  "id": "webstandards",
+  "name": "WebStandards",
+  "short_name": "WebStandards",
+  "description": "A toolkit that helps developers set up essential web standards like sitemaps, manifests, icons, SEO tags, and security files for modern websites and PWAs.",
   "background_color": "#ffffff",
   "theme_color": "#03173d",
-  "prefer_related_applications": false,
+  "start_url": "/",
+  "dir": "ltr",
+  "scope": "/",
+  "lang": "en-US",
+  "orientation": "any",
+  "display": "standalone",
+  "display_override": [
+    "standalone",
+    "window-controls-overlay"
+  ],
+  "iarc_rating_id": "2673f916-2fd7-4be8-8523-88d7588cc444",
+  "prefer_related_applications": true,
+  "related_applications": [
+    {
+      "platform": "windows",
+      "url": "",
+      "id": ""
+    },
+    {
+      "platform": "webapp",
+      "url": "https://www.web-standards.com/"
+    }
+  ],
+  "categories": [
+    "entertainment",
+    "lifestyle",
+    "social"
+  ],
   "icons": [
     {
-      "src": "icon/icon-512.png",
+      "src": "icon/icon-71.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "71x71"
     },
     {
       "src": "icon/icon-192.png",
       "type": "image/png",
       "sizes": "192x192"
+    },
+    {
+      "src": "icon/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
     }
-  ]
+  ],
+  "screenshots": [
+    {
+      "src": "screenshots/index_desktop.png",
+      "type": "image/jpg",
+      "sizes": "1440x900",
+      "form_factor": "wide",
+      "label": "Index"
+    }
+  ],
+  "launch_handler": {
+    "client_mode": [
+      "navigate-existing",
+      "auto"
+    ]
+  }
 }
