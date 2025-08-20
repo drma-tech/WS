@@ -1,0 +1,79 @@
+﻿@using System.Security.Claims
+@using Toolbelt.Blazor.PWA.Updater
+@using WS.WEB.Resources
+@using WS.WEB.Properties
+@inherits LayoutComponentBase
+
+@inject IJSRuntime JsRuntime
+@inject ISnackbar Snackbar
+
+<MudThemeProvider @ref="_mudThemeProvider" IsDarkMode="@AppStateStatic.DarkMode" />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudMessageBox />
+<MudSnackbarProvider />
+
+<PWAUpdater Text="@GlobalTranslations.PWAUpdaterText" ButtonCaption="@GlobalTranslations.PWAUpdaterButton" />
+
+<MudLayout>
+    <HeadLayout></HeadLayout>
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="my-3" Style="min-height: calc(100vh - 64px - 32px);">
+            @Body
+        </MudContainer>
+
+        <FooterComponent></FooterComponent>
+        <MudDivider Class="my-3 mt-10"></MudDivider>
+        <MudText Align="Align.Center" Class="mb-3">
+            © 2025-@DateTime.Now.Year - DRMA Tech. All rights reserved.
+        </MudText>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    private MudThemeProvider? _mudThemeProvider;
+
+    protected override void OnInitialized()
+    {
+        AppStateStatic.DarkModeChanged += StateHasChanged;
+        AppStateStatic.ShowError = msg => { Snackbar.Add(msg, Severity.Error); };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            //DARK MODE
+            var darkMode = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "dark-mode");
+
+            if (darkMode.Empty())
+            {
+                darkMode = (await _mudThemeProvider!.GetSystemDarkModeAsync()).ToString();
+
+                await JsRuntime.InvokeAsync<string>("SetLocalStorage", "dark-mode", darkMode);
+            }
+
+            AppStateStatic.ChangeDarkMode(bool.Parse(darkMode));
+        }
+    }
+
+    [JSInvokable]
+    public static void ShowError(string error)
+    {
+        AppStateStatic.ShowError?.Invoke(error);
+    }
+
+    //https://swharden.com/blog/2020-12-29-blazor-build-info/
+    public static string BuildDateString()
+    {
+        try
+        {
+            return Resources.BuildDate.ReplaceLineEndings("");
+        }
+        catch (Exception)
+        {
+            return "Version Error";
+        }
+    }
+
+}

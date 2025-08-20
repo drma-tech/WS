@@ -1,0 +1,105 @@
+﻿@page "/support/faq/{lang}"
+@inherits PageCore<Faq>
+
+<SeoHeader Title="FAQ" Url=@($"/support/faq/{Lang}")></SeoHeader>
+
+<MudExpansionPanels Outlined="true" Elevation="0" Class="mb-2">
+    <MudExpansionPanel Disabled="true" HideIcon="true">
+        <TitleContent>
+            <div class="d-flex">
+                <MudIcon Color="Color.Primary" Icon="@Icons.Material.Filled.PrivacyTip" class="mr-3"></MudIcon>
+                <MudText Color="Color.Primary">Privacy & Data</MudText>
+            </div>
+        </TitleContent>
+    </MudExpansionPanel>
+    <MudExpansionPanel Text="What user data does the platform collect?" HeaderClass="mud-secondary-text">
+        We collect minimal data: email for login, platform preferences, and usage metadata like IP and login times. No personal sensitive information is stored.
+    </MudExpansionPanel>
+    <MudExpansionPanel Text="Are my lists and data shared with others?" HeaderClass="mud-secondary-text">
+        Private lists you create are visible only to you unless you choose to share a public link. Public lists are curated by the platform and accessible to all users.
+    </MudExpansionPanel>
+</MudExpansionPanels>
+
+<MudExpansionPanels Outlined="true" Elevation="0" Class="mb-2">
+    <MudExpansionPanel Disabled="true" HideIcon="true">
+        <TitleContent>
+            <div class="d-flex">
+                <MudIcon Color="Color.Primary" Icon="@Icons.Material.Filled.ListAlt" class="mr-3"></MudIcon>
+                <MudText Color="Color.Primary">Lists & Recommendations</MudText>
+            </div>
+        </TitleContent>
+    </MudExpansionPanel>
+    <MudExpansionPanel Text="Can I create and manage my own lists?" HeaderClass="mud-secondary-text">
+        Yes, you can create private lists for movies and shows you have watched or want to watch. Premium users can save more items per list.
+    </MudExpansionPanel>
+    <MudExpansionPanel Text="How does personalized recommendations work?" HeaderClass="mud-secondary-text">
+        Recommendations are based on your favorite platforms and genres, excluding titles already on other personal lists.
+    </MudExpansionPanel>
+    <MudExpansionPanel Text="Can I share my private lists?" HeaderClass="mud-secondary-text">
+        Yes, you can generate public links to share your private lists with others outside the platform.
+    </MudExpansionPanel>
+</MudExpansionPanels>
+
+<MudExpansionPanels Outlined="true" Elevation="0" Class="mb-2">
+    <MudExpansionPanel Disabled="true" HideIcon="true">
+        <TitleContent>
+            <div class="d-flex">
+                <MudIcon Color="Color.Primary" Icon="@Icons.Material.Filled.AccountCircle" class="mr-3"></MudIcon>
+                <MudText Color="Color.Primary">Account & Access</MudText>
+            </div>
+        </TitleContent>
+    </MudExpansionPanel>
+    <MudExpansionPanel Text="Do I need to create an account?" HeaderClass="mud-secondary-text">
+        No account is required to browse public lists and general content. Creating an account lets you save your preferences and manage your personal lists.
+    </MudExpansionPanel>
+    <MudExpansionPanel Text="What information is required to register?" HeaderClass="mud-secondary-text">
+        Only an email address is required to create an account. No personal data beyond that is collected.
+    </MudExpansionPanel>
+    <MudExpansionPanel Text="Can I delete my account and data?" HeaderClass="mud-secondary-text">
+        Yes, you can delete your account anytime, which removes your saved lists and preferences from our system.
+    </MudExpansionPanel>
+</MudExpansionPanels>
+
+<MudExpansionPanels Outlined="true" Elevation="0" Class="mb-2">
+    <MudExpansionPanel Disabled="true" HideIcon="true">
+        <TitleContent>
+            <div class="d-flex">
+                <MudIcon Color="Color.Primary" Icon="@Icons.Material.Filled.Payment" class="mr-3"></MudIcon>
+                <MudText Color="Color.Primary">Subscriptions & Payments</MudText>
+            </div>
+        </TitleContent>
+    </MudExpansionPanel>
+    <MudExpansionPanel Text="Is the platform free?" HeaderClass="mud-secondary-text">
+        Yes, basic access is free. Premium subscriptions unlock benefits such as no ads and larger list capacities.
+    </MudExpansionPanel>
+    <MudExpansionPanel Text="How do I manage my subscription?" HeaderClass="mud-secondary-text">
+        You can manage or cancel your subscription at any time in your account billing settings.
+    </MudExpansionPanel>
+    <MudExpansionPanel Text="How is payment processed?" HeaderClass="mud-secondary-text">
+        Payments are securely handled by our partner Paddle. We do not store full payment details on our servers.
+    </MudExpansionPanel>
+</MudExpansionPanels>
+
+<MudExpansionPanels Outlined="true" Elevation="0" Class="mb-2">
+    <MudExpansionPanel Disabled="true" HideIcon="true">
+        <TitleContent>
+            <div class="d-flex">
+                <MudIcon Color="Color.Primary" Icon="@Icons.Material.Filled.HelpOutline" class="mr-3"></MudIcon>
+                <MudText Color="Color.Primary">Usage & Support</MudText>
+            </div>
+        </TitleContent>
+    </MudExpansionPanel>
+    <MudExpansionPanel Text="Is this a platform to watch movies and shows?" HeaderClass="mud-secondary-text">
+        No, our platform is for managing, discovering, and organizing movies and shows, not streaming or viewing content.
+    </MudExpansionPanel>
+    <MudExpansionPanel Text="How can I contact support?" HeaderClass="mud-secondary-text">
+        You can contact support via the in-app feedback section or by emailing support@streamingdiscovery.com.
+    </MudExpansionPanel>
+    <MudExpansionPanel Text="What languages does the platform support?" HeaderClass="mud-secondary-text">
+        The platform interface supports English, Portuguese, and Spanish. Movie and show metadata is available in multiple languages but does not affect site language.
+    </MudExpansionPanel>
+</MudExpansionPanels>
+
+@code {
+    [Parameter] public string? Lang { get; set; }
+}

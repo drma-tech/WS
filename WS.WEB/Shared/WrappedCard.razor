@@ -1,0 +1,27 @@
+﻿<MudCard Elevation="0" Outlined="true" Style="height: 100%;">
+    <MudCardHeader Class="pa-3">
+        <CardHeaderContent>
+            <MudText Color="Color.Secondary" Typo="Typo.h6">
+                @Title
+            </MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent Class="px-3 pt-1 pb-3">
+        <MudText Typo="Typo.body1" Align="Align.Justify">
+            @Description
+        </MudText>
+    </MudCardContent>
+    <MudCardActions Class="px-3 pt-1 pb-3">
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Action" Disabled="!Action.HasDelegate">
+            @ActionName
+        </MudButton>
+    </MudCardActions>
+</MudCard>
+
+@code {
+    [Parameter][EditorRequired] public string Title { get; set; }
+    [Parameter][EditorRequired] public string Description { get; set; }
+
+    [Parameter] public EventCallback<MouseEventArgs> Action { get; set; }
+    [Parameter] public string? ActionName { get; set; }
+}

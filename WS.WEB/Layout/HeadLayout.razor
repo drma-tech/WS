@@ -1,0 +1,105 @@
+@using WS.WEB.Resources
+@inherits ComponentCore<HeadLayout>
+
+@inject IJSRuntime JsRuntime
+
+@if (_processing)
+{
+    <MudProgressLinear Color="Color.Secondary" Indeterminate="true" Style="position: fixed; z-index: 1400;" />
+}
+<MudAppBar Fixed="true" Elevation="1" Color="Color.Dark">
+    @if (Breakpoint <= Breakpoint.Xs) //mobile view
+    {
+        <MudIconButton Icon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href="/" Variant="@GetVariant("/")" Style="padding: 8px;" />
+        <MudSpacer />
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { _open = true; })" />
+    }
+    else if (Breakpoint == Breakpoint.Sm) //tablet view
+    {
+        <MudIconButton Icon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href="/" Variant="@GetVariant("/")" Style="padding: 8px;" />
+        <MudIconButton Icon="@IconsFA.Solid.Icon("headset").Font" Color="@GetColor("/support")" Href="/support" Variant="@GetVariant("/support")" Style="padding: 8px;" />
+        <MudSpacer />
+        <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("cog").Font" Class="me-2" OnClick="@OpenConfigurations" />
+    }
+    else //desktop view
+    {
+        <MudButton StartIcon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href="/" Variant="@GetVariant("/")" Class="px-3">
+            @if (Focused("/"))
+            {
+                <MudText Typo="Typo.h1" Class="custom-h1-menu">Home</MudText>
+            }
+            else
+            {
+                <span>Home</span>
+            }
+        </MudButton>
+        <MudSpacer />
+        <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("cog").Font" Class="me-2" OnClick="@OpenConfigurations" />
+    }
+</MudAppBar>
+
+@if (Breakpoint <= Breakpoint.Xs) //mobile menu
+{
+    <MudDrawer @bind-Open="@_open" Anchor="Anchor.Right" Elevation="1" OverlayAutoClose="true">
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h6">@SeoTranslations.AppName</MudText>
+        </MudDrawerHeader>
+        <MudNavMenu>
+            <MudNavLink Icon="@IconsFA.Solid.Icon("cog").Font" OnClick="@OpenConfigurations">Settings</MudNavLink>
+            <MudNavLink Icon="@IconsFA.Solid.Icon("headset").Font" Href="/support">Support</MudNavLink>
+        </MudNavMenu>
+    </MudDrawer>
+}
+
+@code {
+    private bool _open = false;
+
+    private int _processingCount = 0;
+    private bool _processing => _processingCount > 0;
+
+    protected override void OnInitialized()
+    {
+        Navigation.LocationChanged += delegate { StateHasChanged(); };
+
+        AppStateStatic.ProcessingStarted += () =>
+        {
+            Interlocked.Increment(ref _processingCount);
+            InvokeAsync(StateHasChanged);
+        };
+
+        AppStateStatic.ProcessingFinished += async () =>
+        {
+            Interlocked.Decrement(ref _processingCount);
+
+            await Task.Delay(200);
+
+            if (_processingCount == 0)
+            {
+                await InvokeAsync(StateHasChanged);
+            }
+        };
+    }
+
+    private async Task OpenConfigurations()
+    {
+        await DialogService.SettingsPopup();
+    }
+
+    private Color GetColor(string endpoint)
+    {
+        return Focused(endpoint) ? Color.Primary : Color.Inherit;
+    }
+
+    private Variant GetVariant(string endpoint)
+    {
+        return Focused(endpoint) ? Variant.Filled : Variant.Text;
+    }
+
+    private bool Focused(string endpoint)
+    {
+        var uri = new Uri(Navigation.Uri);
+
+        return string.Equals(uri.AbsolutePath, endpoint, StringComparison.OrdinalIgnoreCase);
+    }
+
+}

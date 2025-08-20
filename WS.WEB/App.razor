@@ -1,0 +1,36 @@
+﻿@using WS.WEB.Layout
+
+<ErrorBoundary @ref="_boundary">
+    <ChildContent>
+        <Router AppAssembly="@typeof(App).Assembly">
+            <Found Context="routeData">
+                <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+                <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+            </Found>
+            <NotFound>
+                <PageTitle>Not found</PageTitle>
+                <LayoutView Layout="@typeof(MainLayout)">
+                    <MudAlert Severity="Severity.Error" Variant="Variant.Filled" Dense="true">
+                        Sorry, there's nothing at this address.
+                    </MudAlert>
+                </LayoutView>
+            </NotFound>
+        </Router>
+    </ChildContent>
+    <ErrorContent Context="ex">
+        <MudAlert Severity="Severity.Error" Variant="Variant.Filled" Dense="true">
+            This operation could not be processed. Please email our <MudLink Href="mailto:support@web-standards.com" style="cursor: pointer;">support</MudLink> with the following details:
+            @ex.StackTrace
+        </MudAlert>
+    </ErrorContent>
+</ErrorBoundary>
+
+@code {
+    ErrorBoundary? _boundary;
+
+    protected override void OnParametersSet()
+    {
+        _boundary?.Recover();
+    }
+
+}

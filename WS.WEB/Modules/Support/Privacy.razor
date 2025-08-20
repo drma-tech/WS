@@ -1,0 +1,246 @@
+﻿@page "/support/privacy/{lang}"
+@using WS.WEB.Resources
+<SeoHeader Title="Privacy Policy" Url=@($"/support/privacy/{Lang}")></SeoHeader>
+
+<style>
+    .privacy-container {
+        max-width: 900px;
+        margin: 32px auto;
+        padding: 40px 24px 32px 24px;
+        background: var(--mud-palette-background, #fff);
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.09);
+    }
+
+    .privacy-title {
+        text-align: center;
+        font-size: 2.2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--mud-palette-text-primary, #222);
+    }
+
+    .privacy-subtitle {
+        text-align: center;
+        color: var(--mud-palette-text-secondary, #555);
+        font-size: 1.1rem;
+        margin-bottom: 2.2rem;
+    }
+
+    .privacy-section {
+        margin-bottom: 2.2rem;
+    }
+
+        .privacy-section h2 {
+            margin-bottom: 0.7rem;
+            color: var(--mud-palette-primary, #1976d2);
+            font-size: 1.18rem;
+            font-weight: 500;
+        }
+
+        .privacy-section p {
+            text-align: justify;
+            margin-bottom: 0.5rem;
+            color: var(--mud-palette-text-primary, #333);
+            line-height: 1.7;
+        }
+
+        .privacy-section ul {
+            text-align: justify;
+            margin-bottom: 0.5rem;
+            color: var(--mud-palette-text-primary, #333);
+            line-height: 1.7;
+            padding-left: 1.4rem;
+            list-style-type: disc;
+        }
+
+            .privacy-section ul li {
+                padding-left: 0.1rem;
+            }
+</style>
+
+<div class="privacy-container">
+    @if (Lang == "pt")
+    {
+        <h1 class="privacy-title">Política de Privacidade</h1>
+        <div class="privacy-subtitle">
+            Sua privacidade é uma prioridade no <b>@ProjectTitle</b> (<a href="https://@ProjectDomain" target="_blank">@ProjectDomain</a>).<br />
+            Por favor, leia esta política com atenção para entender como tratamos seus dados.
+        </div>
+        <div class="privacy-section">
+            <h2>1. Dados coletados</h2>
+            <p>Coletamos e armazenamos informações como: endereço de e-mail, data de login e endereço IP, país de acesso (via IP) e configurações básicas do usuário. O login é opcional, mas alguns recursos estão disponíveis apenas para usuários autenticados. Dados técnicos e de navegação também podem ser coletados mesmo sem autenticação.</p>
+            <p>Todas as informações sobre filmes e séries são obtidas de serviços externos como TMDb, IMDb, JustWatch, entre outros. A plataforma apenas organiza, apresenta e personaliza esse conteúdo.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>2. Cookies e tecnologias similares</h2>
+            <p>Utilizamos cookies próprios e armazenamento de sessão para manter preferências do usuário, autenticação e funcionalidades da plataforma. Também utilizamos cookies de terceiros de serviços como Google AdSense para exibir anúncios personalizados com base em sua atividade e preferências.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>3. Ferramentas de análise</h2>
+            <p>Para melhorar a plataforma e entender os padrões de uso, utilizamos ferramentas como Google Analytics e Microsoft Clarity. Esses serviços podem coletar dados não identificáveis, como endereço IP, localização aproximada, tipo de navegador, duração da sessão e páginas visitadas.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>4. Compartilhamento de dados</h2>
+            <p>Não compartilhamos seus dados pessoais com terceiros, exceto com parceiros técnicos essenciais para o funcionamento do serviço, incluindo provedores de login social, infraestrutura de hospedagem, análises e publicidade. Esses parceiros atuam sob rigorosos acordos de confidencialidade e controle de acesso.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>5. Armazenamento</h2>
+            <p>Seus dados são armazenados em servidores da Microsoft Azure localizados nos Estados Unidos e podem ser replicados em outras regiões para garantir estabilidade e disponibilidade. Os dados são protegidos por práticas modernas de segurança, incluindo transmissão criptografada e controle de acesso.</p>
+            <p>Quando uma conta é excluída, os dados pessoais são removidos do banco de dados principal. No entanto, certas informações podem ser retidas em sistemas isolados por até 6 meses por razões legais ou operacionais, como prevenção de fraudes, conformidade ou solicitações de investigação. Após esse período, os dados são permanentemente excluídos ou anonimizados.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>6. Direitos do usuário</h2>
+            <p>Os usuários podem excluir suas contas a qualquer momento e solicitar a remoção de seus dados associados. Também é possível acessar ou modificar suas informações de conta usando as ferramentas disponíveis nas configurações do perfil. Se desejar obter uma cópia dos seus dados armazenados, entre em contato pelo canal de suporte.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>7. Listas públicas e privadas</h2>
+            <p>A plataforma oferece listas públicas curadas que podem ser acessadas e compartilhadas por qualquer visitante. Usuários autenticados podem criar listas privadas com número limitado de itens. Essas listas permanecem privadas, mas podem ser compartilhadas por link público, a critério do usuário. Usuários pagos têm acesso a maior capacidade de listas.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>8. Crianças e menores de idade</h2>
+            <p>A plataforma é destinada ao público geral e não coleta intencionalmente dados de menores de idade. Se tomarmos conhecimento do uso não autorizado de nossos serviços por crianças abaixo da idade permitida, os dados associados serão removidos mediante solicitação.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>9. Conformidade legal</h2>
+            <p>Esta política de privacidade está alinhada com as regulamentações de privacidade e proteção de dados aplicáveis, incluindo GDPR, LGPD e leis equivalentes nas regiões onde operamos.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>10. Contato</h2>
+            <p>Se tiver dúvidas, solicitações ou reclamações relacionadas aos seus dados pessoais, utilize a página de suporte disponível na plataforma.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>11. Atualizações</h2>
+            <p>Esta política pode ser atualizada periodicamente para refletir mudanças na funcionalidade, nos serviços ou nas regulamentações aplicáveis. Recomendamos revisá-la ocasionalmente para se manter informado.</p>
+        </div>
+        <div class="privacy-section" style="text-align:center; color:#888; font-size:0.95rem;">
+            Ao utilizar este site, você concorda com esta Política de Privacidade e com os <a href="/support/terms/pt">Termos de Uso</a>.
+        </div>
+    }
+    else if (Lang == "es")
+    {
+        <h1 class="privacy-title">Política de Privacidad</h1>
+        <div class="privacy-subtitle">
+            Tu privacidad es una prioridad en <b>@ProjectTitle</b> (<a href="https://@ProjectDomain" target="_blank">@ProjectDomain</a>).<br />
+            Por favor, lee esta política con atención para entender cómo manejamos tus datos.
+        </div>
+        <div class="privacy-section">
+            <h2>1. Datos recopilados</h2>
+            <p>Recopilamos y almacenamos información como: dirección de correo electrónico, fecha de inicio de sesión y dirección IP, país de acceso (a través de IP) y configuraciones básicas del usuario. El inicio de sesión es opcional, pero algunas funciones solo están disponibles para usuarios autenticados. También se pueden recopilar datos técnicos y de navegación incluso sin autenticación.</p>
+            <p>Toda la información sobre películas y series proviene de servicios externos como TMDb, IMDb, JustWatch, entre otros. La plataforma solo organiza, presenta y personaliza este contenido.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>2. Cookies y tecnologías similares</h2>
+            <p>Utilizamos cookies propias y almacenamiento de sesión para mantener las preferencias del usuario, la autenticación y el funcionamiento de la plataforma. También usamos cookies de terceros de servicios como Google AdSense para mostrar anuncios personalizados según tu actividad y preferencias.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>3. Herramientas de análisis</h2>
+            <p>Para mejorar la plataforma y comprender los patrones de uso, utilizamos herramientas como Google Analytics y Microsoft Clarity. Estos servicios pueden recopilar datos no identificables como dirección IP, ubicación aproximada, tipo de navegador, duración de la sesión y páginas visitadas.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>4. Compartición de datos</h2>
+            <p>No compartimos tus datos personales con terceros, salvo con socios técnicos esenciales para el funcionamiento básico, incluidos proveedores de inicio de sesión social, infraestructura de alojamiento, análisis y servicios de publicidad. Estos socios operan bajo estrictos controles de confidencialidad y acceso.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>5. Almacenamiento</h2>
+            <p>Tus datos se almacenan en servidores de Microsoft Azure ubicados en los Estados Unidos y pueden replicarse en otras regiones para garantizar la estabilidad y disponibilidad. Los datos están protegidos mediante prácticas modernas de seguridad, como transmisión cifrada y acceso controlado.</p>
+            <p>Cuando se elimina una cuenta, los datos personales se eliminan de la base de datos principal. Sin embargo, cierta información puede conservarse en sistemas aislados por hasta 6 meses por razones legales u operativas, como prevención de fraudes, cumplimiento o solicitudes de investigación. Después de este período, los datos se eliminan permanentemente o se anonimizan.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>6. Derechos del usuario</h2>
+            <p>Los usuarios pueden eliminar sus cuentas en cualquier momento y solicitar la eliminación de sus datos asociados. También puedes acceder o modificar tu información de cuenta usando las herramientas disponibles en la configuración de perfil. Si deseas obtener una copia de tus datos almacenados, puedes contactarnos a través del canal de soporte.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>7. Listas públicas y privadas</h2>
+            <p>La plataforma ofrece listas públicas curadas que pueden ser accedidas y compartidas por cualquier visitante. Los usuarios autenticados pueden crear listas privadas con un número limitado de elementos. Estas listas permanecen privadas, pero pueden compartirse mediante un enlace público, a discreción del usuario. Los usuarios pagos tienen acceso a una mayor capacidad de listas.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>8. Niños y menores de edad</h2>
+            <p>La plataforma está destinada al público general y no recopila intencionadamente datos de menores de edad. Si llegamos a saber del uso no autorizado de nuestros servicios por parte de niños que no cumplan con la edad mínima permitida, eliminaremos los datos asociados tras recibir una solicitud.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>9. Cumplimiento legal</h2>
+            <p>Esta política de privacidad está alineada con las normativas aplicables de privacidad y protección de datos, incluyendo el GDPR, la LGPD y leyes equivalentes en las regiones donde operamos.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>10. Contacto</h2>
+            <p>Si tienes preguntas, solicitudes o reclamos relacionados con tus datos personales, utiliza la página de soporte disponible en la plataforma.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>11. Actualizaciones</h2>
+            <p>Esta política puede actualizarse periódicamente para reflejar cambios en la funcionalidad, servicios o regulaciones aplicables. Recomendamos revisarla de vez en cuando para mantenerte informado.</p>
+        </div>
+        <div class="privacy-section" style="text-align:center; color:#888; font-size:0.95rem;">
+            Al utilizar este sitio, aceptas esta Política de Privacidad y los <a href="/support/terms/es">Términos de Uso</a>.
+        </div>
+    }
+    else
+    {
+        <h1 class="privacy-title">Privacy Policy</h1>
+        <div class="privacy-subtitle">
+            Your privacy is a priority at <b>@ProjectTitle</b> (<a href="https://@ProjectDomain" target="_blank">@ProjectDomain</a>).<br />
+            Please read this policy carefully to understand how we handle your data.
+        </div>
+        <div class="privacy-section">
+            <h2>1. Data collected</h2>
+            <p>We collect and store information such as: email address, login date and IP address, access country (via IP), device type, browser type, and basic user settings. Login is optional, but some features are only available to authenticated users. Technical and browsing data may also be collected even without authentication.</p>
+            <p>All film and series information is sourced from external services like TMDb, IMDb, JustWatch, among others. The platform only curates, organizes, and presents this content in personalized formats.</p>
+            <p>We do not collect sensitive personal data or precise geolocation without explicit consent.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>2. Cookies and similar technologies</h2>
+            <p>We use first-party cookies and session storage to maintain user preferences, authentication, and platform functionality. Third-party cookies from analytics providers may be used to analyze usage patterns. You can manage or revoke consent through your browser or platform settings.</p>
+            <p><b>Important:</b> Due to Apple's AppTrackingTransparency (ATT) framework, which requires explicit user permission for cross-app and cross-site tracking, behavioral tracking technologies are not operational on Apple devices in our app. We do not use or install tracking frameworks that require ATT consent. As a result, behavioral data collection and related analytics are limited or unavailable on Apple devices.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>3. Analytics tools</h2>
+            <p>We use analytics tools like Google Analytics and Microsoft Clarity to understand platform usage and improve our services. These tools collect non-identifiable data such as IP address, approximate location (city or region level), browser type, session duration, and visited pages. No personal identification is shared with these services.</p>
+            <p><b>Note:</b> On Apple devices, due to ATT restrictions, behavioral tracking and cross-app data collection are limited. We fully comply with these restrictions and do not bypass them, so data from Apple users may be less comprehensive or absent.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>4. Data sharing</h2>
+            <p>We do not sell or rent your personal data. We share data only with trusted third-party providers essential to the platform’s core functionality, such as social login providers, hosting services, analytics, and advertising platforms. These providers operate under strict confidentiality agreements and data access is limited to necessary information.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>5. Data storage and security</h2>
+            <p>Your data is securely stored on Microsoft Azure servers located in the United States, with possible replication in other regions for stability and availability. Data is encrypted during transmission (e.g., via HTTPS) and protected with access controls and monitoring.</p>
+            <p>When an account is deleted, personal data is removed from the main database. Certain data may be retained in isolated systems for up to 6 months for legal or operational reasons, such as fraud prevention or compliance. After this period, the data is permanently deleted or anonymized.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>6. User rights</h2>
+            <p>You can delete your account at any time and request removal of your data. You also have the right to access, correct, or export your data using tools provided in your account settings or via support channels.</p>
+            <p>If you have questions about your data or wish to exercise your rights under applicable privacy laws (GDPR, LGPD, CCPA/CPRA), please contact us through the platform’s support page.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>7. Public and private lists</h2>
+            <p>The platform features curated public lists accessible and shareable by any visitor. Logged-in users can create private lists with item limits based on their subscription level. Private lists remain confidential unless shared externally by the user.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>8. Children and minors</h2>
+            <p>The platform is designed for general audiences and does not knowingly collect data from children under the applicable age of majority. If we learn that a minor has provided personal information without parental consent, we will take steps to delete such data.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>9. Legal compliance</h2>
+            <p>This policy aligns with privacy laws including GDPR, LGPD, and CCPA/CPRA, depending on your location. We continuously review our practices to ensure compliance with applicable regulations.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>10. Contact</h2>
+            <p>For any questions, requests, or complaints regarding your data privacy, please use the support page within the platform or contact us directly.</p>
+        </div>
+        <div class="privacy-section">
+            <h2>11. Updates to this Policy</h2>
+            <p>We may update this Privacy Policy periodically to reflect changes in technology, services, or regulations. Significant changes will be communicated through notifications or email when feasible. We encourage you to review this policy regularly.</p>
+        </div>
+        <div class="privacy-section">
+            <p style="text-align:center; color:#888; font-size:0.9rem;">Last updated: August 5, 2025</p>
+            <p style="text-align:center; color:#888; font-size:0.9rem;">By using the platform, you agree to this Privacy Policy and the <a href="/support/terms/en">Terms of Use</a>.</p>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public string? Lang { get; set; }
+
+    public string? ProjectTitle => SeoTranslations.AppName;
+    public string ProjectDomain => "www.web-standards.com";
+}

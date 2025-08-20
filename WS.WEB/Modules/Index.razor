@@ -1,0 +1,100 @@
+﻿@page "/"
+@page "/index"
+@using WS.WEB.Resources
+
+@inherits PageCore<Index>
+
+@inject IJSRuntime JsRuntime
+
+<SeoHeader Title="Home" Description="@SeoTranslations.AppDescription" Url="/"></SeoHeader>
+@* <GoogleAdSense Section="@GoogleAdSense.AdUnit.Main"></GoogleAdSense> *@
+
+<SectionComponent Title="Discovery & Search" Description="make sure Google finds your site" IconName="@IconsFA.Solid.Icon("magnifying-glass").Font">
+    <BodyFragment>
+        <MudGrid Spacing="2">
+            <MudItem xs="12" sm="6" md="4">
+                <WrappedCard Title="robots.txt" ActionName="Coming soon"
+                             Description="File used by search engines (Google, Bing, etc.) to understand which parts of the site can or cannot be crawled. Important to prevent private or irrelevant areas (e.g., /admin, /api) from appearing in search results. It also helps direct the “crawl budget” to the right pages.">
+                </WrappedCard>
+            </MudItem>
+            <MudItem xs="12" sm="6" md="4">
+                <WrappedCard Title="sitemap.xml" ActionName="Check it out" Action="@(()=>Navigation.NavigateTo("sitemap"))"
+                             Description="An XML list of site pages that search engines use to index content efficiently. Without it, crawlers may take much longer to find all pages. Essential for large sites or those with weak internal linking.">
+                </WrappedCard>
+            </MudItem>
+            <MudItem xs="12" sm="6" md="4">
+                <WrappedCard Title="image/video sitemaps" ActionName="Coming soon"
+                             Description="Extended sitemap formats that help search engines understand and index images and videos. Useful for sites with lots of multimedia (portfolios, blogs, e-commerce). Increases chances of appearing in image/video results.">
+                </WrappedCard>
+            </MudItem>
+        </MudGrid>
+    </BodyFragment>
+</SectionComponent>
+
+<SectionComponent Title="Device & App Integration" Description="work as a PWA, provide icons, integrate with apps" IconName="@IconsFA.Solid.Icon("mobile-screen").Font">
+    <BodyFragment>
+        <MudGrid Spacing="2">
+            <MudItem xs="12" sm="6" md="4">
+                <WrappedCard Title="manifest.webmanifest" ActionName="Coming soon"
+                             Description="File that describes how the site should behave when installed on a device (e.g., “Add to Home Screen” on mobile). Defines name, colors, icons, and splash screen. Core requirement for any PWA (Progressive Web App). Without it, the site cannot be treated like a native app.">
+                </WrappedCard>
+            </MudItem>
+            <MudItem xs="12" sm="6" md="4">
+                <WrappedCard Title="service-worker.js" ActionName="Coming soon"
+                             Description="A script that runs in the background and enables caching, offline mode, and push notifications. Even a simple version ensures the site works in poor or no connection scenarios. Fundamental for modern user experience.">
+                </WrappedCard>
+            </MudItem>
+            <MudItem xs="12" sm="6" md="4">
+                <WrappedCard Title="Layout & Icons" ActionName="Coming soon"
+                             Description="Favicons, multi-size icons, theme-color">
+                </WrappedCard>
+            </MudItem>
+        </MudGrid>
+    </BodyFragment>
+</SectionComponent>
+
+<SectionComponent Title="Security & Privacy" Description="protect users and comply with standards" IconName="@IconsFA.Solid.Icon("lock").Font">
+    <BodyFragment>
+        <MudGrid Spacing="2">
+            <MudItem xs="12" sm="6" md="4">
+                <WrappedCard Title="security.txt" ActionName="Coming soon"
+                             Description="A standardized file to tell security researchers how to responsibly report vulnerabilities. Helps fix issues faster and builds user trust." />
+            </MudItem>
+            <MudItem xs="12" sm="6" md="4">
+                <WrappedCard Title="gpc.json" ActionName="Coming soon"
+                             Description="Implements the Global Privacy Control standard, allowing browsers to automatically communicate a user’s preference not to be tracked. Supports GDPR, CCPA, and similar privacy laws." />
+            </MudItem>
+            <MudItem xs="12" sm="6" md="4">
+                <WrappedCard Title="change-password / reset-password" ActionName="Coming soon"
+                             Description="Standardized links that allow browsers and password managers to take users directly to the password reset/change page. Improves UX and reduces phishing risks." />
+            </MudItem>
+            <MudItem xs="12" sm="6" md="4">
+                <WrappedCard Title="Security Headers" ActionName="Coming soon"
+                             Description="Set of headers that strengthen site security. Even static web apps can define them in config files: Content-Security-Policy (CSP), Strict-Transport-Security (HSTS), Permissions-Policy, Referrer-Policy, X-Content-Type-Options, X-Frame-Options / frame-ancestors" />
+            </MudItem>
+        </MudGrid>
+    </BodyFragment>
+</SectionComponent>
+
+<SectionComponent Title="SEO & Sharing" Description="look good in search engines and social media" IconName="@IconsFA.Solid.Icon("share-nodes").Font">
+    <BodyFragment>
+        <MudGrid Spacing="2">
+            <MudItem xs="12" sm="6" md="4">
+                <WrappedCard Title="Open Graph tags" ActionName="Coming soon"
+                             Description="A set of meta tags (originally by Facebook) that control the title, description, and image shown when a site is shared on social networks or messaging apps. Essential for engagement and professional appearance." />
+            </MudItem>
+            <MudItem xs="12" sm="6" md="4">
+                <WrappedCard Title="Twitter Cards" ActionName="Coming soon"
+                             Description="Twitter/X-specific version of link previews. Without them, shared links often look plain or incomplete." />
+            </MudItem>
+            <MudItem xs="12" sm="6" md="4">
+                <WrappedCard Title="Structured Data (JSON-LD)" ActionName="Coming soon"
+                             Description="Metadata in JSON format embedded in HTML to describe content (articles, FAQs, products, events, etc.). Enables Google rich results (FAQ boxes, product carousels). Greatly boosts visibility in search results." />
+            </MudItem>
+            <MudItem xs="12" sm="6" md="4">
+                <WrappedCard Title="hreflang / canonical" ActionName="Coming soon"
+                             Description="hreflang → indicates the correct language/region version of a page. | canonical → tells search engines which URL is the “official” one, preventing duplicate content issues." />
+            </MudItem>
+        </MudGrid>
+    </BodyFragment>
+</SectionComponent>

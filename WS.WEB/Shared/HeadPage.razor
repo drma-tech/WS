@@ -1,0 +1,64 @@
+﻿@inherits ComponentCore<HeadPage>
+
+@inject IJSRuntime Js
+
+<MudPaper Class="@(IncludeMB ? "mb-2" : "")" Outlined="true">
+    <MudStack StretchItems="StretchItems.Middle" Row="true" Spacing="2">
+        <div class="pa-2" style="align-self: center;">
+            @if (Link.Empty())
+            {
+                <MudImage Src="@ImageSource" Alt="@ImageSource" Style="max-height: 50px; max-width: 50px;"></MudImage>
+            }
+            else
+            {
+                <a href="@Link" target="_blank" rel="nofollow">
+                    <MudImage Src="@ImageSource" Alt="@ImageSource" Style="max-height: 50px; max-width: 50px;"></MudImage>
+                </a>
+            }
+        </div>
+        <div class="pa-2">
+            <MudText Typo="Typo.h1" Color="Color" Class="custom-h1">
+                @if (Link.Empty())
+                {
+                    @Title
+                }
+                else
+                {
+                    <a href="@Link" target="_blank" rel="nofollow" class="mud-primary-text">@Title</a>
+                }
+            </MudText>
+        </div>
+        <div class="pa-2" style="align-self: center;">
+            @if (ShowShare)
+            {
+                <MudButton StartIcon="@IconsFA.Solid.Icon("share").Font" Color="Color" Variant="Variant.Filled" OnClick="@(() => Share(Navigation.Uri))">
+                    Share
+                </MudButton>
+            }
+        </div>
+    </MudStack>
+    @if (Text.NotEmpty())
+    {
+        <MudStack Row="true" Class="px-2">
+            <MudText Typo="Typo.body1" Align="Align.Justify">
+                @Text
+            </MudText>
+        </MudStack>
+    }
+</MudPaper>
+
+@code {
+    [Parameter] public string? ImageSource { get; set; }
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public Color Color { get; set; } = Color.Primary;
+    [Parameter] public string? Text { get; set; }
+    [Parameter] public string? Link { get; set; }
+    [Parameter] public bool ShowShare { get; set; } = true;
+    [Parameter] public bool IncludeMB { get; set; } = true;
+
+    private async Task Share(string? link)
+    {
+        await Js.InvokeVoidAsync("share", link);
+    }
+
+}

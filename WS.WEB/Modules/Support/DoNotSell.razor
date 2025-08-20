@@ -1,0 +1,100 @@
+﻿@page "/support/do-not-sell/{lang}"
+@using WS.WEB.Resources
+<SeoHeader Title="Privacy" Url=@($"/support/do-not-sell/{Lang}")></SeoHeader>
+
+<style>
+    .privacy-container {
+        max-width: 900px;
+        margin: 32px auto;
+        padding: 40px 24px 32px 24px;
+        background: var(--mud-palette-background, #fff);
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.09);
+    }
+
+    .privacy-title {
+        text-align: center;
+        font-size: 2.2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--mud-palette-text-primary, #222);
+    }
+
+    .privacy-subtitle {
+        text-align: center;
+        color: var(--mud-palette-text-secondary, #555);
+        font-size: 1.1rem;
+        margin-bottom: 2.2rem;
+    }
+
+    .privacy-section {
+        margin-bottom: 2.2rem;
+    }
+
+        .privacy-section h2 {
+            margin-bottom: 0.7rem;
+            color: var(--mud-palette-primary, #1976d2);
+            font-size: 1.18rem;
+            font-weight: 500;
+        }
+
+        .privacy-section p {
+            text-align: justify;
+            margin-bottom: 0.5rem;
+            color: var(--mud-palette-text-primary, #333);
+            line-height: 1.7;
+        }
+
+        .privacy-section ul {
+            text-align: justify;
+            margin-bottom: 0.5rem;
+            color: var(--mud-palette-text-primary, #333);
+            line-height: 1.7;
+            padding-left: 1.4rem;
+            list-style-type: disc;
+        }
+
+            .privacy-section ul li {
+                padding-left: 0.1rem;
+            }
+</style>
+
+<div class="privacy-container">
+    @if (Lang == "pt")
+    {
+        <h1 class="privacy-title">Não Vender ou Compartilhar Meus Dados Pessoais</h1>
+        <div class="privacy-section">
+            <p>Não vendemos nem compartilhamos seus dados pessoais em troca de dinheiro ou qualquer outra forma de compensação.</p>
+            <p>No entanto, algumas ferramentas de terceiros usadas na plataforma (como para análises ou publicidade) podem coletar dados que, segundo a Lei de Privacidade da Califórnia (CCPA/CPRA), podem ser considerados como “compartilhamento”.</p>
+            <p>Você pode gerenciar suas preferências ajustando as configurações de cookies ou desativando rastreamento pelo navegador.</p>
+            <p>Se você reside na Califórnia e tiver dúvidas, entre em contato: support@streamingdiscovery.com</p>
+        </div>
+    }
+    else if (Lang == "es")
+    {
+        <h1 class="privacy-title">No Vender ni Compartir Mi Información Personal</h1>
+        <div class="privacy-section">
+            <p>No vendemos ni compartimos su información personal a cambio de dinero u otra compensación de valor.</p>
+            <p>Sin embargo, algunas herramientas de terceros utilizadas en nuestra plataforma (por ejemplo, para análisis o publicidad) pueden recopilar datos que podrían considerarse un “compartir” según la Ley de Privacidad de California (CCPA/CPRA).</p>
+            <p>Puede administrar sus preferencias ajustando la configuración de cookies o desactivando el seguimiento en su navegador.</p>
+            <p>Si usted reside en California y tiene preguntas, contáctenos: support@streamingdiscovery.com</p>
+        </div>
+    }
+    else
+    {
+        <h1 class="privacy-title">Do Not Sell or Share My Personal Information</h1>
+        <div class="privacy-section">
+            <p>We do not sell or share your personal data in exchange for money or any other valuable consideration.</p>
+            <p>However, certain third-party tools used on our platform (e.g., for analytics or advertising) may collect data that could be considered a “share” under the California Consumer Privacy Act (CCPA/CPRA).</p>
+            <p>To manage your preferences, please adjust your cookie settings or disable tracking via your browser.</p>
+            <p>If you are a California resident and have any questions, contact us at: support@streamingdiscovery.com</p>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public string? Lang { get; set; }
+
+    public string? ProjectTitle => SeoTranslations.AppName;
+    public string ProjectDomain => "www.web-standards.com";
+}

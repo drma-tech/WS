@@ -1,0 +1,70 @@
+﻿@using WS.WEB.Modules.Support.Resources
+@using WS.WEB.Resources
+@inherits ComponentCore<FooterComponent>
+
+@if ((Support && Breakpoint <= Breakpoint.Sm) || (!Support && Breakpoint > Breakpoint.Sm))
+{
+    <MudDivider Class="mb-3 mt-10"></MudDivider>
+    <MudGrid Justify="Justify.Center" Style="overflow: auto;" Spacing="2">
+        <MudItem xs="12" sm="12" md="3">
+            <MudList T="string" Color="Color.Surface">
+                <MudListSubheader>
+                    <MudText Typo="Typo.button" Color="Color.Primary">
+                        @SeoTranslations.AppName
+                    </MudText>
+                </MudListSubheader>
+                <MudListItem Text="@SeoTranslations.AppDescription" Dense="true" Style="text-align: justify" />
+            </MudList>
+        </MudItem>
+        <MudItem xs="12" sm="3" md="2">
+            <MudList T="string">
+                <MudListSubheader>
+                    <MudText Typo="Typo.button" Color="Color.Secondary">
+                        COMPANY
+                    </MudText>
+                </MudListSubheader>
+                <MudListItem Text="Website" Href="https://www.drma-tech.com/" Dense="true" Target="_blank" />
+            </MudList>
+        </MudItem>
+        <MudItem xs="12" sm="3" md="2">
+            <MudList T="string">
+                <MudListSubheader>
+                    <MudText Typo="Typo.button" Color="Color.Secondary">
+                        PRODUCT
+                    </MudText>
+                </MudListSubheader>
+                <MudListItem Text="Website" Href="https://www.web-standards.com/" Dense="true" Target="_blank" />
+                <MudListItem Text="Google Play" Href="" Dense="true" Target="_blank" />
+                <MudListItem Text="Microsoft Store" Href="" Dense="true" Target="_blank" />
+                <MudListItem Text="HUAWEI AppGallery" Href="" Dense="true" Target="_blank" />
+            </MudList>
+        </MudItem>
+        <MudItem xs="12" sm="3" md="2">
+            <MudList T="string">
+                <MudListSubheader>
+                    <MudText Typo="Typo.button" Color="Color.Secondary">
+                        SUPPORT
+                    </MudText>
+                </MudListSubheader>
+                <MudListItem Text="Contact" Href="mailto:support@web-standards.com" Dense="true" />
+                <MudListItem Text="FAQ" Href="/support/faq" Dense="true" />
+            </MudList>
+        </MudItem>
+        <MudItem xs="12" sm="3" md="2">
+            <MudList T="string">
+                <MudListSubheader>
+                    <MudText Typo="Typo.button" Color="Color.Secondary">
+                        LEGAL
+                    </MudText>
+                </MudListSubheader>
+                <MudListItem Text="@Translations.LinkTerm" Href="/support/terms" Dense="true" />
+                <MudListItem Text="@Translations.LinkPrivacy" Href="/support/privacy" Dense="true" />
+                <MudListItem Text="Credits" Href="/support/credits" Dense="true" />
+            </MudList>
+        </MudItem>
+    </MudGrid>
+}
+
+@code {
+    [Parameter] public bool Support { get; set; }
+}
