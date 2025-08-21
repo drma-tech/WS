@@ -1,6 +1,6 @@
-﻿@page "/support/terms/{lang}"
+﻿@page "/support/terms"
 @using WS.WEB.Resources
-<SeoHeader Title="Terms of Use" Url=@($"/support/terms/{Lang}")></SeoHeader>
+<SeoHeader Title="Terms of Use" Url=@($"/support/terms")></SeoHeader>
 
 <style>
     .terms-container {
@@ -60,229 +60,76 @@
 </style>
 
 <div class="terms-container">
-    @if (Lang == "pt")
-    {
-        <h1 class="terms-title">Termos de Uso</h1>
-        <div class="terms-subtitle">
-            Bem-vindo ao <b>@ProjectTitle</b> (<a href="https://@ProjectDomain" target="_blank">@ProjectDomain</a>)!<br />
-            Ao acessar ou usar este serviço, você concorda com estes Termos de Uso. Por favor, leia-os com atenção.
-        </div>
-        <div class="terms-section">
-            <h2>1. Sobre o Serviço</h2>
-            <p>O <b>@ProjectTitle</b> é uma plataforma global projetada para ajudar usuários a descobrir, organizar e gerenciar conteúdo de streaming em diversos serviços. Embora a maioria dos recursos esteja disponível gratuitamente, alguns são exclusivos para usuários autenticados ou assinantes com planos mensais ou anuais ativos.</p>
-            <p>O serviço é operado pela Delivering Reliable Modern Apps Tech OÜ, registrada na Estônia, e é destinado apenas para uso pessoal e não comercial.</p>
-        </div>
-        <div class="terms-section">
-            <h2>2. Conta, Dados e Privacidade</h2>
-            <p>Você pode usar a plataforma de forma anônima. No entanto, recursos como criação de listas privadas ou gerenciamento de preferências de conta requerem autenticação. Após o login, coletamos seu e-mail, data e hora do login, e endereço IP. Esses dados são usados para segurança, diagnóstico e personalização.</p>
-            <p>Algumas preferências básicas do usuário podem ser configuradas, mas não coletamos nem armazenamos dados sensíveis ou de geolocalização.</p>
-            <p>Utilizamos ferramentas de análise como Google Analytics e Microsoft Clarity para entender padrões de uso. Consulte nossa Política de Privacidade para mais detalhes sobre como seus dados são tratados.</p>
-        </div>
-        <div class="terms-section">
-            <h2>3. Funcionalidades e Assinatura</h2>
-            <p>O <b>@ProjectTitle</b> inclui listas públicas e privadas:</p>
-            <ul>
-                <li><b>Listas públicas</b> são curadas e mantidas pela plataforma e podem ser acessadas ou compartilhadas por qualquer usuário, autenticado ou não.</li>
-                <li><b>Listas privadas</b> são criadas por usuários autenticados. Usuários gratuitos têm um número limitado de itens por lista. Assinantes têm acesso a limites maiores.</li>
-            </ul>
-            <p>As assinaturas estão disponíveis mensal ou anualmente, renovam-se automaticamente salvo cancelamento, e são processadas por nosso parceiro de pagamentos (Paddle). Os preços são exibidos em dólares americanos e convertidos conforme necessário pelo processador de pagamentos.</p>
-        </div>
-        <div class="terms-section">
-            <h2>4. Conteúdo de Terceiros</h2>
-            <p>O <b>@ProjectTitle</b> utiliza dados, imagens e metadados de provedores externos como TMDb, JustWatch e outros. Não temos afiliação com esses serviços, e todo conteúdo de terceiros permanece propriedade de seus respectivos detentores.</p>
-            <p>Não oferecemos streaming, download ou reprodução de conteúdo protegido por direitos autorais. Todos os créditos estão disponíveis em nossa página de créditos.</p>
-        </div>
-        <div class="terms-section">
-            <h2>5. Propriedade Intelectual</h2>
-            <p>A estrutura, organização e apresentação visual dos dados no <b>@ProjectTitle</b> são originais e protegidas sob a licença MPL-2.0 ou licenças abertas similares. Todos os recursos de terceiros permanecem sob seus respectivos direitos autorais e marcas registradas.</p>
-            <p>A reprodução, raspagem de dados (scraping), engenharia reversa ou redistribuição não autorizada de elementos da plataforma é estritamente proibida.</p>
-        </div>
-        <div class="terms-section">
-            <h2>6. Uso Aceitável</h2>
-            <p>Você concorda em usar a plataforma de forma legal e em conformidade com as leis aplicáveis. O uso indevido das funcionalidades, a tentativa de contornar limites ou o uso indevido de dados públicos é proibido. Você não deve usar o serviço para violar direitos de terceiros ou distribuir conteúdo não autorizado.</p>
-        </div>
-        <div class="terms-section">
-            <h2>7. Listas de Usuário</h2>
-            <p>Usuários autenticados podem criar listas privadas para organizar conteúdo. Essas listas são pessoais e não visíveis para outros, salvo se compartilhadas explicitamente pelo usuário. O número de itens por lista é limitado para usuários gratuitos e ampliado para assinantes.</p>
-            <p>Listas públicas são curadas pela plataforma e estão disponíveis para todos os usuários. Podem ser navegadas e compartilhadas livremente sem necessidade de autenticação.</p>
-        </div>
-        <div class="terms-section">
-            <h2>8. Limitação de Responsabilidade</h2>
-            <p>O <b>@ProjectTitle</b> é fornecido "como está" e "conforme disponível". Não garantimos serviço ininterrupto, precisão total ou adequação para um propósito específico.</p>
-            <p>Não nos responsabilizamos por imprecisões, metadados desatualizados ou omissões em conteúdos de terceiros. O uso é por sua conta e risco.</p>
-        </div>
-        <div class="terms-section">
-            <h2>9. Alterações</h2>
-            <p>Estes Termos podem ser atualizados sem aviso prévio. Mudanças significativas serão comunicadas por e-mail ou notificação na plataforma sempre que possível. O uso contínuo da plataforma após as alterações implica aceitação dos novos termos.</p>
-        </div>
-        <div class="terms-section">
-            <h2>10. Contato</h2>
-            <p>Para suporte, feedback ou questões legais, visite nossa página de suporte ou utilize as ferramentas de contato disponíveis na plataforma.</p>
-        </div>
-        <div class="terms-section">
-            <h2>11. Conformidade Legal</h2>
-            <p>Você é responsável por usar o serviço conforme as leis locais, incluindo regulamentos de direitos autorais e privacidade de dados. A plataforma é desenvolvida para estar em conformidade com o GDPR e padrões internacionais relacionados.</p>
-            <p>O serviço é regido sob a jurisdição da Estônia.</p>
-        </div>
-        <div class="terms-section">
-            <h2>12. Legislação Aplicável e Resolução de Disputas</h2>
-            <p>Estes Termos são regidos pelas leis da Estônia. Quaisquer disputas serão resolvidas sob a jurisdição exclusiva dos tribunais de Tallinn, Estônia, em inglês, salvo exigência contrária por leis locais aplicáveis ou em casos de investigações criminais.</p>
-        </div>
-    }
-    else if (Lang == "es")
-    {
-        <h1 class="terms-title">Términos de Uso</h1>
-        <div class="terms-subtitle">
-            Bienvenido a <b>@ProjectTitle</b> (<a href="https://@ProjectDomain" target="_blank">@ProjectDomain</a>)!<br />
-            Al acceder o utilizar este servicio, aceptas estos Términos de Uso. Por favor, léelos cuidadosamente.
-        </div>
-        <div class="terms-section">
-            <h2>1. Sobre el Servicio</h2>
-            <p><b>@ProjectTitle</b> es una plataforma global diseñada para ayudar a los usuarios a descubrir, organizar y gestionar contenido de streaming de varios servicios. Aunque la mayoría de las funciones están disponibles de forma gratuita, algunas son exclusivas para usuarios autenticados o suscriptores con planes mensuales o anuales activos.</p>
-            <p>El servicio es operado por Delivering Reliable Modern Apps Tech OÜ, registrada en Estonia, y está destinado únicamente para uso personal y no comercial.</p>
-        </div>
-        <div class="terms-section">
-            <h2>2. Cuenta, Datos y Privacidad</h2>
-            <p>Puedes utilizar la plataforma de forma anónima. Sin embargo, funciones como la creación de listas privadas o la gestión de preferencias de cuenta requieren autenticación. Al iniciar sesión, recopilamos tu correo electrónico, la fecha y hora de inicio de sesión, y tu dirección IP. Estos datos se utilizan para fines de seguridad, diagnóstico y personalización.</p>
-            <p>Algunas preferencias básicas del usuario se pueden configurar, pero no recopilamos ni almacenamos datos sensibles ni de geolocalización.</p>
-            <p>Utilizamos herramientas de análisis como Google Analytics y Microsoft Clarity para entender los patrones de uso. Consulta nuestra Política de Privacidad para más detalles sobre cómo se procesan tus datos.</p>
-        </div>
-        <div class="terms-section">
-            <h2>3. Funcionalidades y Suscripción</h2>
-            <p><b>@ProjectTitle</b> incluye listas públicas y privadas:</p>
-            <ul>
-                <li><b>Listas públicas</b> son seleccionadas y mantenidas por la plataforma y pueden ser accedidas o compartidas por cualquier usuario, autenticado o no.</li>
-                <li><b>Listas privadas</b> son creadas por usuarios autenticados. Los usuarios gratuitos tienen un número limitado de elementos por lista. Los suscriptores tienen acceso a límites más altos.</li>
-            </ul>
-            <p>Las suscripciones están disponibles de forma mensual o anual, se renuevan automáticamente a menos que se cancelen, y son procesadas por nuestro socio de pagos (Paddle). Los precios se muestran en USD y se convierten automáticamente cuando sea necesario por el procesador de pagos.</p>
-        </div>
-        <div class="terms-section">
-            <h2>4. Contenido de Terceros</h2>
-            <p><b>@ProjectTitle</b> utiliza datos, imágenes y metadatos de proveedores externos como TMDb, JustWatch y otros. No estamos afiliados con estos servicios, y todo el contenido de terceros sigue siendo propiedad de sus respectivos dueños.</p>
-            <p>No ofrecemos transmisión, descarga ni reproducción de contenido protegido por derechos de autor. Todos los créditos se encuentran en nuestra página de créditos.</p>
-        </div>
-        <div class="terms-section">
-            <h2>5. Propiedad Intelectual</h2>
-            <p>La estructura, organización y presentación visual de los datos en <b>@ProjectTitle</b> son originales y están protegidas por la licencia MPL-2.0 u otras licencias abiertas similares. Todos los recursos de terceros conservan sus respectivos derechos de autor y marcas registradas.</p>
-            <p>Está estrictamente prohibida la reproducción, el scraping, la ingeniería inversa o la redistribución no autorizada de los elementos de la plataforma.</p>
-        </div>
-        <div class="terms-section">
-            <h2>6. Uso Aceptable</h2>
-            <p>Te comprometes a utilizar la plataforma de forma legal y conforme a las leyes aplicables. Se prohíbe el abuso de funcionalidades, la evasión de límites o el uso indebido de datos públicos. No debes utilizar el servicio para infringir los derechos de terceros ni para distribuir contenido no autorizado.</p>
-        </div>
-        <div class="terms-section">
-            <h2>7. Listas de Usuario</h2>
-            <p>Los usuarios autenticados pueden crear listas privadas para organizar contenido. Estas listas son personales y no visibles para otros, a menos que el usuario las comparta explícitamente. La cantidad de elementos por lista es limitada para usuarios gratuitos y ampliada para suscriptores.</p>
-            <p>Las listas públicas son seleccionadas por la plataforma y están disponibles para todos los usuarios. Se pueden explorar y compartir libremente sin necesidad de autenticación.</p>
-        </div>
-        <div class="terms-section">
-            <h2>8. Limitación de Responsabilidad</h2>
-            <p><b>@ProjectTitle</b> se proporciona "tal cual" y "según disponibilidad". No garantizamos un servicio ininterrumpido, precisión total ni adecuación para un propósito específico.</p>
-            <p>No somos responsables por inexactitudes, metadatos desactualizados u omisiones en el contenido de terceros. El uso corre por tu cuenta y riesgo.</p>
-        </div>
-        <div class="terms-section">
-            <h2>9. Cambios</h2>
-            <p>Estos Términos pueden actualizarse sin previo aviso. Los cambios significativos serán comunicados por correo electrónico o notificación en la plataforma cuando sea posible. El uso continuado de la plataforma tras dichas actualizaciones implica la aceptación de los nuevos términos.</p>
-        </div>
-        <div class="terms-section">
-            <h2>10. Contacto</h2>
-            <p>Para soporte, comentarios o asuntos legales, visita nuestra página de soporte o utiliza las herramientas de contacto de la plataforma.</p>
-        </div>
-        <div class="terms-section">
-            <h2>11. Cumplimiento Legal</h2>
-            <p>Eres responsable de utilizar el servicio conforme a las leyes locales, incluyendo las regulaciones sobre derechos de autor y privacidad de datos. La plataforma está desarrollada para cumplir con el GDPR y otros estándares internacionales aplicables.</p>
-            <p>El servicio se rige bajo la jurisdicción de Estonia.</p>
-        </div>
-        <div class="terms-section">
-            <h2>12. Legislación Aplicable y Resolución de Disputas</h2>
-            <p>Estos Términos se rigen por las leyes de Estonia. Cualquier disputa se resolverá bajo la jurisdicción exclusiva de los tribunales de Tallin, Estonia, en inglés, salvo que las leyes locales aplicables indiquen lo contrario o se trate de investigaciones criminales.</p>
-        </div>
-    }
-    else
-    {
-        <h1 class="terms-title">Terms of Use</h1>
-        <div class="terms-subtitle">
-            Welcome to <b>@ProjectTitle</b> (<a href="https://@ProjectDomain" target="_blank">@ProjectDomain</a>)!<br />
-            By accessing or using this service, you agree to these Terms of Use. Please read them carefully.
-        </div>
-        <div class="terms-section">
-            <h2>1. About the Service</h2>
-            <p><b>@ProjectTitle</b> is a global platform designed to help users discover, organize, and manage streaming content across various services. While most features are available for free, some require authentication or an active subscription.</p>
-            <p>The service is operated by Delivering Reliable Modern Apps Tech OÜ, registered in Estonia, and is intended for personal, non-commercial use only.</p>
-        </div>
-        <div class="terms-section">
-            <h2>2. Account, Data, and Privacy</h2>
-            <p>You may use the platform anonymously. However, features such as creating private lists or managing account preferences require authentication. Upon login, we collect your email, login timestamps, IP address, and device information. This data is used solely for security, diagnostics, personalization, and analytics.</p>
-            <p>We do not collect or store sensitive personal data or precise geolocation without explicit consent.</p>
-            <p>We implement reasonable technical and organizational measures to protect your data from unauthorized access or disclosure.</p>
-            <p>We use analytics tools such as Google Analytics and Microsoft Clarity to understand usage patterns. For more details, please refer to our <a href="/support/privacy/en">Privacy Policy</a>.</p>
-        </div>
-        <div class="terms-section">
-            <h2>3. Features and Subscription</h2>
-            <p><b>@ProjectTitle</b> offers both public and private lists:</p>
-            <ul>
-                <li><b>Public lists</b> are curated by the platform and accessible to all users, authenticated or not.</li>
-                <li><b>Private lists</b> are created by authenticated users. Free accounts have limits on the number of items per list, while subscribers enjoy higher limits and additional features.</li>
-            </ul>
-            <p>Subscriptions are available monthly or annually, renew automatically unless cancelled, and are processed through our payment partner (Paddle). Prices are displayed in USD and may be converted to local currencies by the payment processor. Availability and payment methods vary by country.</p>
-        </div>
-        <div class="terms-section">
-            <h2>4. Third-party Content</h2>
-            <p><b>@ProjectTitle</b> displays data, images, and metadata sourced from third parties such as TMDb and JustWatch. These third-party contents remain the property of their respective owners.</p>
-            <p>We do not host or provide streaming, downloads, or playback of copyrighted content. Attribution and licensing details are available on our credits page.</p>
-        </div>
-        <div class="terms-section">
-            <h2>5. Intellectual Property</h2>
-            <p>The structure, design, and presentation of data on <b>@ProjectTitle</b> are protected under the MPL-2.0 license or similar open-source licenses. Third-party assets are governed by their respective copyrights and trademarks.</p>
-            <p>Unauthorized copying, scraping, reverse engineering, or redistribution of platform elements is strictly prohibited.</p>
-        </div>
-        <div class="terms-section">
-            <h2>6. Acceptable Use</h2>
-            <p>Users agree to use the platform lawfully and responsibly. Prohibited actions include:</p>
-            <ul>
-                <li>Attempting to circumvent platform limits or restrictions.</li>
-                <li>Using bots, scrapers, or automated tools without explicit permission.</li>
-                <li>Uploading or sharing content that infringes intellectual property rights or applicable laws.</li>
-            </ul>
-        </div>
-        <div class="terms-section">
-            <h2>7. User Lists</h2>
-            <p>Authenticated users may create private lists to organize streaming content. These lists are personal and not visible to others unless the user chooses to share them externally.</p>
-            <p>Public lists are curated by the platform and accessible to all users without authentication.</p>
-        </div>
-        <div class="terms-section">
-            <h2>8. Limitation of Liability and Service Availability</h2>
-            <p><b>@ProjectTitle</b> is provided "as is" and "as available." We do not guarantee uninterrupted access, accuracy, or completeness of content and metadata. Use of the platform is at your own risk.</p>
-            <p>We are not responsible for errors, outdated information, or third-party content availability.</p>
-            <p>The platform may be modified, suspended, or discontinued at any time without prior notice.</p>
-        </div>
-        <div class="terms-section">
-            <h2>9. Changes to Terms</h2>
-            <p>We may update these Terms periodically. Significant changes affecting your rights or obligations will be communicated via email or platform notifications when feasible. Continued use after updates constitutes acceptance of the new Terms.</p>
-        </div>
-        <div class="terms-section">
-            <h2>10. Contact</h2>
-            <p>For support, feedback, or legal inquiries, please visit our support page or use the platform’s contact tools.</p>
-        </div>
-        <div class="terms-section">
-            <h2>11. Legal Compliance</h2>
-            <p>You are responsible for complying with local laws, including copyright and privacy regulations. <b>@ProjectTitle</b> complies with applicable international data protection laws such as GDPR and LGPD.</p>
-            <p>The platform is governed by Estonian law.</p>
-        </div>
-        <div class="terms-section">
-            <h2>12. Governing Law and Dispute Resolution</h2>
-            <p>These Terms are governed by the laws of Estonia. Any disputes will be resolved under the exclusive jurisdiction of the courts of Tallinn, Estonia, in English, except where local laws require otherwise.</p>
-        </div>
-        <div class="privacy-section">
-            <p style="text-align:center; color:#888; font-size:0.9rem;">Last updated: August 5, 2025</p>
-            <p style="text-align:center; color:#888; font-size:0.9rem;">By using the platform, you agree to this Terms of Use and the <a href="/support/privacy/en">Privacy Policy</a>.</p>
-        </div>
-    }
+    <h1 class="terms-title">Terms of Use</h1>
+    <div class="terms-subtitle">
+        Welcome to <b>@ProjectTitle</b> (<a href="https://@ProjectDomain" target="_blank">@ProjectDomain</a>)!<br />
+        By accessing or using this service, you agree to these Terms of Use. Please read them carefully.
+    </div>
+    <div class="terms-section">
+        <h2>1. About the Service</h2>
+        <p><b>@ProjectTitle</b> provides tools to help developers configure and generate essential files and settings for websites and PWAs, such as sitemaps, manifests, icons, and security configurations.</p>
+        <p>The service is operated by Delivering Reliable Modern Apps Tech OÜ, registered in Estonia, and is intended for professional and educational use.</p>
+    </div>
+    <div class="terms-section">
+        <h2>2. Data and Privacy</h2>
+        <p><b>@ProjectTitle</b> does not require user accounts or authentication. The platform can be used fully anonymously.</p>
+        <p>We do not collect personal data such as names, emails, or precise location. Limited technical data (e.g., IP address, browser type, device information) may be processed automatically for security, diagnostics, and usage analytics.</p>
+        <p>We implement reasonable technical and organizational measures to protect such data from unauthorized access or disclosure.</p>
+        <p>For details, see our <a href="/support/privacy/en">Privacy Policy</a>.</p>
+    </div>
+    <div class="terms-section">
+        <h2>3. Features</h2>
+        <p><b>@ProjectTitle</b> helps developers generate and configure:</p>
+        <ul>
+            <li>Sitemaps, robots.txt, and SEO-related metadata</li>
+            <li>Web app manifests, icons, and PWA integration files</li>
+            <li>Security and privacy-related configurations (.well-known, headers, CSP)</li>
+            <li>Social sharing metadata (Open Graph, Twitter Cards)</li>
+        </ul>
+        <p>The platform is provided “as is” and may evolve with new standards over time.</p>
+    </div>
+    <div class="terms-section">
+        <h2>4. Third-party Content</h2>
+        <p>Some generated configurations may rely on public standards or external references (e.g., schema.org for structured data). We do not claim ownership of such standards or third-party assets.</p>
+    </div>
+    <div class="terms-section">
+        <h2>5. Intellectual Property</h2>
+        <p>The platform’s structure, tools, and interface are protected by copyright and/or open-source licenses. Generated output belongs to the developer using the tool, unless otherwise noted.</p>
+        <p>Reverse engineering, scraping, or unauthorized redistribution of the platform is prohibited.</p>
+    </div>
+    <div class="terms-section">
+        <h2>6. Acceptable Use</h2>
+        <p>You agree to use the service lawfully and responsibly. Prohibited actions include:</p>
+        <ul>
+            <li>Abuse of automated access (bots, scrapers) without permission</li>
+            <li>Using the platform to generate malicious configurations</li>
+            <li>Attempting to disrupt or compromise the service</li>
+        </ul>
+    </div>
+    <div class="terms-section">
+        <h2>7. Limitation of Liability and Service Availability</h2>
+        <p><b>@ProjectTitle</b> is provided "as is" without warranties of availability, accuracy, or completeness. The service may be modified, suspended, or discontinued at any time without notice.</p>
+        <p>We are not responsible for errors in generated files, misuse by developers, or third-party content referenced.</p>
+    </div>
+    <div class="terms-section">
+        <h2>8. Changes to Terms</h2>
+        <p>We may update these Terms from time to time. Significant changes will be announced when feasible. Continued use after updates means you accept the revised Terms.</p>
+    </div>
+    <div class="terms-section">
+        <h2>9. Contact</h2>
+        <p>For support, feedback, or legal matters, please visit our support page or contact us through the platform.</p>
+    </div>
+    <div class="terms-section">
+        <h2>10. Governing Law</h2>
+        <p>These Terms are governed by Estonian law. Any disputes shall be resolved under the jurisdiction of the courts of Tallinn, Estonia, in English, except where local laws require otherwise.</p>
+    </div>
+    <div class="privacy-section">
+        <p style="text-align:center; color:#888; font-size:0.9rem;">Last updated: August 21, 2025</p>
+        <p style="text-align:center; color:#888; font-size:0.9rem;">By using the platform, you agree to these Terms of Use and the <a href="/support/privacy/en">Privacy Policy</a>.</p>
+    </div>
 </div>
 
 @code {
-    [Parameter] public string? Lang { get; set; }
-
     public string? ProjectTitle => SeoTranslations.AppName;
     public string? ProjectDomain => "www.web-standards.com";
 }

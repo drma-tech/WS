@@ -2,20 +2,38 @@
 
 @inject IJSRuntime Js
 
-<MudPaper Class="@(IncludeMB ? "mb-2" : "")" Outlined="true">
+<MudPaper Class="@(IncludeMB ? "mb-4" : "")" Outlined="true">
     <MudStack StretchItems="StretchItems.Middle" Row="true" Spacing="2">
-        <div class="pa-2" style="align-self: center;">
-            @if (Link.Empty())
-            {
-                <MudImage Src="@ImageSource" Alt="@ImageSource" Style="max-height: 50px; max-width: 50px;"></MudImage>
-            }
-            else
-            {
-                <a href="@Link" target="_blank" rel="nofollow">
+        @if (ImageSource.NotEmpty())
+        {
+            <div class="pa-2" style="align-self: center;">
+                @if (Link.Empty())
+                {
                     <MudImage Src="@ImageSource" Alt="@ImageSource" Style="max-height: 50px; max-width: 50px;"></MudImage>
-                </a>
-            }
-        </div>
+                }
+                else
+                {
+                    <a href="@Link" target="_blank" rel="nofollow">
+                        <MudImage Src="@ImageSource" Alt="@ImageSource" Style="max-height: 50px; max-width: 50px;"></MudImage>
+                    </a>
+                }
+            </div>
+        }
+        @if (IconName.NotEmpty())
+        {
+            <div class="pa-2" style="align-self: center;">
+                @if (Link.Empty())
+                {
+                    <MudIcon Icon="@IconName" Color="Color" Style="max-height: 50px; max-width: 50px;"></MudIcon>
+                }
+                else
+                {
+                    <a href="@Link" target="_blank" rel="nofollow">
+                        <MudIcon Icon="@IconName" Color="Color" Style="max-height: 50px; max-width: 50px;"></MudIcon>
+                    </a>
+                }
+            </div>
+        }
         <div class="pa-2">
             <MudText Typo="Typo.h1" Color="Color" Class="custom-h1">
                 @if (Link.Empty())
@@ -49,6 +67,7 @@
 
 @code {
     [Parameter] public string? ImageSource { get; set; }
+    [Parameter] public string? IconName { get; set; }
     [Parameter] public string? Title { get; set; }
     [Parameter] public Color Color { get; set; } = Color.Primary;
     [Parameter] public string? Text { get; set; }

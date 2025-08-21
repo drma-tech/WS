@@ -1,26 +1,30 @@
 ﻿@page "/sitemap"
-<SeoHeader Title="Home" Description="Lists site pages in XML. Ensures search engines find and index content faster, critical for large or poorly linked websites." Url="/"></SeoHeader>
+
 @using System.Xml.Linq
 @inherits PageCore<Sitemap>
 
 @inject IJSRuntime JsRuntime
 @inject IHttpClientFactory HttpClientFactory
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Main"></GoogleAdSense>
+<SeoHeader Title="Sitemap Generator" Description="Lists site pages in XML. Ensures search engines find and index content faster, critical for large or poorly linked websites." Url="/sitemap"></SeoHeader>
+@* <GoogleAdSense Section="@GoogleAdSense.AdUnit.Main"></GoogleAdSense> *@
 
 <MudGrid Justify="Justify.Center">
-    <MudItem xs="12" sm="8">
+    <MudItem xs="12" md="10">
+        <HeadPage Title="Sitemap Generator" IconName="@IconsFA.Solid.Icon("sitemap").Font"></HeadPage>
+    </MudItem>
+    <MudItem xs="12" md="10">
         <MudAlert Severity="Severity.Info" Variant="Variant.Filled" NoIcon="true" Class="mb-4" ContentAlignment="HorizontalAlignment.Center" Style="text-align: center;">
             <MudText Typo="Typo.h4">The only 100% free and unlimited platform</MudText>
             <MudText Typo="Typo.body1">It runs 100% in your environment, so you may need to enable CORS for this domain: https://www.web-standards.com/</MudText>
         </MudAlert>
     </MudItem>
-    <MudItem xs="12" sm="8">
+    <MudItem xs="12" md="10">
         <MudTextField T="string" Label="Type your domain" @bind-Text="@Search" Immediate="true" OnKeyDown="@KeyPress" Class="mb-2"
                       Variant="Variant.Outlined">
         </MudTextField>
     </MudItem>
-    <MudItem xs="12" sm="8">
+    <MudItem xs="12" md="10">
         <MudToolBar Gutters="false" WrapContent="true">
             <MudNumericField @bind-Value="MaxDepth" Label="Page Depth" Min="1" Max="10" Variant="Variant.Outlined" Class="me-3" />
             <MudSelect @bind-Value="IgnoreRel" Label="Ignore Rel" Clearable="true" MultiSelection="true" Variant="Variant.Outlined" Class="me-3">
@@ -47,7 +51,67 @@
             <MudIconButton Icon="@Icons.Material.Outlined.Search" Color="Color.Primary" OnClick="StartCrawling" />
         </MudToolBar>
     </MudItem>
+    <MudItem xs="12" md="10">
+        <MudPaper Class="pa-6 mt-6">
+            <MudText Typo="Typo.h5" Color="Color.Secondary" GutterBottom="true">About Sitemap Generator</MudText>
+            <MudText Typo="Typo.body1" Class="mb-4" Align="Align.Justify">
+                A sitemap is an XML file that lists the important pages of your website. It helps search engines like Google and Bing
+                discover, crawl, and index content more efficiently. This is especially useful for large websites, single-page
+                applications (SPAs), or sites with pages not easily accessible by normal navigation.
+            </MudText>
+
+            <MudText Typo="Typo.h5" Color="Color.Secondary" GutterBottom="true">Standards</MudText>
+            <MudText Typo="Typo.body1" Class="mb-4" Align="Align.Justify">
+                This generator follows the <b>Sitemap Protocol 0.9</b>, producing valid XML with tags such as
+                <code>&lt;loc&gt;</code> (URL), <code>&lt;lastmod&gt;</code> (last modification date),
+                <code>&lt;changefreq&gt;</code> (update frequency), and <code>&lt;priority&gt;</code> (relative importance).
+                The format is fully supported by all major search engines.
+            </MudText>
+
+            <MudText Typo="Typo.h5" Color="Color.Secondary" GutterBottom="true">Limits</MudText>
+            <MudText Typo="Typo.body1" Class="mb-4" Align="Align.Justify">
+                A sitemap can include up to <b>50,000 URLs</b> or <b>50MB</b> when uncompressed. Larger websites should use a
+                <i>sitemap index</i> to reference multiple sitemap files. Compressed sitemaps (<code>.gz</code>) are also supported
+                by search engines.
+            </MudText>
+
+            <MudText Typo="Typo.h5" Color="Color.Secondary" GutterBottom="true">Why It Matters</MudText>
+            <ul class="mb-4">
+                <li>Improves SEO by ensuring all important pages are visible to crawlers.</li>
+                <li>Helps search engines prioritize fresh and frequently updated content.</li>
+                <li>Uses a standards-based format recognized by all major search engines.</li>
+            </ul>
+
+            <MudText Typo="Typo.h5" Color="Color.Secondary" GutterBottom="true">Usage</MudText>
+            <ul class="mb-4">
+                <li>Save the sitemap at <code>https://yourdomain.com/sitemap.xml</code>.</li>
+                <li>
+                    Add a reference in <code>robots.txt</code>: <br />
+                    <code>Sitemap: https://yourdomain.com/sitemap.xml</code>
+                </li>
+                <li>Submit it to Google Search Console and Bing Webmaster Tools for faster discovery.</li>
+            </ul>
+
+            <MudText Typo="Typo.body2" Class="mt-4" Align="Align.Justify">
+                Tip: Keep <code>&lt;lastmod&gt;</code> accurate and update the sitemap only after meaningful content changes, not for minor edits.
+            </MudText>
+        </MudPaper>
+    </MudItem>
 </MudGrid>
+
+<style>
+    ul {
+        text-align: justify;
+        margin-bottom: 0.5rem;
+        line-height: 1.7;
+        padding-left: 1.4rem;
+        list-style-type: disc;
+    }
+
+        ul li {
+            padding-left: 0.1rem;
+        }
+</style>
 
 @code {
 

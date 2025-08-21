@@ -1,7 +1,7 @@
-﻿@page "/support/faq/{lang}"
+﻿@page "/support/faq"
 @inherits PageCore<Faq>
 
-<SeoHeader Title="FAQ" Url=@($"/support/faq/{Lang}")></SeoHeader>
+<SeoHeader Title="FAQ" Url=@($"/support/faq")></SeoHeader>
 
 <MudExpansionPanels Outlined="true" Elevation="0" Class="mb-2">
     <MudExpansionPanel Disabled="true" HideIcon="true">
@@ -12,11 +12,11 @@
             </div>
         </TitleContent>
     </MudExpansionPanel>
-    <MudExpansionPanel Text="What user data does the platform collect?" HeaderClass="mud-secondary-text">
-        We collect minimal data: email for login, platform preferences, and usage metadata like IP and login times. No personal sensitive information is stored.
+    <MudExpansionPanel Text="Does the platform collect personal data?" HeaderClass="mud-secondary-text">
+        No. The app is fully anonymous and does not require an account. No personal information or usage tracking is stored.
     </MudExpansionPanel>
-    <MudExpansionPanel Text="Are my lists and data shared with others?" HeaderClass="mud-secondary-text">
-        Private lists you create are visible only to you unless you choose to share a public link. Public lists are curated by the platform and accessible to all users.
+    <MudExpansionPanel Text="Are generated files stored on the server?" HeaderClass="mud-secondary-text">
+        No. All files are generated locally in your browser. Nothing is uploaded or saved by the platform.
     </MudExpansionPanel>
 </MudExpansionPanels>
 
@@ -24,19 +24,19 @@
     <MudExpansionPanel Disabled="true" HideIcon="true">
         <TitleContent>
             <div class="d-flex">
-                <MudIcon Color="Color.Primary" Icon="@Icons.Material.Filled.ListAlt" class="mr-3"></MudIcon>
-                <MudText Color="Color.Primary">Lists & Recommendations</MudText>
+                <MudIcon Color="Color.Primary" Icon="@Icons.Material.Filled.BuildCircle" class="mr-3"></MudIcon>
+                <MudText Color="Color.Primary">Features</MudText>
             </div>
         </TitleContent>
     </MudExpansionPanel>
-    <MudExpansionPanel Text="Can I create and manage my own lists?" HeaderClass="mud-secondary-text">
-        Yes, you can create private lists for movies and shows you have watched or want to watch. Premium users can save more items per list.
+    <MudExpansionPanel Text="What can I generate with this tool?" HeaderClass="mud-secondary-text">
+        You can generate sitemaps, robots.txt, manifests, security headers, well-known files, and other web standards quickly and consistently.
     </MudExpansionPanel>
-    <MudExpansionPanel Text="How does personalized recommendations work?" HeaderClass="mud-secondary-text">
-        Recommendations are based on your favorite platforms and genres, excluding titles already on other personal lists.
+    <MudExpansionPanel Text="Does it work for any type of site?" HeaderClass="mud-secondary-text">
+        Yes. The generated files follow open standards and can be used in static sites, PWAs, or dynamic websites regardless of technology.
     </MudExpansionPanel>
-    <MudExpansionPanel Text="Can I share my private lists?" HeaderClass="mud-secondary-text">
-        Yes, you can generate public links to share your private lists with others outside the platform.
+    <MudExpansionPanel Text="Can I customize the generated content?" HeaderClass="mud-secondary-text">
+        Yes. Each generator allows configuration of key fields like site URLs, metadata, and security settings before exporting.
     </MudExpansionPanel>
 </MudExpansionPanels>
 
@@ -45,38 +45,15 @@
         <TitleContent>
             <div class="d-flex">
                 <MudIcon Color="Color.Primary" Icon="@Icons.Material.Filled.AccountCircle" class="mr-3"></MudIcon>
-                <MudText Color="Color.Primary">Account & Access</MudText>
+                <MudText Color="Color.Primary">Accounts & Access</MudText>
             </div>
         </TitleContent>
     </MudExpansionPanel>
-    <MudExpansionPanel Text="Do I need to create an account?" HeaderClass="mud-secondary-text">
-        No account is required to browse public lists and general content. Creating an account lets you save your preferences and manage your personal lists.
+    <MudExpansionPanel Text="Do I need an account to use it?" HeaderClass="mud-secondary-text">
+        No. The platform is completely account-free. You can access and use all features without registration.
     </MudExpansionPanel>
-    <MudExpansionPanel Text="What information is required to register?" HeaderClass="mud-secondary-text">
-        Only an email address is required to create an account. No personal data beyond that is collected.
-    </MudExpansionPanel>
-    <MudExpansionPanel Text="Can I delete my account and data?" HeaderClass="mud-secondary-text">
-        Yes, you can delete your account anytime, which removes your saved lists and preferences from our system.
-    </MudExpansionPanel>
-</MudExpansionPanels>
-
-<MudExpansionPanels Outlined="true" Elevation="0" Class="mb-2">
-    <MudExpansionPanel Disabled="true" HideIcon="true">
-        <TitleContent>
-            <div class="d-flex">
-                <MudIcon Color="Color.Primary" Icon="@Icons.Material.Filled.Payment" class="mr-3"></MudIcon>
-                <MudText Color="Color.Primary">Subscriptions & Payments</MudText>
-            </div>
-        </TitleContent>
-    </MudExpansionPanel>
-    <MudExpansionPanel Text="Is the platform free?" HeaderClass="mud-secondary-text">
-        Yes, basic access is free. Premium subscriptions unlock benefits such as no ads and larger list capacities.
-    </MudExpansionPanel>
-    <MudExpansionPanel Text="How do I manage my subscription?" HeaderClass="mud-secondary-text">
-        You can manage or cancel your subscription at any time in your account billing settings.
-    </MudExpansionPanel>
-    <MudExpansionPanel Text="How is payment processed?" HeaderClass="mud-secondary-text">
-        Payments are securely handled by our partner Paddle. We do not store full payment details on our servers.
+    <MudExpansionPanel Text="Can I save my configurations?" HeaderClass="mud-secondary-text">
+        Configurations are not saved on the server. You can download files and store them locally in your project.
     </MudExpansionPanel>
 </MudExpansionPanels>
 
@@ -89,17 +66,13 @@
             </div>
         </TitleContent>
     </MudExpansionPanel>
-    <MudExpansionPanel Text="Is this a platform to watch movies and shows?" HeaderClass="mud-secondary-text">
-        No, our platform is for managing, discovering, and organizing movies and shows, not streaming or viewing content.
+    <MudExpansionPanel Text="Is this an official standard authority?" HeaderClass="mud-secondary-text">
+        No. The platform helps developers apply web standards but does not replace W3C, IETF, or other governing bodies.
     </MudExpansionPanel>
-    <MudExpansionPanel Text="How can I contact support?" HeaderClass="mud-secondary-text">
-        You can contact support via the in-app feedback section or by emailing support@streamingdiscovery.com.
+    <MudExpansionPanel Text="How can I suggest improvements?" HeaderClass="mud-secondary-text">
+        Suggestions and feedback can be sent via the GitHub repository or the feedback form linked in the app.
     </MudExpansionPanel>
-    <MudExpansionPanel Text="What languages does the platform support?" HeaderClass="mud-secondary-text">
-        The platform interface supports English, Portuguese, and Spanish. Movie and show metadata is available in multiple languages but does not affect site language.
+    <MudExpansionPanel Text="Is the tool free to use?" HeaderClass="mud-secondary-text">
+        Yes. The platform is completely free and open for developers to generate the standards they need.
     </MudExpansionPanel>
 </MudExpansionPanels>
-
-@code {
-    [Parameter] public string? Lang { get; set; }
-}
