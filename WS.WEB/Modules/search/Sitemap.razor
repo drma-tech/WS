@@ -6,7 +6,8 @@
 @inject IJSRuntime JsRuntime
 @inject IHttpClientFactory HttpClientFactory
 
-<SeoHeader Title="Sitemap Generator" Description="Lists site pages in XML. Ensures search engines find and index content faster, critical for large or poorly linked websites." Url="/sitemap"></SeoHeader>
+<SeoHeader Title="Sitemap Generator" Keywords="@(["Sitemap Generator"])"
+           Description="Lists site pages in XML. Ensures search engines find and index content faster, critical for large or poorly linked websites." Url="/sitemap"></SeoHeader>
 @* <GoogleAdSense Section="@GoogleAdSense.AdUnit.Main"></GoogleAdSense> *@
 
 <MudGrid Justify="Justify.Center">
