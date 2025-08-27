@@ -173,7 +173,7 @@
 
             ResultXml = await helper.RunAsync();
 
-            await JsRuntime.InvokeVoidAsync("downloadFile", "sitemap.xml", "application/xml", ResultXml);
+            await JsRuntime.InvokeVoidAsync("jsSaveAsFile", "sitemap.xml", "application/xml", ResultXml);
         }
         catch (Exception ex)
         {
