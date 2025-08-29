@@ -1,5 +1,3 @@
-"use strict";
-
 // Google Analytics
 window.initGoogleAnalytics = function (code) {
     if (!window.location.host.includes("localhost") && GetLocalStorage("platform") !== "ios") {
@@ -51,4 +49,15 @@ window.initUserBack = function () {
         language: GetLocalStorage("language") ?? browserLang.slice(0, 2),
         logo: window.location.origin + "/icon/icon-71.png"
     };
+}
+
+window.loadAds = function () {
+    var ad = document.querySelector('.adsbygoogle:not([data-adsbygoogle-status])');
+    if (ad) {
+        try {
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        } catch (error) {
+            showError(error.message);
+        }
+    }
 }

@@ -172,9 +172,11 @@
             var http = HttpClientFactory.CreateClient();
             var helper = new SitemapHelper(http, Search, true, null, 2);
 
+            AppStateStatic.ProcessingStarted?.Invoke();
             ResultXml = await helper.RunAsync();
+            AppStateStatic.ProcessingFinished?.Invoke();
 
-            await JsRuntime.InvokeVoidAsync("downloadFile", "sitemap.xml", "application/xml", ResultXml);
+            await JsRuntime.InvokeVoidAsync("jsSaveAsFile", "sitemap.xml", "application/xml", ResultXml);
         }
         catch (Exception ex)
         {
