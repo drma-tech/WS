@@ -1,0 +1,214 @@
+﻿@page "/robots"
+
+@using System.Xml.Linq
+@inherits PageCore<Robots>
+
+@inject IJSRuntime JsRuntime
+@inject IHttpClientFactory HttpClientFactory
+
+<SeoHeader Title="robots.txt generator" Keywords="@(["robots.txt generator"])"
+           Description="Lists site pages in XML. Ensures search engines find and index content faster, critical for large or poorly linked websites." Url="/sitemap"></SeoHeader>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Global"></GoogleAdSense>
+
+<MudGrid Justify="Justify.Center">
+    <MudItem xs="12" md="10">
+        <HeadPage Title="robots.txt generator" IconName="@IconsFA.Solid.Icon("robot").Font"></HeadPage>
+    </MudItem>
+    @* <MudItem xs="12" md="10">
+        <MudAlert Severity="Severity.Info" Variant="Variant.Filled" NoIcon="true" Class="mb-4" ContentAlignment="HorizontalAlignment.Center" Style="text-align: center;">
+            <MudText Typo="Typo.h4">The only 100% free and unlimited platform</MudText>
+            <MudText Typo="Typo.body1">It runs 100% in your environment, so you may need to enable CORS for this domain: https://www.web-standards.com/</MudText>
+        </MudAlert>
+    </MudItem> *@
+    @*  <MudItem xs="12" md="10">
+        <MudTextField T="string" Label="Type your domain" @bind-Text="@Search" Immediate="true" OnKeyDown="@KeyPress" Class="mb-2"
+                      Variant="Variant.Outlined">
+        </MudTextField>
+    </MudItem> *@
+    @* <MudItem xs="12" md="10">
+        <MudToolBar Gutters="false" WrapContent="true">
+            <MudNumericField @bind-Value="MaxDepth" Label="Page Depth" Min="1" Max="10" Variant="Variant.Outlined" Class="me-3" />
+            <MudSelect @bind-Value="IgnoreRel" Label="Ignore Rel" Clearable="true" MultiSelection="true" Variant="Variant.Outlined" Class="me-3">
+                <MudSelectItem Value="@("alternate")">alternate</MudSelectItem>
+                <MudSelectItem Value="@("author")">author</MudSelectItem>
+                <MudSelectItem Value="@("bookmark")">bookmark</MudSelectItem>
+                <MudSelectItem Value="@("external")">external</MudSelectItem>
+                <MudSelectItem Value="@("help")">help</MudSelectItem>
+                <MudSelectItem Value="@("license")">license</MudSelectItem>
+                <MudSelectItem Value="@("next")">next</MudSelectItem>
+                <MudSelectItem Value="@("nofollow")">nofollow</MudSelectItem>
+                <MudSelectItem Value="@("noreferrer")">noreferrer</MudSelectItem>
+                <MudSelectItem Value="@("noopener")">noopener</MudSelectItem>
+                <MudSelectItem Value="@("prev")">prev</MudSelectItem>
+                <MudSelectItem Value="@("search")">search</MudSelectItem>
+                <MudSelectItem Value="@("tag")">tag</MudSelectItem>
+            </MudSelect>
+            <MudSelect @bind-Value="IgnoreTarget" Label="Ignore Target" Clearable="true" MultiSelection="true" Variant="Variant.Outlined" Class="me-3">
+                <MudSelectItem Value="@("_blank")">_blank</MudSelectItem>
+                <MudSelectItem Value="@("_parent")">_parent</MudSelectItem>
+                <MudSelectItem Value="@("_self")">_self</MudSelectItem>
+                <MudSelectItem Value="@("_top")">_top</MudSelectItem>
+            </MudSelect>
+            <MudIconButton Icon="@Icons.Material.Outlined.Search" Color="Color.Primary" OnClick="StartCrawling" />
+        </MudToolBar>
+    </MudItem> *@
+    <MudItem xs="12" md="10">
+        <MudPaper Class="pa-6 mt-6">
+            <MudText Typo="Typo.h5" Color="Color.Secondary" GutterBottom="true">About robots.txt generator</MudText>
+            <MudText Typo="Typo.body1" Class="mb-4" Align="Align.Justify">
+                The <code>robots.txt</code> file is a simple text file placed in the root of your domain
+                (for example: <code>https://yourdomain.com/robots.txt</code>).
+                It gives instructions to search engine crawlers about which parts of your site should be crawled
+                and which should be ignored. While it does not enforce security, it is an essential tool for
+                managing SEO visibility and controlling crawler traffic.
+            </MudText>
+
+            <MudText Typo="Typo.h5" Color="Color.Secondary" GutterBottom="true">Standards</MudText>
+            <MudText Typo="Typo.body1" Class="mb-4" Align="Align.Justify">
+                This generator follows the official <b>Robots Exclusion Protocol (RFC 9309)</b>.
+                Supported directives include <code>User-agent</code>, <code>Disallow</code>, <code>Allow</code> and <code>Sitemap</code>.
+            </MudText>
+
+            <MudText Typo="Typo.h5" Color="Color.Secondary" GutterBottom="true">Syntax</MudText>
+            <ul class="mb-4">
+                <li><b>User-agent:</b> Defines the target crawler (e.g., <code>*</code> for all, <code>Googlebot</code>, <code>Bingbot</code>).</li>
+                <li><b>Disallow:</b> Blocks specific paths from being crawled (e.g., <code>/admin</code>, <code>/private/</code>).</li>
+                <li><b>Allow:</b> Grants access to exceptions inside restricted areas (e.g., <code>/admin/help</code>).</li>
+                <li><b>Sitemap:</b> Points to the XML sitemap URL (e.g., <code>https://yourdomain.com/sitemap.xml</code>).</li>
+            </ul>
+
+            <MudText Typo="Typo.h5" Color="Color.Secondary" GutterBottom="true">Wildcards and Matching</MudText>
+            <ul class="mb-4">
+                <li><code>*</code> matches any sequence of characters (e.g., <code>/search/*</code>).</li>
+                <li><code>$</code> anchors the rule to the end of a URL (e.g., <code>.pdf$</code> to target PDF files).</li>
+                <li>Matching is based on path prefixes; case-sensitivity depends on your server and file system.</li>
+            </ul>
+
+            <MudText Typo="Typo.h5" Color="Color.Secondary" GutterBottom="true">Behavior and Limits</MudText>
+            <ul class="mb-4">
+                <li>The file must be accessible at <code>/robots.txt</code> in the root of the domain.</li>
+                <li>Rules are grouped by <code>User-agent</code>. The most specific match takes precedence.</li>
+                <li>Use relative paths for <code>Allow</code>/<code>Disallow</code>, and absolute URLs for <code>Sitemap</code>.</li>
+                <li>Keep the file concise: large or overly complex robots.txt files can cause inconsistent crawler behavior.</li>
+            </ul>
+
+            <MudText Typo="Typo.h5" Color="Color.Secondary" GutterBottom="true">Best Practices</MudText>
+            <ul class="mb-4">
+                <li>Do not block critical resources such as CSS and JavaScript needed for page rendering.</li>
+                <li>Use it to restrict administrative areas, duplicate content, or infinite URL filters.</li>
+                <li>Remember: robots.txt does not prevent indexing if a URL is linked elsewhere — use <code>noindex</code> for that.</li>
+                <li>Always include <code>Sitemap:</code> entries to improve content discovery.</li>
+            </ul>
+
+            <MudText Typo="Typo.h5" Color="Color.Secondary" GutterBottom="true">Example</MudText>
+            <MudPaper Class="pa-3 mb-4" Outlined="true">
+                <pre><code>User-agent: *
+Disallow: /admin/
+Disallow: /private/
+Allow: /admin/help
+
+User-agent: Googlebot
+Allow: /
+Disallow: /experiments/
+
+Sitemap: https://yourdomain.com/sitemap.xml
+                </code></pre>
+            </MudPaper>
+
+            <MudText Typo="Typo.h5" Color="Color.Secondary" GutterBottom="true">Usage</MudText>
+            <ul class="mb-4">
+                <li>Publish the file at <code>https://yourdomain.com/robots.txt</code>.</li>
+                <li>Include all <code>Sitemap:</code> entries for your XML sitemap or sitemap index.</li>
+                <li>Test your file using Google Search Console or Bing Webmaster Tools.</li>
+            </ul>
+
+            <MudText Typo="Typo.body2" Class="mt-4" Align="Align.Justify">
+                Tip: <code>robots.txt</code> is a public file. Avoid exposing sensitive paths;
+                protect them with proper authentication and access controls.
+            </MudText>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<style>
+    ul {
+        text-align: justify;
+        margin-bottom: 0.5rem;
+        line-height: 1.7;
+        padding-left: 1.4rem;
+        list-style-type: disc;
+    }
+
+        ul li {
+            padding-left: 0.1rem;
+        }
+</style>
+
+@code {
+
+    [Parameter][SupplyParameterFromQuery(Name = "language")] public string? Language { get; set; }
+    [Parameter][SupplyParameterFromQuery(Name = "platform")] public string? Platform { get; set; }
+
+    // public string? Search { get; set; }
+
+    // private int MaxDepth { get; set; } = 2;
+    // private string? IgnoreRel { get; set; } = "nofollow";
+    // private string? IgnoreTarget { get; set; } = null;
+
+    // private Uri? _baseUri { get; set; } = new Uri("https://dev.streamingdiscovery.com/");
+    // private string? ResultXml { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if (Platform.NotEmpty())
+            {
+                await JsRuntime.InvokeAsync<string>("SetLocalStorage", "platform", Platform);
+            }
+            else
+            {
+                await JsRuntime.InvokeAsync<string>("TryDetectPlatform");
+            }
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    // private async Task KeyPress(KeyboardEventArgs args)
+    // {
+    //     if (Search.Empty()) return;
+
+    //     if (args.Key == "Enter")
+    //     {
+    //         await StartCrawling();
+    //     }
+    // }
+
+    // private async Task StartCrawling()
+    // {
+    //     try
+    //     {
+    //         if (!Uri.TryCreate(Search, UriKind.Absolute, out var uri))
+    //         {
+    //             Snackbar.Add("Invalid URL", Severity.Error);
+    //             return;
+    //         }
+
+    //         _baseUri = uri;
+    //         ResultXml = null;
+
+    //         var http = HttpClientFactory.CreateClient();
+    //         var helper = new SitemapHelper(http, Search, true, null, 2);
+
+    //         ResultXml = await helper.RunAsync();
+
+    //         await JsRuntime.InvokeVoidAsync("downloadFile", "sitemap.xml", "application/xml", ResultXml);
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         ex.ProcessException(Snackbar, Logger);
+    //     }
+    // }
+
+}

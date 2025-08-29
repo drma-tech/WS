@@ -7,15 +7,12 @@
 </div>
 
 @code {
-    [Parameter][EditorRequired] public AdUnit Section { get; set; } = AdUnit.Main;
+    [Parameter][EditorRequired] public AdUnit Section { get; set; } = AdUnit.Global;
 
     private const string AdClientId = "5145928155833172";
 
     public enum AdUnit : long
     {
-        Main = 4046112630,
-        Profile = 4650130753,
-        Platforms = 5359194302,
-        Collections = 1353899488
+        Global = 6236322353
     }
 }

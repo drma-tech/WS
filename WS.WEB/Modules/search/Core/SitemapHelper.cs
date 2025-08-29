@@ -3,7 +3,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace WS.WEB.Core
+namespace WS.WEB.Modules.Search.Core
 {
     public class SitemapHelper(HttpClient http, string baseUrl, bool ignoreNoFollow = true, string? ignoreTarget = "_blank", int maxDepth = 3)
     {

@@ -1,18 +1,19 @@
 ﻿@page "/sitemap"
 
 @using System.Xml.Linq
+@using WS.WEB.Modules.Search.Core
 @inherits PageCore<Sitemap>
 
 @inject IJSRuntime JsRuntime
 @inject IHttpClientFactory HttpClientFactory
 
-<SeoHeader Title="Sitemap Generator" Keywords="@(["Sitemap Generator"])"
+<SeoHeader Title="sitemap generator" Keywords="@(["sitemap generator"])"
            Description="Lists site pages in XML. Ensures search engines find and index content faster, critical for large or poorly linked websites." Url="/sitemap"></SeoHeader>
-@* <GoogleAdSense Section="@GoogleAdSense.AdUnit.Main"></GoogleAdSense> *@
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Global"></GoogleAdSense>
 
 <MudGrid Justify="Justify.Center">
     <MudItem xs="12" md="10">
-        <HeadPage Title="Sitemap Generator" IconName="@IconsFA.Solid.Icon("sitemap").Font"></HeadPage>
+        <HeadPage Title="sitemap generator" IconName="@IconsFA.Solid.Icon("sitemap").Font"></HeadPage>
     </MudItem>
     <MudItem xs="12" md="10">
         <MudAlert Severity="Severity.Info" Variant="Variant.Filled" NoIcon="true" Class="mb-4" ContentAlignment="HorizontalAlignment.Center" Style="text-align: center;">
@@ -54,7 +55,7 @@
     </MudItem>
     <MudItem xs="12" md="10">
         <MudPaper Class="pa-6 mt-6">
-            <MudText Typo="Typo.h5" Color="Color.Secondary" GutterBottom="true">About Sitemap Generator</MudText>
+            <MudText Typo="Typo.h5" Color="Color.Secondary" GutterBottom="true">About sitemap generator</MudText>
             <MudText Typo="Typo.body1" Class="mb-4" Align="Align.Justify">
                 A sitemap is an XML file that lists the important pages of your website. It helps search engines like Google and Bing
                 discover, crawl, and index content more efficiently. This is especially useful for large websites, single-page
@@ -125,7 +126,7 @@
     private string? IgnoreRel { get; set; } = "nofollow";
     private string? IgnoreTarget { get; set; } = null;
 
-    private Uri? _baseUri { get; set; } = new Uri("https://dev.streamingdiscovery.com/");
+    private Uri? _baseUri { get; set; }
     private string? ResultXml { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
