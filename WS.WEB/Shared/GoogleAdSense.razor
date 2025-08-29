@@ -1,21 +1,28 @@
-﻿<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5145928155833172" crossorigin="anonymous"></script>
-<div style="text-align: center">
+﻿@inject IJSRuntime JS
+
+<div style="text-align: center" @key="_instanceKey">
     <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-@AdClientId" data-ad-slot="@(((long)Section).ToString())"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
 </div>
 
+<style>
+    ins.adsbygoogle[data-ad-status='unfilled'] {
+        display: none !important;
+    }
+</style>
+
 @code {
-    [Parameter][EditorRequired] public AdUnit Section { get; set; } = AdUnit.Main;
+    [Parameter][EditorRequired] public AdUnit Section { get; set; } = AdUnit.Global;
 
     private const string AdClientId = "5145928155833172";
+    private readonly Guid _instanceKey = Guid.NewGuid();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JS.InvokeVoidAsync("loadAds");
+    }
 
     public enum AdUnit : long
     {
-        Main = 4046112630,
-        Profile = 4650130753,
-        Platforms = 5359194302,
-        Collections = 1353899488
+        Global = 6236322353
     }
 }
