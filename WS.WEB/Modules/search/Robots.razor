@@ -1,6 +1,7 @@
 ﻿@page "/robots"
 
 @using System.Xml.Linq
+@using WS.WEB.Modules.Search.Core
 @inherits PageCore<Robots>
 
 @inject IJSRuntime JsRuntime
@@ -8,50 +9,92 @@
 
 <SeoHeader Title="robots.txt generator" Keywords="@(["robots.txt generator"])"
            Description="Lists site pages in XML. Ensures search engines find and index content faster, critical for large or poorly linked websites." Url="/sitemap"></SeoHeader>
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Global"></GoogleAdSense>
+@* <GoogleAdSense Section="@GoogleAdSense.AdUnit.Global"></GoogleAdSense> *@
 
 <MudGrid Justify="Justify.Center">
     <MudItem xs="12" md="10">
         <HeadPage Title="robots.txt generator" IconName="@IconsFA.Solid.Icon("robot").Font"></HeadPage>
     </MudItem>
-    @* <MudItem xs="12" md="10">
+    @*  <MudItem xs="12" md="10">
         <MudAlert Severity="Severity.Info" Variant="Variant.Filled" NoIcon="true" Class="mb-4" ContentAlignment="HorizontalAlignment.Center" Style="text-align: center;">
             <MudText Typo="Typo.h4">The only 100% free and unlimited platform</MudText>
             <MudText Typo="Typo.body1">It runs 100% in your environment, so you may need to enable CORS for this domain: https://www.web-standards.com/</MudText>
         </MudAlert>
     </MudItem> *@
-    @*  <MudItem xs="12" md="10">
-        <MudTextField T="string" Label="Type your domain" @bind-Text="@Search" Immediate="true" OnKeyDown="@KeyPress" Class="mb-2"
-                      Variant="Variant.Outlined">
+    <MudItem xs="12" md="10">
+        <MudTextField T="string" Label="Type your domain" @bind-Text="@Domain" Immediate="true" Class="mb-2" Variant="Variant.Outlined">
         </MudTextField>
-    </MudItem> *@
-    @* <MudItem xs="12" md="10">
-        <MudToolBar Gutters="false" WrapContent="true">
-            <MudNumericField @bind-Value="MaxDepth" Label="Page Depth" Min="1" Max="10" Variant="Variant.Outlined" Class="me-3" />
-            <MudSelect @bind-Value="IgnoreRel" Label="Ignore Rel" Clearable="true" MultiSelection="true" Variant="Variant.Outlined" Class="me-3">
-                <MudSelectItem Value="@("alternate")">alternate</MudSelectItem>
-                <MudSelectItem Value="@("author")">author</MudSelectItem>
-                <MudSelectItem Value="@("bookmark")">bookmark</MudSelectItem>
-                <MudSelectItem Value="@("external")">external</MudSelectItem>
-                <MudSelectItem Value="@("help")">help</MudSelectItem>
-                <MudSelectItem Value="@("license")">license</MudSelectItem>
-                <MudSelectItem Value="@("next")">next</MudSelectItem>
-                <MudSelectItem Value="@("nofollow")">nofollow</MudSelectItem>
-                <MudSelectItem Value="@("noreferrer")">noreferrer</MudSelectItem>
-                <MudSelectItem Value="@("noopener")">noopener</MudSelectItem>
-                <MudSelectItem Value="@("prev")">prev</MudSelectItem>
-                <MudSelectItem Value="@("search")">search</MudSelectItem>
-                <MudSelectItem Value="@("tag")">tag</MudSelectItem>
-            </MudSelect>
-            <MudSelect @bind-Value="IgnoreTarget" Label="Ignore Target" Clearable="true" MultiSelection="true" Variant="Variant.Outlined" Class="me-3">
-                <MudSelectItem Value="@("_blank")">_blank</MudSelectItem>
-                <MudSelectItem Value="@("_parent")">_parent</MudSelectItem>
-                <MudSelectItem Value="@("_self")">_self</MudSelectItem>
-                <MudSelectItem Value="@("_top")">_top</MudSelectItem>
-            </MudSelect>
-            <MudIconButton Icon="@Icons.Material.Outlined.Search" Color="Color.Primary" OnClick="StartCrawling" />
-        </MudToolBar>
-    </MudItem> *@
+    </MudItem>
+    <MudItem xs="6" md="5">
+        <MudText Typo="Typo.h6">User Agents</MudText>
+        <MudPaper Elevation="0" Outlined="true" Class="pa-2 mb-3">
+            <MudDynamicTabs @ref="@DynamicTabs" @bind-ActivePanelIndex="@UserIndex" Outlined="true" Elevation="0" MinimumTabWidth="100px"
+                            AddTab="@AddTabCallback" CloseTab="@CloseTabCallback"
+                            AddIconToolTip="Click to add a user agent" CloseIconToolTip="Close user agent. All data will be lost">
+                @foreach (var item in Config.Rules)
+                {
+                    <MudTabPanel ID="@item.Id" Text="@item.UserAgent" ShowCloseIcon="true" Class="pa-2">
+                        <MudSelect T="string" Label="User Agent" @bind-Value="@item.UserAgent">
+                            <MudSelectItem T="string" Value="@("*")">*</MudSelectItem>
+                            
+                            <MudSelectItem T="string" Value="@("Googlebot")">Googlebot</MudSelectItem>
+                            <MudSelectItem T="string" Value="@("Googlebot-Image")">Googlebot-Image</MudSelectItem>
+                            <MudSelectItem T="string" Value="@("Googlebot-Video")">Googlebot-Video</MudSelectItem>
+                            <MudSelectItem T="string" Value="@("Googlebot-News")">Googlebot-News</MudSelectItem>
+
+                            <MudSelectItem T="string" Value="@("Bingbot")">Bingbot</MudSelectItem>
+                            <MudSelectItem T="string" Value="@("DuckDuckBot")">DuckDuckBot</MudSelectItem>
+                            <MudSelectItem T="string" Value="@("Slurp")">Slurp (Yahoo)</MudSelectItem>
+                            <MudSelectItem T="string" Value="@("Yandex")">Yandex</MudSelectItem>
+                            <MudSelectItem T="string" Value="@("Baiduspider")">Baiduspider</MudSelectItem>
+                        </MudSelect>
+
+                        <MudDivider Class="my-3"></MudDivider>
+
+                        <MudTextField T="string" Label="Disallow" Placeholder="Routes you want to disable for the robot" @bind-Text="@item.NewDisallow" Immediate="true" Class="mb-2"
+                                      Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Add" OnAdornmentClick="@(()=>{ item.Disallow.Add(item.NewDisallow); })">
+                        </MudTextField>
+                        <MudList T="string" Dense="true" Gutters="false">
+                            @foreach (var value in item.Disallow)
+                            {
+                                <MudChip T="string" Color="Color.Default" OnClose="@(() => { item.Disallow.Remove(value); })">@value</MudChip>
+                            }
+                        </MudList>
+
+                        <MudDivider Class="my-3"></MudDivider>
+
+                        <MudTextField T="string" Label="Allow" Placeholder="Routes you want to enable for the robot" @bind-Text="@item.NewAllow" Immediate="true" Class="mb-2"
+                                      Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Add" OnAdornmentClick="@(()=>{ item.Allow.Add(item.NewAllow); })">
+                        </MudTextField>
+                        <MudList T="string" Dense="true" Gutters="false">
+                            @foreach (var value in item.Allow)
+                            {
+                                <MudChip T="string" Color="Color.Default" OnClose="@(() => { item.Allow.Remove(value); })">@value</MudChip>
+                            }
+                        </MudList>
+                    </MudTabPanel>
+                }
+            </MudDynamicTabs>
+        </MudPaper>
+        <MudText Typo="Typo.h6">Sitemap</MudText>
+        <MudPaper Elevation="0" Outlined="true" Class="pa-2">
+            <MudTextField T="string" Label="Sitemap route" Placeholder="Name of the file containing the sitemap" @bind-Text="@SitemapRoute" Immediate="true" Class="mb-2"
+                          Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Add" OnAdornmentClick="@(()=>{ Config.Sitemaps.Add($"{Domain}{SitemapRoute}"); })">
+            </MudTextField>
+            <MudList T="string" Dense="true" Gutters="false">
+                @foreach (var item in Config.Sitemaps)
+                {
+                    <MudChip T="string" Color="Color.Default" OnClose="@(() => { Config.Sitemaps.Remove(item); })">@item</MudChip>
+                }
+            </MudList>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="6" md="5">
+        <MudText Typo="Typo.h6">Result</MudText>
+        <MudPaper Elevation="0" Outlined="true" Class="pa-2">
+            <MudTextField T="string" FullWidth="true" Lines="20" Text="@(new RobotsHelper().Generate(Config))"></MudTextField>
+        </MudPaper>
+    </MudItem>
     <MudItem xs="12" md="10">
         <MudPaper Class="pa-6 mt-6">
             <MudText Typo="Typo.h5" Color="Color.Secondary" GutterBottom="true">About robots.txt generator</MudText>
@@ -149,14 +192,26 @@ Sitemap: https://yourdomain.com/sitemap.xml
     [Parameter][SupplyParameterFromQuery(Name = "language")] public string? Language { get; set; }
     [Parameter][SupplyParameterFromQuery(Name = "platform")] public string? Platform { get; set; }
 
-    // public string? Search { get; set; }
+    public string? Domain { get; set; } = "https://www.mywebsite.com";
 
-    // private int MaxDepth { get; set; } = 2;
-    // private string? IgnoreRel { get; set; } = "nofollow";
-    // private string? IgnoreTarget { get; set; } = null;
+    private MudDynamicTabs? DynamicTabs;
+    private int UserIndex;
 
-    // private Uri? _baseUri { get; set; } = new Uri("https://dev.streamingdiscovery.com/");
-    // private string? ResultXml { get; set; }
+    public RobotsConfig Config { get; set; } = new();
+
+    public string? SitemapRoute { get; set; }
+
+    protected override void OnInitialized()
+    {
+        var rules = new RobotsRule()
+        {
+            UserAgent = "*",
+            Allow = new List<string>() { "/" },
+            Disallow = new List<string>() { "/admin/" }
+        };
+        Config.Rules.Add(rules);
+        Config.Sitemaps.Add($"{Domain}/sitemap.xml");
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -175,40 +230,24 @@ Sitemap: https://yourdomain.com/sitemap.xml
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    // private async Task KeyPress(KeyboardEventArgs args)
-    // {
-    //     if (Search.Empty()) return;
+    public void AddTab(Guid id)
+    {
+        Config.Rules.Add(new RobotsRule { Id = id, UserAgent = "*" });
+        UserIndex = Config.Rules.Count - 1; // Automatically switch to the new tab.
+        StateHasChanged();
+    }
 
-    //     if (args.Key == "Enter")
-    //     {
-    //         await StartCrawling();
-    //     }
-    // }
+    public void RemoveTab(Guid id)
+    {
+        var tabView = Config.Rules.SingleOrDefault((t) => Equals(t.Id, id));
+        if (tabView is not null)
+        {
+            Config.Rules.Remove(tabView);
+            StateHasChanged();
+        }
+    }
 
-    // private async Task StartCrawling()
-    // {
-    //     try
-    //     {
-    //         if (!Uri.TryCreate(Search, UriKind.Absolute, out var uri))
-    //         {
-    //             Snackbar.Add("Invalid URL", Severity.Error);
-    //             return;
-    //         }
-
-    //         _baseUri = uri;
-    //         ResultXml = null;
-
-    //         var http = HttpClientFactory.CreateClient();
-    //         var helper = new SitemapHelper(http, Search, true, null, 2);
-
-    //         ResultXml = await helper.RunAsync();
-
-    //         await JsRuntime.InvokeVoidAsync("downloadFile", "sitemap.xml", "application/xml", ResultXml);
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         ex.ProcessException(Snackbar, Logger);
-    //     }
-    // }
+    void AddTabCallback() => AddTab(Guid.NewGuid());
+    void CloseTabCallback(MudTabPanel panel) => RemoveTab((Guid)panel.ID!);
 
 }

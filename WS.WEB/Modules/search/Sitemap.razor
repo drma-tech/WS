@@ -9,7 +9,7 @@
 
 <SeoHeader Title="sitemap generator" Keywords="@(["sitemap generator"])"
            Description="Lists site pages in XML. Ensures search engines find and index content faster, critical for large or poorly linked websites." Url="/sitemap"></SeoHeader>
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Global"></GoogleAdSense>
+@* <GoogleAdSense Section="@GoogleAdSense.AdUnit.Global"></GoogleAdSense> *@
 
 <MudGrid Justify="Justify.Center">
     <MudItem xs="12" md="10">
@@ -22,8 +22,7 @@
         </MudAlert>
     </MudItem>
     <MudItem xs="12" md="10">
-        <MudTextField T="string" Label="Type your domain" @bind-Text="@Search" Immediate="true" OnKeyDown="@KeyPress" Class="mb-2"
-                      Variant="Variant.Outlined">
+        <MudTextField T="string" Label="Type your domain" @bind-Text="@Search" Immediate="true" OnKeyDown="@KeyPress" Class="mb-2" Variant="Variant.Outlined">
         </MudTextField>
     </MudItem>
     <MudItem xs="12" md="10">

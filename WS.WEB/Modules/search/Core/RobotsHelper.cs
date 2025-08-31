@@ -7,6 +7,11 @@ namespace WS.WEB.Modules.Search.Core
         public string UserAgent { get; set; } = "*";
         public List<string> Allow { get; set; } = [];
         public List<string> Disallow { get; set; } = [];
+
+        public string? NewDisallow { get; set; }
+        public string? NewAllow { get; set; }
+
+        public Guid Id { get; set; }
     }
 
     public class RobotsConfig

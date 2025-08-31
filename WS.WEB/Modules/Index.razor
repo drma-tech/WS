@@ -6,20 +6,19 @@
 
 @inject IJSRuntime JsRuntime
 
-<SeoHeader Title="Home" Description="@SeoTranslations.AppDescription" Url="/"
-           Keywords="@(["Sitemap Generator"])"></SeoHeader>
+<SeoHeader Title="Home" Description="@SeoTranslations.AppDescription" Url="/" Keywords="@(["sitemap", "robot.txt"])"></SeoHeader>
 @* <GoogleAdSense Section="@GoogleAdSense.AdUnit.Main"></GoogleAdSense> *@
 
 <SectionComponent Title="Discovery & Search" Description="Tell search engines what to index, improve crawling speed, and ensure important pages and media appear in search results." IconName="@IconsFA.Solid.Icon("magnifying-glass").Font">
     <BodyFragment>
         <MudGrid Spacing="2">
             <MudItem xs="12" sm="6" md="4">
-                <WrappedCard Title="robots.txt" ActionName="Coming soon"
+                <WrappedCard Title="robots.txt" ActionName="Check it out" Href="/robots"
                              Description="Tells crawlers which areas to scan or block. Prevents private paths from being indexed and focuses search engines on the right content.">
                 </WrappedCard>
             </MudItem>
             <MudItem xs="12" sm="6" md="4">
-                <WrappedCard Title="Sitemap Generator" ActionName="Check it out" Href="/sitemap"
+                <WrappedCard Title="sitemap generator" ActionName="Check it out" Href="/sitemap"
                              Description="Lists site pages in XML. Ensures search engines find and index content faster, critical for large or poorly linked websites.">
                 </WrappedCard>
             </MudItem>

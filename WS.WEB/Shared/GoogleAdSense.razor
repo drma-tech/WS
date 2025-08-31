@@ -1,14 +1,19 @@
-﻿@inject IJSRuntime JS
+﻿@inherits ComponentCore<GoogleAdSense>
 
-<div style="text-align: center" @key="_instanceKey">
-    <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-@AdClientId" data-ad-slot="@(((long)Section).ToString())"></ins>
-</div>
+@inject IJSRuntime JS
 
-<style>
-    ins.adsbygoogle[data-ad-status='unfilled'] {
-        display: none !important;
-    }
-</style>
+@if (!Navigation.BaseUri.Contains("localhost"))
+{
+    <div style="text-align: center" @key="_instanceKey">
+        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-@AdClientId" data-ad-slot="@(((long)Section).ToString())"></ins>
+    </div>
+
+    <style>
+        ins.adsbygoogle[data-ad-status='unfilled'] {
+            display: none !important;
+        }
+    </style>
+}
 
 @code {
     [Parameter][EditorRequired] public AdUnit Section { get; set; } = AdUnit.Global;
