@@ -53,6 +53,13 @@
         </MudToolBar>
     </MudItem>
     <MudItem xs="12" md="10">
+        <MudToolBar Gutters="false" WrapContent="true">
+            <MudSwitch @bind-Value="_image" ThumbIcon="@Icons.Material.Filled.Image" Size="Size.Large">Image</MudSwitch>
+            <MudSwitch @bind-Value="_video" ThumbIcon="@Icons.Material.Filled.VideoFile" Size="Size.Large">Videos</MudSwitch>
+            <MudSwitch @bind-Value="_news" ThumbIcon="@Icons.Material.Filled.Newspaper" Size="Size.Large" Disabled="true">News</MudSwitch>
+        </MudToolBar>
+    </MudItem>
+    <MudItem xs="12" md="10">
         <MudPaper Class="pa-6 mt-6">
             <MudText Typo="Typo.h5" Color="Color.Secondary" GutterBottom="true">About extensions sitemap generator</MudText>
             <MudText Typo="Typo.body1" Class="mb-4" Align="Align.Justify">
@@ -129,6 +136,10 @@
     private string? IgnoreRel { get; set; } = "nofollow";
     private string? IgnoreTarget { get; set; } = null;
 
+    private bool _image = false;
+    private bool _video = false;
+    private bool _news = false;
+
     private Uri? _baseUri { get; set; }
     private string? ResultXml { get; set; }
 
@@ -173,7 +184,7 @@
             ResultXml = null;
 
             var http = HttpClientFactory.CreateClient();
-            var helper = new SitemapHelper(http, Search, true, null, 2);
+            var helper = new SitemapHelper(http, Search, _image, _video, _news, true, null, 2);
 
             AppStateStatic.ProcessingStarted?.Invoke();
             ResultXml = await helper.RunAsync();
