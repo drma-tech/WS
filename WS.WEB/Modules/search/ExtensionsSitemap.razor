@@ -1,19 +1,19 @@
-﻿@page "/sitemap"
+﻿@page "/extensions-sitemap"
 
 @using System.Xml.Linq
 @using WS.WEB.Modules.Search.Core
-@inherits PageCore<Sitemap>
+@inherits PageCore<ExtensionsSitemap>
 
 @inject IJSRuntime JsRuntime
 @inject IHttpClientFactory HttpClientFactory
 
-<SeoHeader Title="sitemap generator" Keywords="@(["sitemap generator"])"
+<SeoHeader Title="extensions sitemap generator" Keywords="@(["extensions sitemap generator"])"
            Description="Lists site pages in XML. Ensures search engines find and index content faster, critical for large or poorly linked websites." Url="/sitemap"></SeoHeader>
 @* <GoogleAdSense Section="@GoogleAdSense.AdUnit.Global"></GoogleAdSense> *@
 
 <MudGrid Justify="Justify.Center">
     <MudItem xs="12" md="10">
-        <HeadPage Title="sitemap generator" IconName="@IconsFA.Solid.Icon("sitemap").Font"></HeadPage>
+        <HeadPage Title="extensions sitemap generator" IconName="@IconsFA.Solid.Icon("sitemap").Font"></HeadPage>
     </MudItem>
     <MudItem xs="12" md="10">
         <MudAlert Severity="Severity.Info" Variant="Variant.Filled" NoIcon="true" Class="mb-4" ContentAlignment="HorizontalAlignment.Center" Style="text-align: center;">
@@ -54,7 +54,7 @@
     </MudItem>
     <MudItem xs="12" md="10">
         <MudPaper Class="pa-6 mt-6">
-            <MudText Typo="Typo.h5" Color="Color.Secondary" GutterBottom="true">About sitemap generator</MudText>
+            <MudText Typo="Typo.h5" Color="Color.Secondary" GutterBottom="true">About extensions sitemap generator</MudText>
             <MudText Typo="Typo.body1" Class="mb-4" Align="Align.Justify">
                 A sitemap is an XML file that lists the important pages of your website. It helps search engines like Google and Bing
                 discover, crawl, and index content more efficiently. This is especially useful for large websites, single-page
@@ -65,8 +65,13 @@
             <MudText Typo="Typo.body1" Class="mb-4" Align="Align.Justify">
                 This generator follows the <b>Sitemap Protocol 0.9</b>, producing valid XML with tags such as
                 <code>&lt;loc&gt;</code> (URL) and <code>&lt;lastmod&gt;</code> (last modification date).
-                The format is fully supported by all major search engines.
+                It also optionally supports Google extensions for:
             </MudText>
+            <ul class="mb-4">
+                <li><b>Images:</b> associate images to a page using <code>&lt;image:image&gt;</code>.</li>
+                <li><b>Videos:</b> include video metadata with <code>&lt;video:video&gt;</code>.</li>
+                <li><b>News:</b> define news articles with <code>&lt;news:news&gt;</code>, including title, publication date, and publisher.</li>
+            </ul>
 
             <MudText Typo="Typo.h5" Color="Color.Secondary" GutterBottom="true">Limits</MudText>
             <MudText Typo="Typo.body1" Class="mb-4" Align="Align.Justify">
@@ -77,7 +82,7 @@
             <MudText Typo="Typo.h5" Color="Color.Secondary" GutterBottom="true">Why It Matters</MudText>
             <ul class="mb-4">
                 <li>Improves SEO by ensuring all important pages are visible to crawlers.</li>
-                <li>Helps search engines prioritize fresh and frequently updated content.</li>
+                <li>Helps search engines understand additional content types like images, videos, and news articles.</li>
                 <li>Supports standards recognized by all major search engines.</li>
             </ul>
 
@@ -93,6 +98,7 @@
 
             <MudText Typo="Typo.body2" Class="mt-4" Align="Align.Justify">
                 Tip: Keep <code>&lt;lastmod&gt;</code> accurate and update the sitemap only after meaningful content changes.
+                Optional image, video, and news blocks should be included only if relevant for SEO and content discovery.
             </MudText>
         </MudPaper>
     </MudItem>

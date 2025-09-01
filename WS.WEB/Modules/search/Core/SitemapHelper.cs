@@ -66,9 +66,8 @@ namespace WS.WEB.Modules.Search.Core
 
                 if (links != null)
                 {
-                    foreach (var link in links)
+                    foreach (var link in links.Where(link => !_visited.Contains(link)))
                     {
-                        if (!_visited.Contains(link))
                             queue.Enqueue((link, depth + 1));
                     }
                 }
