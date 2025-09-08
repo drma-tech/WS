@@ -1,7 +1,8 @@
 ﻿@page "/support/credits"
+@using WS.WEB.Resources
 @inherits PageCore<Credits>
 
-<SeoHeader Title="Credits" Url="/support/credits"></SeoHeader>
+<SeoHeader Title="Credits" Description="@SeoTranslations.AppDescription" Url="/support/credits"></SeoHeader>
 
 <MudGrid>
     <MudItem xs="12" sm="6">
@@ -30,4 +31,3 @@
         </HeadPage>
     </MudItem>
 </MudGrid>
-

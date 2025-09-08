@@ -6,6 +6,6 @@
     ]
   },
   "globalHeaders": {
-    "content-security-policy": "default-src 'self'; frame-src 'self' https://www.google.com https://ep2.adtrafficquality.google https://googleads.g.doubleclick.net https://productfeedback31422.ideas.userback.io; script-src 'self' https://www.googletagmanager.com https://cdn.jsdelivr.net https://unpkg.com https://www.clarity.ms https://scripts.clarity.ms https://pagead2.googlesyndication.com https://ep2.adtrafficquality.google https://fundingchoicesmessages.google.com https://static.userback.io 'unsafe-inline' 'unsafe-eval'; connect-src *; style-src * 'unsafe-inline'; img-src * data:; font-src * data:;"
+    "content-security-policy": "default-src 'self'; frame-src 'self' *.google.com *.adtrafficquality.google *.paddle.com *.doubleclick.net *.ideas.userback.io *.googlesyndication.com; frame-ancestors 'self' google.com *.google.com *.doubleclick.net; script-src 'self' *.paddle.com *.profitwell.com *.googletagmanager.com cdn.jsdelivr.net unpkg.com *.clarity.ms *.googlesyndication.com *.adtrafficquality.google *.google.com *.userback.io *.ampproject.org 'unsafe-inline' 'unsafe-eval'; connect-src *; style-src * 'unsafe-inline'; img-src * data: blob:; font-src * data:;"
   }
 }

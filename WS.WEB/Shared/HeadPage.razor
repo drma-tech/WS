@@ -46,14 +46,6 @@
                 }
             </MudText>
         </div>
-        <div class="pa-2" style="align-self: center;">
-            @if (ShowShare)
-            {
-                <MudButton StartIcon="@IconsFA.Solid.Icon("share").Font" Color="Color" Variant="Variant.Filled" OnClick="@(() => Share(Navigation.Uri))">
-                    Share
-                </MudButton>
-            }
-        </div>
     </MudStack>
     @if (Text.NotEmpty())
     {
@@ -72,7 +64,6 @@
     [Parameter] public Color Color { get; set; } = Color.Primary;
     [Parameter] public string? Text { get; set; }
     [Parameter] public string? Link { get; set; }
-    [Parameter] public bool ShowShare { get; set; } = true;
     [Parameter] public bool IncludeMB { get; set; } = true;
 
     private async Task Share(string? link)

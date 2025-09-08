@@ -10,15 +10,12 @@
     {
         <meta name="robots" content="noindex, nofollow" />
     }
-    @if (Url.NotEmpty())
-    {
-        <meta property="og:url" content="@GetCanonicalUrl()" />
-    }
-    <meta property="og:site_name" content="@ProjectName" />
+    <meta property="og:url" content="@GetCanonicalUrl()" />
+    <meta property="og:site_name" content="@LongProjectName" />
     <meta property="og:title" content="@GetTitle()" />
     <meta property="og:image" content="@Icon" />
     <meta property="twitter:title" content="@GetTitle()" />
-    <meta property="twitter:site" content="@ProjectName" />
+    <meta property="twitter:site" content="@LongProjectName" />
     <meta property="twitter:image" content="@Icon" />
     @if (!string.IsNullOrEmpty(Description))
     {
@@ -28,33 +25,30 @@
     }
     <meta name="keywords" Content="@GetKeywords()" />
 
-    @if (Url.NotEmpty())
-    {
-        <link rel="canonical" href="@GetCanonicalUrl()" />
-    }    
+    <link rel="canonical" href="@GetCanonicalUrl()" />
     <link rel="icon" type="image/png" href="favicon.ico" />
 </HeadContent>
 
 @code {
-    private const string ProjectName = "WebStandards";
+    private const string ShortProjectName = "WS";
+    private const string LongProjectName = "WebStandards";
     private const string ProjectUrl = "https://www.web-standards.com";
 
-    [Parameter] public string? Title { get; set; }
-    [Parameter] public string? Description { get; set; }
-    [Parameter] public string? Url { get; set; }
+    [Parameter][EditorRequired] public string Title { get; set; }
+    [Parameter][EditorRequired] public string Description { get; set; }
+    [Parameter][EditorRequired] public string Url { get; set; }
     [Parameter] public string? Icon { get; set; } = $"{ProjectUrl}/icon/icon-192.png";
     [Parameter] public IEnumerable<string> Keywords { get; set; } = [];
     [Parameter] public bool Index { get; set; } = true;
+    [Parameter] public bool TitleShort { get; set; } = false;
 
     string GetTitle()
     {
-        return Title is null ? ProjectName : $"{ProjectName} | {Title}";
+        return $"{(TitleShort ? ShortProjectName : LongProjectName)} | {Title}";
     }
 
     string GetDescription()
     {
-        if (string.IsNullOrEmpty(Description))
-            return "";
         return Description.TrimEnd('.') + ".";
     }
 
@@ -64,7 +58,7 @@
 
         keywords.AddRange(Keywords);
 
-        keywords.Add(ProjectName);
+        keywords.Add(LongProjectName);
 
         return string.Join(", ", keywords);
     }

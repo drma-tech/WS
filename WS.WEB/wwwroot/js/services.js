@@ -52,12 +52,12 @@ window.initUserBack = function () {
 }
 
 window.loadAds = function () {
-    var ad = document.querySelector('.adsbygoogle:not([data-adsbygoogle-status])');
-    if (ad) {
-        try {
+    try {
+        const ins = document.querySelector('ins.adsbygoogle');
+        if (ins) {
             (adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (error) {
-            showError(error.message);
         }
+    } catch (e) {
+        sendLog(`error: ${e.message}`);
     }
-}
+};

@@ -1,5 +1,15 @@
 ﻿"use strict";
 
+function sendLog(msg) {
+    const baseUrl = window.location.hostname === "localhost" ? "http://localhost:7071" : "";
+
+    fetch(`${baseUrl}/api/public/logger`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: msg
+    }).catch(() => { /* do nothing */ });
+}
+
 function share(url) {
     if (!("share" in navigator) || window.isSecureContext === false) {
         showError("Web Share API not supported.");
@@ -89,11 +99,6 @@ function showToast(message) {
     }, 5000);
 }
 
-(function () {
-    const theme = GetLocalStorage("theme") || "light";
-    document.documentElement.setAttribute("data-bs-theme", theme);
-})();
-
 async function detectBrowserFeatures() {
     const [simd, bulkMemory, bigInt] = await Promise.all([
         wasmFeatureDetect.simd(),
@@ -106,27 +111,31 @@ async function detectBrowserFeatures() {
 
 function showBrowserWarning() {
     document.body.innerHTML = `
-        <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; background: #f0f2f5; font-family: 'Segoe UI', Roboto, sans-serif; padding: 1rem;">
-            <div style="background: #fff; padding: 0.6rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); max-width: 460px; text-align: center; color: #333;">
-                <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚠️</div>
-                <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Your browser needs an update</h2>
-                <p style="font-size: 1rem; line-height: 1.6; margin-bottom: 0.5rem; text-align: justify;">
-                    This app uses modern browser features. Your current browser version isn’t compatible. Even when installed from a store, this app runs inside your device’s built-in browser.
+        <div style="display:flex; align-items:center; justify-content:center; min-height:100vh; background:#f0f2f5; font-family:'Segoe UI', Roboto, sans-serif; padding:1rem;">
+            <div style="background:#fff; padding:1.2rem; border-radius:16px; box-shadow:0 4px 12px rgba(0,0,0,0.1); width:100%; max-width:380px; text-align:center; color:#333;">
+                <div style="font-size:2.2rem; margin-bottom:0.5rem;">⚠️</div>
+                <h2 style="font-size:1.3rem; margin-bottom:0.75rem;">Your browser is too old</h2>
+                <p style="font-size:1rem; line-height:1.5; margin-bottom:1rem;">
+                    This app can’t run on your current browser because it is out of date.
+                    Please update your device using the instructions below.
                 </p>
-                <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.95rem; color: #555; text-align: left; padding-top: 0.5rem;">
-                    <li style="margin: 0.5rem 0; text-align: center;">
-                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/googleplay.svg" alt="Play Store" width="20" style="margin-right: 4px;" />
-                        <strong>Android</strong>: uses <strong>Chrome</strong>
-                    </li>
-                    <li style="margin: 0.5rem 0; text-align: center;">
-                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/apple.svg" alt="App Store" width="20" style="margin-right: 4px;" />
-                        <strong>iOS/macOS</strong>: uses <strong>Safari</strong>
-                    </li>
-                    <li style="margin: 0.5rem 0; text-align: center;">
-                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/microsoftstore.svg" alt="Microsoft Store" width="20" style="margin-right: 4px;" />
-                        <strong>Windows</strong>: uses <strong>Edge</strong>
-                    </li>
-                </ul>
+                <div style="text-align:left; font-size:1rem; color:#444;">
+                    <div style="margin:0.8rem 0; display:flex; align-items:center;">
+                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/googleplay.svg" width="22" style="margin-right:8px;" />
+                        <span><strong>Android:</strong> update <strong>Google Chrome</strong> in the Play Store</span>
+                    </div>
+                    <div style="margin:0.8rem 0; display:flex; align-items:center;">
+                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/apple.svg" width="22" style="margin-right:8px;" />
+                        <span><strong>iOS / macOS:</strong> update your system (Safari is included)</span>
+                    </div>
+                    <div style="margin:0.8rem 0; display:flex; align-items:center;">
+                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/windows.svg" width="22" style="margin-right:8px;" />
+                        <span><strong>Windows:</strong> run Windows Update (Edge is included)</span>
+                    </div>
+                </div>
+                <p style="font-size:0.9rem; color:#777; margin-top:1.2rem; text-align:center;">
+                    If you cannot update, try opening this app on a newer device.
+                </p>
             </div>
         </div>
     `;

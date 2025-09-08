@@ -4,26 +4,22 @@
 
 @if (!Navigation.BaseUri.Contains("localhost"))
 {
-    <div style="text-align: center" @key="_instanceKey">
-        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-@AdClientId" data-ad-slot="@(((long)Section).ToString())"></ins>
-    </div>
-
-    <style>
-        ins.adsbygoogle[data-ad-status='unfilled'] {
-            display: none !important;
-        }
-    </style>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5145928155833172" crossorigin="anonymous"></script>
+    <ins class="adsbygoogle" style="display: block; min-width: 320px; text-align: center; margin-bottom: 12px; border-width: 1px; border-radius: 4px; border-color: var(--mud-palette-lines-inputs);"
+         data-ad-client="ca-pub-@AdClientId" data-ad-slot="@(((long)Section).ToString())" data-ad-format="auto" data-full-width-responsive="true"></ins>
 }
 
 @code {
     [Parameter][EditorRequired] public AdUnit Section { get; set; } = AdUnit.Global;
 
     private const string AdClientId = "5145928155833172";
-    private readonly Guid _instanceKey = Guid.NewGuid();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await JS.InvokeVoidAsync("loadAds");
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("loadAds");
+        }
     }
 
     public enum AdUnit : long
