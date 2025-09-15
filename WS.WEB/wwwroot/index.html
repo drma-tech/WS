@@ -23,6 +23,7 @@
     <link href="/fa/css/brands.min.css" rel="stylesheet" />
     <link href="/fa/css/solid.min.css" rel="stylesheet" />
 
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5145928155833172" crossorigin="anonymous"></script>
     <script async src="https://fundingchoicesmessages.google.com/i/pub-5145928155833172?ers=1"></script>
     <script>(function () { function signalGooglefcPresent() { if (!window.frames['googlefcPresent']) { if (document.body) { const iframe = document.createElement('iframe'); iframe.style = 'width: 0; height: 0; border: none; z-index: -1000; left: -1000px; top: -1000px;'; iframe.style.display = 'none'; iframe.name = 'googlefcPresent'; document.body.appendChild(iframe); } else { setTimeout(signalGooglefcPresent, 0); } } } signalGooglefcPresent(); })();</script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4BSYH92X9W"></script>
@@ -68,13 +69,11 @@
         //avoid google (and others) search console execute this
         if (!/google|baidu|bingbot|duckduckbot|teoma|slurp|yandex/i.test(window.navigator.userAgent) &&
             window.navigator.serviceWorker && window.navigator.serviceWorker.register) {
-            navigator.serviceWorker.register('service-worker.js');
+            navigator.serviceWorker.register('service-worker.js')
+                .catch(err => {
+                    showError("Failed to register the service worker, which may affect platform functionality. This can occur if your browser blocks certain features or if there's a network issue.");
+                });
         }
-
-        //capture height of the app
-        const appHeight = () => document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
-        window.addEventListener('resize', appHeight);
-        appHeight();
 
         // check is browser is compatible with blazor
         detectBrowserFeatures()

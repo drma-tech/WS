@@ -70,6 +70,15 @@ namespace WS.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Toolkit to set up sitemaps, manifests, icons, SEO, and security for Websites..
+        /// </summary>
+        public static string AppDescriptionShort {
+            get {
+                return ResourceManager.GetString("AppDescriptionShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to WebStandards.
         /// </summary>
         public static string AppName {

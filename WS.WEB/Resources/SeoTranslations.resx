@@ -120,6 +120,9 @@
   <data name="AppDescription" xml:space="preserve">
     <value>A toolkit that helps developers set up essential web standards like sitemaps, manifests, icons, SEO tags, and security files for modern websites and PWAs.</value>
   </data>
+  <data name="AppDescriptionShort" xml:space="preserve">
+    <value>Toolkit to set up sitemaps, manifests, icons, SEO, and security for Websites.</value>
+  </data>
   <data name="AppName" xml:space="preserve">
     <value>WebStandards</value>
   </data>

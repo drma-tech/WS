@@ -55,20 +55,23 @@ function SetLocalStorage(key, value) {
 function TryDetectPlatform() {
     if (GetLocalStorage("platform")) return; //if populate before, cancel, cause detection (windows) only works for first call
 
-    const isWindows = document.referrer == "app-info://platform/microsoft-store";
-    const isAndroid = /(android)/i.test(navigator.userAgent);
+    const isWindows = document.referrer == "app-info://platform/microsoft-store" || /microsoft-store/i.test(navigator.userAgent);
+    const isAndroid = /android/i.test(navigator.userAgent);
     const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-    //const isMac = /macintosh|mac os x/i.test(navigator.userAgent);
+    const isMac = /macintosh|mac os x/i.test(navigator.userAgent);
     const isHuawei = /huawei|honor/i.test(navigator.userAgent);
+    const isXiaomi = /xiaomi/i.test(navigator.userAgent);
 
     if (isWindows)
         SetLocalStorage("platform", "windows");
     else if (isAndroid)
         SetLocalStorage("platform", "play");
-    else if (isIOS)
+    else if (isIOS || isMac)
         SetLocalStorage("platform", "ios");
     else if (isHuawei)
         SetLocalStorage("platform", "huawei");
+    else if (isXiaomi)
+        SetLocalStorage("platform", "xiaomi");
     else
         SetLocalStorage("platform", "webapp");
 }
@@ -96,7 +99,7 @@ function showToast(message) {
 
     setTimeout(() => {
         container.style.display = "none";
-    }, 5000);
+    }, 10000);
 }
 
 async function detectBrowserFeatures() {
@@ -139,4 +142,31 @@ function showBrowserWarning() {
             </div>
         </div>
     `;
+}
+
+function getBrowserName() {
+    const ua = navigator.userAgent;
+    if (ua.includes("Firefox/")) return "Firefox";
+    if (ua.includes("Edg/")) return "Edge";
+    if (ua.includes("Chrome/")) return "Chrome";
+    if (ua.includes("Safari/")) return "Safari";
+    if (ua.includes("OPR/")) return "Opera";
+    if (ua.includes("MSIE") || ua.includes("Trident/")) return "Internet Explorer";
+    return "Unknown";
+}
+
+function getBrowserVersion() {
+    const ua = navigator.userAgent;
+    const matches = RegExp(/(Firefox|Edg|Chrome|Safari|Version)\/([0-9.]+)/).exec(ua);
+    return matches ? matches[2] : "unknown";
+}
+
+function getOperatingSystem() {
+    const ua = navigator.userAgent;
+    if (ua.includes("Windows")) return "Windows";
+    if (ua.includes("Mac")) return "Mac OS";
+    if (ua.includes("Linux")) return "Linux";
+    if (ua.includes("Android")) return "Android";
+    if (ua.includes("iOS") || ua.includes("iPhone") || ua.includes("iPad")) return "iOS";
+    return "Unknown";
 }

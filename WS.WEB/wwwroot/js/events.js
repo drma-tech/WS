@@ -32,25 +32,68 @@ window.addEventListener("load", function () {
     }
 });
 
-window.addEventListener("error", function (e) {
-    if (e.filename?.includes("blazor.webassembly.js")) {
+window.addEventListener("error", function (event) {
+    if (event.filename?.includes("blazor.webassembly.js")) {
         showBrowserWarning();
     }
     else {
-        showError(e.message);
-        sendLog(`error: ${e.message}`);
+        showError(event.message);
+
+        const errorInfo = {
+            message: event.message,
+            filename: event.filename,
+            errorMessage: event.error.message,
+            errorStack: event.error.stack,
+            env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
+            userAgent: navigator.userAgent,
+            url: window.location.href
+        };
+
+        sendLog(`error: ${JSON.stringify(errorInfo)}`);
     }
 });
 
-window.addEventListener("unhandledrejection", function (e) {
-    showError(e.reason.message);
-    //sendLog(`unhandledrejection: ${e.reason.message}`); //i cant control (usually its connection/internet error)
+window.addEventListener("unhandledrejection", function (event) {
+    const reasonMessage = event.reason?.message || 'Unknown error';
+    const reasonStack = event.reason?.stack || 'No stack trace';
+
+    if (reasonMessage.includes('Failed to fetch')) {
+        showError("Connection problem detected. Check your internet connection and try reloading.");
+        return;
+    }
+
+    showError(reasonMessage);
+
+    const obj = {
+        reasonMessage: reasonMessage,
+        reasonStack: reasonStack,
+        env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
+        userAgent: navigator.userAgent,
+        url: window.location.href
+    };
+
+    sendLog(`unhandledrejection: ${JSON.stringify(obj)}`);
 });
 
-window.addEventListener("securitypolicyviolation", (e) => {
-    const msg = `CSP violation: Violated directive: ${e.violatedDirective} | Blocked URI: ${e.blockedURI}`;
-    sendLog(msg);
+window.addEventListener("securitypolicyviolation", (event) => {
+    const obj = {
+        violatedDirective: event.violatedDirective,
+        blockedURI: event.blockedURI,
+        sourceFile: event.sourceFile,
+        lineNumber: event.lineNumber,
+        env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
+        url: window.location.href
+    };
+
+    sendLog(`securitypolicyviolation: ${JSON.stringify(obj)}`);
 });
+
+//const originalConsoleError = console.error;
+//console.error = function (...args) {
+//    // ERROS CORRIGÍVEIS: console.error() intencionais no código
+//    sendLog("console_error: " + args.join(" "));
+//    return originalConsoleError.apply(console, args);
+//};
 
 window.addEventListener("resize", function () {
     const divs = document.querySelectorAll('[id^="swiper-trailer-"]');

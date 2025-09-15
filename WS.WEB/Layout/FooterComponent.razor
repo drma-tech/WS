@@ -5,59 +5,65 @@
 @if ((Support && Breakpoint <= Breakpoint.Sm) || (!Support && Breakpoint > Breakpoint.Sm))
 {
     <MudDivider Class="mb-3 mt-10"></MudDivider>
-    <MudGrid Justify="Justify.Center" Style="overflow: auto;" Spacing="2">
+    <MudGrid Justify="Justify.Center" Style="overflow: auto;" Spacing="4">
         <MudItem xs="12" sm="12" md="3">
-            <MudList T="string" Color="Color.Surface">
+            <MudList T="string" Color="Color.Surface" Dense="true">
                 <MudListSubheader>
-                    <MudText Typo="Typo.button" Color="Color.Primary">
+                    <MudText Color="Color.Primary" Typo="Typo.h6">
                         @SeoTranslations.AppName
                     </MudText>
                 </MudListSubheader>
-                <MudListItem Text="@SeoTranslations.AppDescription" Dense="true" Style="text-align: justify" />
+                <MudListItem Text="" Style="text-align: justify" Class="py-0" >
+                    @SeoTranslations.AppDescriptionShort
+                </MudListItem>
+                <MudListItem Text="" Style="text-align: justify" Class="py-0">
+                    @AppStateStatic.Version
+                </MudListItem>
             </MudList>
         </MudItem>
         <MudItem xs="12" sm="3" md="2">
-            <MudList T="string">
+            <MudList T="string" Dense="true">
                 <MudListSubheader>
-                    <MudText Typo="Typo.button" Color="Color.Secondary">
-                        COMPANY
+                    <MudText Color="Color.Secondary">
+                        Company
                     </MudText>
                 </MudListSubheader>
-                <MudListItem Text="Website" Href="https://www.drma-tech.com/" Dense="true" Target="_blank" />
+                <MudListItem Text="About us" Href="/support/about-us" Class="py-0" />
+                <MudListItem Text="Website" Href="https://www.drma-tech.com/" Target="_blank" Class="py-0" />
             </MudList>
         </MudItem>
         <MudItem xs="12" sm="3" md="2">
-            <MudList T="string">
+            <MudList T="string" Dense="true">
                 <MudListSubheader>
-                    <MudText Typo="Typo.button" Color="Color.Secondary">
-                        PRODUCT
+                    <MudText Color="Color.Secondary">
+                        Product
                     </MudText>
                 </MudListSubheader>
-                <MudListItem Text="Website" Href="https://www.web-standards.com/" Dense="true" Target="_blank" />
-                <MudListItem Text="Microsoft Store" Href="" Dense="true" Target="_blank" />
+                <MudListItem Text="Website" Href="https://www.web-standards.com" Target="_blank" Class="py-0" />
+                <MudListItem Text="Microsoft Store" Href="" Class="py-0" Target="_blank" />
             </MudList>
         </MudItem>
         <MudItem xs="12" sm="3" md="2">
-            <MudList T="string">
+            <MudList T="string" Dense="true">
                 <MudListSubheader>
-                    <MudText Typo="Typo.button" Color="Color.Secondary">
-                        SUPPORT
+                    <MudText Color="Color.Secondary">
+                        Support
                     </MudText>
                 </MudListSubheader>
-                <MudListItem Text="Contact" Href="mailto:support@web-standards.com" Dense="true" />
-                <MudListItem Text="FAQ" Href="/support/faq" Dense="true" />
+                <MudListItem Text="Contact" Href="mailto:support@web-standards.com" Class="py-0" />
+                <MudListItem Text="FAQ" Href="/support/faq" Class="py-0" />
             </MudList>
         </MudItem>
         <MudItem xs="12" sm="3" md="2">
-            <MudList T="string">
+            <MudList T="string" Dense="true">
                 <MudListSubheader>
-                    <MudText Typo="Typo.button" Color="Color.Secondary">
-                        LEGAL
+                    <MudText Color="Color.Secondary">
+                        Legal
                     </MudText>
                 </MudListSubheader>
-                <MudListItem Text="@Translations.LinkTerm" Href="/support/terms" Dense="true" />
-                <MudListItem Text="@Translations.LinkPrivacy" Href="/support/privacy" Dense="true" />
-                <MudListItem Text="Credits" Href="/support/credits" Dense="true" />
+                <MudListItem Text="@Translations.LinkTerm" Href="/support/terms" Class="py-0" />
+                <MudListItem Text="@Translations.LinkPrivacy" Href="/support/privacy" Class="py-0" />
+                <MudListItem Text="Credits" Href="/support/credits" Class="py-0" />
             </MudList>
         </MudItem>
     </MudGrid>

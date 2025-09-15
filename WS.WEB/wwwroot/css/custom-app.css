@@ -280,6 +280,10 @@ body .pwa-updater[b-pwa-updater] {
     min-width: 40px !important;
 }
 
+.mud-swipearea {
+    touch-action: pan-y !important;
+}
+
 /* FONT AWESOME */
 
 .fa-sm, .fa-md, .fa-lg {
@@ -293,21 +297,11 @@ body .pwa-updater[b-pwa-updater] {
 
 /* ADSENSE */
 
-ins[data-ad-status="unfilled"] {
-    position: relative;
+.adsbygoogle.custom-ad {
+    display: block;
+    min-width: 300px;
+    margin-bottom: 12px;
+    border-width: 1px;
+    border-radius: 4px;
+    border-color: var(--mud-palette-lines-inputs);
 }
-
-    ins[data-ad-status="unfilled"]::before {
-        content: "Ad not available";
-        position: absolute;
-        top: 30px;
-        left: 0;
-        right: 0;
-        color: #888;
-        pointer-events: none;
-        z-index: 10;
-    }
-
-    ins[data-ad-status="unfilled"] > div {
-        background-color: rgba(0, 0, 0, 0.2) !important;
-    }

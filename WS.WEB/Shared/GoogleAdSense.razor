@@ -2,23 +2,37 @@
 
 @inject IJSRuntime JS
 
-@if (!Navigation.BaseUri.Contains("localhost"))
+@if (IsLocalhost)
 {
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5145928155833172" crossorigin="anonymous"></script>
-    <ins class="adsbygoogle" style="display: block; min-width: 320px; text-align: center; margin-bottom: 12px; border-width: 1px; border-radius: 4px; border-color: var(--mud-palette-lines-inputs);"
-         data-ad-client="ca-pub-@AdClientId" data-ad-slot="@(((long)Section).ToString())" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <div style="text-align: center;">
+        <ins class="adsbygoogle mb-3" data-ad-status="unfilled"
+             style="@($"display: block; min-width: 300px; min-height: {(IsMobile || Format == "horizontal" ? "90" : "280")}px; text-align: center; border-width: 1px; border-radius: 4px; border-color: var(--mud-palette-lines-inputs); background-color: white;")">
+            <div></div>
+        </ins>
+    </div>
+}
+else
+{
+    <div id="@_containerId" @key="@_containerId" style="text-align: center;"></div>
 }
 
 @code {
     [Parameter][EditorRequired] public AdUnit Section { get; set; } = AdUnit.Global;
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+    [Parameter] public string? Format { get; set; }
+
+    private bool IsMobile => Breakpoint < Breakpoint.Sm; //todo: also get height less then 600px
+    private string? AdFormat => Format ?? (IsMobile ? "horizontal" : "auto");
+    private bool IsLocalhost => Navigation.BaseUri.Contains("localhost");
 
     private const string AdClientId = "5145928155833172";
+    private readonly string _containerId = $"ad-container-{Guid.NewGuid()}";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
+        if (firstRender && !IsLocalhost)
         {
-            await JS.InvokeVoidAsync("loadAds");
+            await JS.InvokeVoidAsync("createAd", $"ca-pub-{AdClientId}", ((long)Section).ToString(), AdFormat, _containerId);
         }
     }
 

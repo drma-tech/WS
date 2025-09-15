@@ -51,13 +51,19 @@ window.initUserBack = function () {
     };
 }
 
-window.loadAds = function () {
-    try {
-        const ins = document.querySelector('ins.adsbygoogle');
-        if (ins) {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        }
-    } catch (e) {
-        sendLog(`error: ${e.message}`);
-    }
+// adsense
+window.createAd = function (adClient, adSlot, adFormat, containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    container.innerHTML = ""; // remove old ad
+
+    const ins = document.createElement('ins');
+    ins.className = 'adsbygoogle custom-ad';
+    ins.setAttribute('data-ad-client', adClient);
+    ins.setAttribute('data-ad-slot', adSlot);
+    ins.setAttribute('data-ad-format', adFormat);
+    container.appendChild(ins);
+
+    (adsbygoogle = window.adsbygoogle || []).push({});
 };
