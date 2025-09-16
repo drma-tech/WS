@@ -39,17 +39,17 @@ window.addEventListener("error", function (event) {
     else {
         showError(event.message);
 
-        const errorInfo = {
-            message: event.message,
-            filename: event.filename,
-            errorMessage: event.error.message,
-            errorStack: event.error.stack,
-            env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
-            userAgent: navigator.userAgent,
-            url: window.location.href
-        };
+        //const errorInfo = {
+        //    message: event.message,
+        //    filename: event.filename,
+        //    errorMessage: event.error.message,
+        //    errorStack: event.error.stack,
+        //    env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
+        //    userAgent: navigator.userAgent,
+        //    url: window.location.href
+        //};
 
-        sendLog(`error: ${JSON.stringify(errorInfo)}`);
+        //sendLog(`error: ${JSON.stringify(errorInfo)}`);
     }
 });
 
@@ -64,28 +64,30 @@ window.addEventListener("unhandledrejection", function (event) {
 
     showError(reasonMessage);
 
-    const obj = {
-        reasonMessage: reasonMessage,
-        reasonStack: reasonStack,
-        env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
-        userAgent: navigator.userAgent,
-        url: window.location.href
-    };
+    //const obj = {
+    //    reasonMessage: reasonMessage,
+    //    reasonStack: reasonStack,
+    //    env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
+    //    userAgent: navigator.userAgent,
+    //    url: window.location.href
+    //};
 
-    sendLog(`unhandledrejection: ${JSON.stringify(obj)}`);
+    //sendLog(`unhandledrejection: ${JSON.stringify(obj)}`);
 });
 
 window.addEventListener("securitypolicyviolation", (event) => {
-    const obj = {
-        violatedDirective: event.violatedDirective,
-        blockedURI: event.blockedURI,
-        sourceFile: event.sourceFile,
-        lineNumber: event.lineNumber,
-        env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
-        url: window.location.href
-    };
+    showError(event.violatedDirective);
 
-    sendLog(`securitypolicyviolation: ${JSON.stringify(obj)}`);
+    //const obj = {
+    //    violatedDirective: event.violatedDirective,
+    //    blockedURI: event.blockedURI,
+    //    sourceFile: event.sourceFile,
+    //    lineNumber: event.lineNumber,
+    //    env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
+    //    url: window.location.href
+    //};
+
+    //sendLog(`securitypolicyviolation: ${JSON.stringify(obj)}`);
 });
 
 //const originalConsoleError = console.error;
