@@ -114,7 +114,7 @@ namespace WS.WEB.Modules.Search.Core
                     .Where(link =>
                         Uri.TryCreate(_baseUri, link.href, out var absUri)
                         && absUri.Host == _baseUri.Host
-                        && !link.href.StartsWith("mailto")
+                        && (absUri.Scheme == Uri.UriSchemeHttp || absUri.Scheme == Uri.UriSchemeHttps)
                         && (!ignoreNoFollow || !link.rel.Contains("nofollow", StringComparison.OrdinalIgnoreCase))
                         && (ignoreTarget == null || !link.target.Equals(ignoreTarget, StringComparison.OrdinalIgnoreCase))
                     )
