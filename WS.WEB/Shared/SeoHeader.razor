@@ -37,8 +37,8 @@
     [Parameter][EditorRequired] public string Title { get; set; }
     [Parameter][EditorRequired] public string Description { get; set; }
     [Parameter][EditorRequired] public string Url { get; set; }
-    [Parameter] public string? Icon { get; set; } = $"{ProjectUrl}/icon/icon-192.png";
-    [Parameter] public IEnumerable<string> Keywords { get; set; } = [];
+    [Parameter][EditorRequired] public IEnumerable<string> Keywords { get; set; } = [];
+    [Parameter] public string? Icon { get; set; } = $"{ProjectUrl}/icon/icon-192.png";    
     [Parameter] public bool Index { get; set; } = true;
     [Parameter] public bool TitleShort { get; set; } = false;
 

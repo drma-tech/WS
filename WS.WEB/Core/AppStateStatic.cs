@@ -13,7 +13,7 @@ public static class AppStateStatic
     public static bool DarkMode { get; private set; }
 
     public static Platform Platform { get; set; } = Platform.webapp;
-    public static string Version { get; set; }
+    public static string? Version { get; set; }
 
     public static Action? DarkModeChanged { get; set; }
     public static Action<string>? ShowError { get; set; }

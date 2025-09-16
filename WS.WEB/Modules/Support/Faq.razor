@@ -2,7 +2,9 @@
 @using WS.WEB.Resources
 @inherits PageCore<Faq>
 
-<SeoHeader Title="FAQ" Description="@SeoTranslations.AppDescription" Url="/support/faq"></SeoHeader>
+<SeoHeader Title="FAQ" Description="@SeoTranslations.AppDescription" Url="/support/faq" Keywords="@(["FAQ"])"></SeoHeader>
+
+<HeadPage Title="FAQ" Text="Here you can get answers to your main questions about the platform. If you have any questions not listed here, please contact us via our support email or in the feedback section."></HeadPage>
 
 <MudExpansionPanels Outlined="true" Elevation="0" Class="mb-2">
     <MudExpansionPanel Disabled="true" HideIcon="true">

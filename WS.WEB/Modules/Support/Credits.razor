@@ -2,32 +2,33 @@
 @using WS.WEB.Resources
 @inherits PageCore<Credits>
 
-<SeoHeader Title="Credits" Description="@SeoTranslations.AppDescription" Url="/support/credits"></SeoHeader>
+<SeoHeader Title="Credits" Description="@SeoTranslations.AppDescription" Url="/support/credits" Keywords="@(["credits", "W3C", "IETF", "Google Developers", "MDN Web Docs", "WHATWG"])"></SeoHeader>
 
-<MudGrid>
+<HeadPage Title="Credits" Text="Standards and references used to define the tools available here"></HeadPage>
+
+<MudGrid Spacing="4">
     <MudItem xs="12" sm="6">
-        <HeadPage Title="W3C" ImageSource="logo/w3c.png" Link="https://www.w3.org/" IncludeMB="false"
-                  Text="Standards and specifications for the open web, including HTML, CSS, and manifest guidelines.">
-        </HeadPage>
+        <SectionComponent Title="W3C" IconImage="logo/w3c.png" Link="https://www.w3.org/" IncludeMB="false"
+                          Description="Standards and specifications for the open web, including HTML, CSS, and manifest guidelines."></SectionComponent>
     </MudItem>
     <MudItem xs="12" sm="6">
-        <HeadPage Title="IETF" ImageSource="logo/ietf.png" Link="https://www.ietf.org/" IncludeMB="false"
-                  Text="Internet standards such as robots.txt, well-known URIs, and security headers.">
-        </HeadPage>
+        <SectionComponent Title="IETF" IconImage="logo/ietf.png" Link="https://www.ietf.org/" IncludeMB="false"
+                          Description="Internet standards such as robots.txt, well-known URIs, and security headers.">
+        </SectionComponent>
     </MudItem>
     <MudItem xs="12" sm="6">
-        <HeadPage Title="Google Developers" ImageSource="logo/google.png" Link="https://developers.google.com/" IncludeMB="false"
-                  Text="Guidelines and tools for sitemaps, SEO, and Progressive Web Apps (PWA).">
-        </HeadPage>
+        <SectionComponent Title="Google Developers" IconImage="logo/google.png" Link="https://developers.google.com/" IncludeMB="false"
+                          Description="Guidelines and tools for sitemaps, SEO, and Progressive Web Apps (PWA).">
+        </SectionComponent>
     </MudItem>
     <MudItem xs="12" sm="6">
-        <HeadPage Title="MDN Web Docs" ImageSource="logo/mdn.png" Link="https://developer.mozilla.org/" IncludeMB="false"
-                  Text="Comprehensive documentation and best practices for implementing web standards.">
-        </HeadPage>
+        <SectionComponent Title="MDN Web Docs" IconImage="logo/mdn.png" Link="https://developer.mozilla.org/" IncludeMB="false"
+                          Description="Comprehensive documentation and best practices for implementing web standards.">
+        </SectionComponent>
     </MudItem>
     <MudItem xs="12" sm="6">
-        <HeadPage Title="WHATWG" ImageSource="logo/whatwg.png" Link="https://whatwg.org/" IncludeMB="false"
-                  Text="Living standards for HTML and DOM specifications maintained by the community.">
-        </HeadPage>
+        <SectionComponent Title="WHATWG" IconImage="logo/whatwg.png" Link="https://whatwg.org/" IncludeMB="false"
+                          Description="Living standards for HTML and DOM specifications maintained by the community.">
+        </SectionComponent>
     </MudItem>
 </MudGrid>

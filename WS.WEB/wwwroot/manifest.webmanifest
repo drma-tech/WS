@@ -1,6 +1,6 @@
 {
   "id": "webstandards",
-  "name": "WebStandards",
+  "name": "WebStandards: Web Developer Tools",
   "short_name": "WebStandards",
   "description": "A toolkit that helps developers set up essential web standards like sitemaps, manifests, icons, SEO tags, and security files for modern websites and PWAs.",
   "background_color": "#ffffff",

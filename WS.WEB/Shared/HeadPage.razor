@@ -2,7 +2,7 @@
 
 @inject IJSRuntime Js
 
-<MudPaper Class="@(IncludeMB ? "mb-4" : "")" Outlined="true">
+<MudPaper Class="@(IncludeMB ? "mb-6" : "")" Outlined="true">
     <MudStack StretchItems="StretchItems.Middle" Row="true" Spacing="2">
         @if (ImageSource.NotEmpty())
         {
@@ -49,7 +49,7 @@
     </MudStack>
     @if (Text.NotEmpty())
     {
-        <MudStack Row="true" Class="px-2">
+        <MudStack Row="true" Class="pa-2">
             <MudText Typo="Typo.body1" Align="Align.Justify">
                 @Text
             </MudText>

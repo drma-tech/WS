@@ -2,7 +2,7 @@
 @using WS.WEB.Resources
 @inherits PageCore<AboutUs>
 
-<SeoHeader Title="About Us" Description="@SeoTranslations.AppDescription" Url=@($"/support/about-us")></SeoHeader>
+<SeoHeader Title="About Us" Description="@SeoTranslations.AppDescription" Url=@($"/support/about-us") Keywords="@(["about us"])"></SeoHeader>
 
 <style>
     .terms-container {
@@ -62,7 +62,7 @@
 </style>
 
 <div class="terms-container">
-    <div class="terms-title">About DRMA Tech</div>
+    <h1 class="terms-title">About DRMA Tech</h1>
     <div class="terms-subtitle">
         Welcome to <b>DRMA Tech</b> (<a href="https://www.drma-tech.com" target="_blank">www.drma-tech.com</a>)!<br />
         We create smart tools that connect people with what fits them best — making decisions easier, more aligned, and built around who they truly are.
