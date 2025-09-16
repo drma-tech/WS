@@ -55,7 +55,7 @@ window.addEventListener("error", function (event) {
 
 window.addEventListener("unhandledrejection", function (event) {
     const reasonMessage = event.reason?.message || 'Unknown error';
-    const reasonStack = event.reason?.stack || 'No stack trace';
+    //const reasonStack = event.reason?.stack || 'No stack trace';
 
     if (reasonMessage.includes('Failed to fetch')) {
         showError("Connection problem detected. Check your internet connection and try reloading.");
@@ -76,7 +76,7 @@ window.addEventListener("unhandledrejection", function (event) {
 });
 
 window.addEventListener("securitypolicyviolation", (event) => {
-    showError(event.violatedDirective);
+    showError(`securitypolicyviolation: violatedDirective: ${event.violatedDirective}, blockedURI: ${event.blockedURI}, sourceFile: ${event.sourceFile}`);
 
     //const obj = {
     //    violatedDirective: event.violatedDirective,
