@@ -4,8 +4,7 @@
 
 <MudDialog Style="width: 100%">
     <DialogContent>
-        <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" Color="Color.Primary"
-                        Value="AppStateStatic.DarkMode" ValueChanged="(bool vl) => DarkModeChanged(vl)">
+        <MudToggleGroup Value="DarkMode" ValueChanged="(bool vl) => DarkModeChanged(vl)" SelectionMode="SelectionMode.SingleSelection" Vertical="false" Color="Color.Primary">
             <MudToggleItem Value="false">
                 <MudIcon Icon="@IconsFA.Solid.Icon("sun").Font" Title="Light Mode" Class="me-1"></MudIcon>
                 Light Mode
@@ -25,9 +24,18 @@
 
     [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
 
+    public bool DarkMode { get; set; } = false;
+
+    protected override async Task LoadEssentialDataAsync()
+    {
+        DarkMode = await AppStateStatic.GetDarkMode(JsRuntime) ?? false;
+    }
+
     protected async Task DarkModeChanged(bool value)
     {
-        await JsRuntime.InvokeAsync<string>("SetLocalStorage", "dark-mode", value.ToString());
+        DarkMode = value;
+
+        await JsRuntime.InvokeAsync<string>("SetLocalStorage", "dark-mode", value.ToString()?.ToLower());
 
         AppStateStatic.ChangeDarkMode(value);
     }

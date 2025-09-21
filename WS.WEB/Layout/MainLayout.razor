@@ -7,8 +7,11 @@
 
 @inject IJSRuntime JsRuntime
 @inject ISnackbar Snackbar
+@inject ILogger<MainLayout> Logger
 
-<MudThemeProvider @ref="_mudThemeProvider" IsDarkMode="@AppStateStatic.DarkMode" />
+@inject NavigationManager Navigation
+
+<MudThemeProvider @ref="_mudThemeProvider" IsDarkMode="@_darkMode" />
 <MudPopoverProvider />
 <MudDialogProvider />
 <MudMessageBox />
@@ -42,43 +45,50 @@
 @code {
     private bool IsLoading = true;
     private MudThemeProvider? _mudThemeProvider;
+    private bool _darkMode = false;
 
     protected override void OnInitialized()
     {
         try
         {
-            AppStateStatic.DarkModeChanged += StateHasChanged;
+            // *************************************
+            // attention: avoid using asynchronous calls here, as it may affect static html generation (especially for anonymous users)
+            // *************************************
+
+            IsLoading = true; StateHasChanged();
+
+            AppStateStatic.DarkModeChanged += dark => { _darkMode = dark; StateHasChanged(); };
             AppStateStatic.ShowError = msg => { Snackbar.Add(msg, Severity.Error); };
+
+            AppStateStatic.Version = GetAppVersion();
+
+            IsLoading = false; StateHasChanged();
         }
-        finally
+        catch (Exception ex)
         {
-            IsLoading = false;
-            StateHasChanged();
+            ex.ProcessException(Snackbar, Logger);
+            IsLoading = false; StateHasChanged();
         }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        await base.OnAfterRenderAsync(firstRender);
+
         if (firstRender)
         {
             //DARK MODE
-            var darkMode = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "dark-mode");
+            var darkMode = await AppStateStatic.GetDarkMode(JsRuntime);
 
-            if (darkMode.Empty())
+            if (darkMode == null && _mudThemeProvider != null)
             {
-                darkMode = (await _mudThemeProvider!.GetSystemDarkModeAsync()).ToString();
+                var system = await _mudThemeProvider.GetSystemDarkModeAsync();
+                darkMode = system;
 
-                await JsRuntime.InvokeAsync<string>("SetLocalStorage", "dark-mode", darkMode);
+                await JsRuntime.InvokeAsync<string>("SetLocalStorage", "dark-mode", darkMode.ToString()?.ToLower());
             }
 
-            AppStateStatic.ChangeDarkMode(bool.Parse(darkMode));
-
-            //PLATFORM
-
-            var platform = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "platform");
-
-            AppStateStatic.Platform = Enum.Parse<Platform>(platform);
-            AppStateStatic.Version = BuildDateString();
+            AppStateStatic.ChangeDarkMode(darkMode ?? false);
         }
     }
 
@@ -87,17 +97,18 @@
     {
         AppStateStatic.ShowError?.Invoke(error);
     }
-
-    //https://swharden.com/blog/2020-12-29-blazor-build-info/
-    public static string BuildDateString()
+    
+    [JSInvokable]
+    public static string GetAppVersion()
     {
         try
         {
+            //https://swharden.com/blog/2020-12-29-blazor-build-info/
             return Resources.BuildDate.ReplaceLineEndings("").Trim();
         }
         catch (Exception)
         {
-            return "Version Error";
+            return "version-error";
         }
     }
 

@@ -32,6 +32,8 @@ window.addEventListener("load", function () {
     }
 });
 
+//setTimeout(() => { throw new Error('error test call'); }, 100);
+
 window.addEventListener("error", function (event) {
     if (event.filename?.includes("blazor.webassembly.js")) {
         showBrowserWarning();
@@ -45,6 +47,7 @@ window.addEventListener("error", function (event) {
         //    errorMessage: event.error.message,
         //    errorStack: event.error.stack,
         //    env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
+        //    app: `${GetLocalStorage("platform")} | ${GetLocalStorage("app-version")}`,
         //    userAgent: navigator.userAgent,
         //    url: window.location.href
         //};
@@ -52,6 +55,8 @@ window.addEventListener("error", function (event) {
         //sendLog(`error: ${JSON.stringify(errorInfo)}`);
     }
 });
+
+//Promise.reject(new Error('unhandledrejection test call'));
 
 window.addEventListener("unhandledrejection", function (event) {
     const reasonMessage = event.reason?.message || 'Unknown error';
@@ -64,10 +69,16 @@ window.addEventListener("unhandledrejection", function (event) {
 
     showError(reasonMessage);
 
+    //if (!/google|baidu|bingbot|duckduckbot|teoma|slurp|yandex/i.test(window.navigator.userAgent) && window.navigator.serviceWorker?.register) {
+    //    //just ignore, just a bot
+    //    return;
+    //}
+
     //const obj = {
     //    reasonMessage: reasonMessage,
     //    reasonStack: reasonStack,
     //    env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
+    //    app: `${GetLocalStorage("platform")} | ${GetLocalStorage("app-version")}`,
     //    userAgent: navigator.userAgent,
     //    url: window.location.href
     //};
@@ -84,26 +95,24 @@ window.addEventListener("securitypolicyviolation", (event) => {
     //    sourceFile: event.sourceFile,
     //    lineNumber: event.lineNumber,
     //    env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
+    //    app: `${GetLocalStorage("platform")} | ${GetLocalStorage("app-version")}`,
     //    url: window.location.href
     //};
 
     //sendLog(`securitypolicyviolation: ${JSON.stringify(obj)}`);
 });
 
-//const originalConsoleError = console.error;
-//console.error = function (...args) {
-//    // ERROS CORRIGÍVEIS: console.error() intencionais no código
-//    sendLog("console_error: " + args.join(" "));
-//    return originalConsoleError.apply(console, args);
-//};
-
+let resizeTimeout;
 window.addEventListener("resize", function () {
-    const divs = document.querySelectorAll('[id^="swiper-trailer-"]');
-    divs.forEach(function (el) {
-        if (window.initGrid) {
-            window.initGrid(el.id);
-        }
-    });
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(function () {
+        const divs = document.querySelectorAll('[id^="swiper-trailer-"]');
+        divs.forEach(function (el) {
+            if (window.initGrid) {
+                window.initGrid(el.id);
+            }
+        });
+    }, 250);
 });
 
 window.addEventListener('offline', () => {

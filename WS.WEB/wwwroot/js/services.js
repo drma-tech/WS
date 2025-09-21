@@ -1,16 +1,25 @@
 // Google Analytics
-window.initGoogleAnalytics = function (code) {
-    if (!window.location.host.includes("localhost") && GetLocalStorage("platform") !== "ios") {
+window.initGoogleAnalytics = function (code, version) {
+    SetLocalStorage("app-version", version);
+    const PLATFORM = GetLocalStorage("platform");
+
+    if (!window.location.host.includes("localhost")) {
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag("js", new Date());
-        gtag("config", code);
+
+        const config = {
+            'app_version': version,
+            'platform': PLATFORM
+        };
+
+        gtag("config", code, config);
     }
 }
 
 // Microsoft Clarity
 window.initClarity = function (code) {
-    if (!window.location.host.includes("localhost") && GetLocalStorage("platform") !== "ios") {
+    if (!window.location.host.includes("localhost")) {
         (function (c, l, a, r, i, t, y) {
             c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
             t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
@@ -58,11 +67,14 @@ window.createAd = function (adClient, adSlot, adFormat, containerId) {
 
     container.innerHTML = ""; // remove old ad
 
+    const isMobile = window.innerWidth <= 600 || window.innerHeight <= 600;
+
     const ins = document.createElement('ins');
-    ins.className = 'adsbygoogle custom-ad';
+    ins.className = 'adsbygoogle ' + (isMobile ? 'custom-ad-mobile' : 'custom-ad');
     ins.setAttribute('data-ad-client', adClient);
     ins.setAttribute('data-ad-slot', adSlot);
-    ins.setAttribute('data-ad-format', adFormat);
+    if (!isMobile) ins.setAttribute('data-ad-format', adFormat); //on mobile, adsense doesnt respect horizontal format
+    //ins.setAttribute('data-full-width-responsive', true); //this forces it to take up half the screen
     container.appendChild(ins);
 
     (adsbygoogle = window.adsbygoogle || []).push({});

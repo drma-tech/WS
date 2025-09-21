@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.JSInterop;
 using MudBlazor.Services;
 using Polly;
 using Polly.Extensions.Http;
@@ -18,6 +19,11 @@ if (builder.RootComponents.Empty())
 ConfigureServices(builder.Services, builder.HostEnvironment.BaseAddress);
 
 var app = builder.Build();
+
+var js = app.Services.GetRequiredService<IJSRuntime>();
+
+var version = WS.WEB.Layout.MainLayout.GetAppVersion();
+await js.InvokeVoidAsync("initGoogleAnalytics", "G-4BSYH92X9W", version);
 
 await app.RunAsync();
 

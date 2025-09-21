@@ -305,3 +305,14 @@ body .pwa-updater[b-pwa-updater] {
     border-radius: 4px;
     border-color: var(--mud-palette-lines-inputs);
 }
+
+.adsbygoogle.custom-ad-mobile {
+    height: 180px !important;
+    align-content: center;
+    display: block;
+    min-width: 300px;
+    margin-bottom: 12px;
+    border-width: 1px;
+    border-radius: 4px;
+    border-color: var(--mud-palette-lines-inputs);
+}

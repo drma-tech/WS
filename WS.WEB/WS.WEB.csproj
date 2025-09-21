@@ -7,7 +7,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="BlazorWasmPreRendering.Build" Version="6.0.0" />
-		<PackageReference Include="HtmlAgilityPack" Version="1.12.2" />
+		<PackageReference Include="HtmlAgilityPack" Version="1.12.3" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.9">
 			<TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>

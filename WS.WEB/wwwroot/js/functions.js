@@ -10,18 +10,6 @@
 //    }).catch(() => { /* do nothing */ });
 //}
 
-function share(url) {
-    if (!("share" in navigator) || window.isSecureContext === false) {
-        showError("Web Share API not supported.");
-        return;
-    }
-
-    navigator
-        .share({ url: url })
-        .then(() => console.log("Successful share"))
-        .catch(error => showError(error.message));
-}
-
 function jsSaveAsFile(filename, contentType, content) {
     // Create the URL
     const file = new File([content], filename, { type: contentType });
@@ -52,29 +40,50 @@ function SetLocalStorage(key, value) {
     return window.localStorage.setItem(key, value);
 }
 
-function TryDetectPlatform() {
-    if (GetLocalStorage("platform")) return; //if populate before, cancel, cause detection (windows) only works for first call
+function LoadAppVariables() {
+    //platform
+    if (!GetLocalStorage("platform")) {
+        const isWindows = document.referrer == "app-info://platform/microsoft-store" || /microsoft-store/i.test(navigator.userAgent);
+        const isAndroid = /android/i.test(navigator.userAgent);
+        const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+        const isMac = /macintosh|mac os x/i.test(navigator.userAgent);
+        const isHuawei = /huawei|honor/i.test(navigator.userAgent);
+        const isXiaomi = /xiaomi/i.test(navigator.userAgent);
 
-    const isWindows = document.referrer == "app-info://platform/microsoft-store" || /microsoft-store/i.test(navigator.userAgent);
-    const isAndroid = /android/i.test(navigator.userAgent);
-    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-    const isMac = /macintosh|mac os x/i.test(navigator.userAgent);
-    const isHuawei = /huawei|honor/i.test(navigator.userAgent);
-    const isXiaomi = /xiaomi/i.test(navigator.userAgent);
-
-    if (isWindows)
-        SetLocalStorage("platform", "windows");
-    else if (isAndroid)
-        SetLocalStorage("platform", "play");
-    else if (isIOS || isMac)
-        SetLocalStorage("platform", "ios");
-    else if (isHuawei)
-        SetLocalStorage("platform", "huawei");
-    else if (isXiaomi)
-        SetLocalStorage("platform", "xiaomi");
-    else
-        SetLocalStorage("platform", "webapp");
+        if (isWindows)
+            SetLocalStorage("platform", "windows");
+        else if (isAndroid)
+            SetLocalStorage("platform", "play");
+        else if (isIOS || isMac)
+            SetLocalStorage("platform", "ios");
+        else if (isHuawei)
+            SetLocalStorage("platform", "huawei");
+        else if (isXiaomi)
+            SetLocalStorage("platform", "xiaomi");
+        else
+            SetLocalStorage("platform", "webapp");
+    }
 }
+
+//async function getUserInfo() {
+//    try {
+//        if (window.location.host.includes("localhost")) {
+//            const response = await fetch("/dev-env/me.json");
+//            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+//            const userInfo = await response.json();
+//            return userInfo?.clientPrincipal;
+//        }
+//        else {
+//            const response = await fetch("/.auth/me");
+//            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+//            const userInfo = await response.json();
+//            return userInfo?.clientPrincipal;
+//        }
+//    } catch (error) {
+//        showError(error.message);
+//        return null;
+//    }
+//}
 
 function showError(message) {
     if (window.DotNet) {
