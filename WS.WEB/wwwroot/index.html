@@ -75,10 +75,18 @@
         // check is browser is compatible with blazor
         detectBrowserFeatures()
             .then((ok) => {
-                if (!ok) { showBrowserWarning(); }
-            })
-            .catch((error) => {
-                showError(`Browser not supported: ${error.message}`);
+                if (!ok) {
+                    showBrowserWarning();
+
+                    const errorInfo = {
+                        env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
+                        app: `${GetLocalStorage("platform")} | ${GetLocalStorage("app-version")}`,
+                        userAgent: navigator.userAgent,
+                        url: window.location.href
+                    };
+
+                    sendLog(`browser not supported: ${JSON.stringify(errorInfo)}`);
+                }
             });
 
         window.initUserBack();
