@@ -112,13 +112,11 @@ function showToast(message) {
 }
 
 async function detectBrowserFeatures() {
-    const [simd, bulkMemory, bigInt] = await Promise.all([
-        wasmFeatureDetect.simd(),
-        wasmFeatureDetect.bulkMemory(),
-        wasmFeatureDetect.bigInt()
+    const [simd] = await Promise.all([
+        wasmFeatureDetect.simd()
     ]);
 
-    return simd && bulkMemory && bigInt;
+    return simd;
 }
 
 function showBrowserWarning() {
