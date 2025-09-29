@@ -58,6 +58,10 @@ window.initUserBack = function () {
         language: GetLocalStorage("language") ?? browserLang.slice(0, 2),
         logo: window.location.origin + "/icon/icon-71.png"
     };
+    Userback.custom_data = {
+        platform: GetLocalStorage("platform"),
+        app_version: GetLocalStorage("app-version")
+    };
 }
 
 // adsense

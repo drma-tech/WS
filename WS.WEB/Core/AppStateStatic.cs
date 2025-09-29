@@ -3,6 +3,7 @@ using MudBlazor;
 using MudBlazor.Services;
 using WS.Shared.Enums;
 using WS.WEB.Core.Helper;
+using WS.WEB.Modules.Subscription.Core;
 
 namespace WS.WEB.Core;
 
@@ -113,6 +114,45 @@ public static class AppStateStatic
     }
 
     #endregion DarkMode
+
+    #region Region Country
+
+    private static string? _country;
+    private static readonly SemaphoreSlim _countrySemaphore = new(1, 1);
+
+    public static async Task<string> GetCountry(IpInfoApi? api, IJSRuntime? js = null)
+    {
+        await _countrySemaphore.WaitAsync();
+        try
+        {
+            if (_country.NotEmpty())
+            {
+                return _country;
+            }
+
+            var cache = js != null ? await js.InvokeAsync<string>("GetLocalStorage", "country") : null;
+
+            if (cache.NotEmpty())
+            {
+                _country = cache.Trim();
+            }
+            else
+            {
+                _country = api != null ? (await api.GetCountry())?.Trim() : "US";
+                if (js != null) await js.InvokeVoidAsync("SetLocalStorage", "country", _country?.ToLower());
+            }
+
+            _country ??= "US";
+
+            return _country;
+        }
+        finally
+        {
+            _countrySemaphore.Release();
+        }
+    }
+
+    #endregion Region Country
 
     public static Action<string>? ShowError { get; set; }
     public static Action? ProcessingStarted { get; set; }

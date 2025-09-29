@@ -1,5 +1,10 @@
 ﻿//lists
 window.initSwiper = (id, size) => {
+    if (typeof Swiper === 'undefined') {
+        setTimeout(() => window.initSwiper(id, size), 100);
+        return;
+    }
+
     const el = document.getElementById(id);
     if (!el) return;
     const posterSize = size ?? 128;
@@ -39,6 +44,11 @@ window.initSwiper = (id, size) => {
 
 //news
 window.initCalendar = (id) => {
+    if (typeof Swiper === 'undefined') {
+        setTimeout(() => window.initCalendar(id), 100);
+        return;
+    }
+
     const el = document.getElementById(id);
     if (!el) return;
 
@@ -73,6 +83,11 @@ window.initCalendar = (id) => {
 
 //trailers
 window.initGrid = (id) => {
+    if (typeof Swiper === 'undefined') {
+        setTimeout(() => window.initGrid(id), 100);
+        return;
+    }
+
     const el = document.getElementById(id);
     if (!el) return;
     const posterSize = 150;

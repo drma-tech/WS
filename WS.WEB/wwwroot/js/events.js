@@ -44,8 +44,8 @@ window.addEventListener("error", function (event) {
         //const errorInfo = {
         //    message: event.message,
         //    filename: event.filename,
-        //    errorMessage: event.error.message,
-        //    errorStack: event.error.stack,
+        //    errorMessage: event.error?.message,
+        //    errorStack: event.error?.stack,
         //    env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
         //    app: `${GetLocalStorage("platform")} | ${GetLocalStorage("app-version")}`,
         //    userAgent: navigator.userAgent,
@@ -69,7 +69,7 @@ window.addEventListener("unhandledrejection", function (event) {
 
     showError(reasonMessage);
 
-    //if (!/google|baidu|bingbot|duckduckbot|teoma|slurp|yandex/i.test(window.navigator.userAgent) && window.navigator.serviceWorker?.register) {
+    //if (!/google|baidu|bingbot|duckduckbot|teoma|slurp|yandex|toutiao/i.test(window.navigator.userAgent) && window.navigator.serviceWorker?.register) {
     //    //just ignore, just a bot
     //    return;
     //}
