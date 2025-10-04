@@ -125,15 +125,9 @@ window.checkBrowserFeatures = async function () {
         };
 
         sendLog(`browser with limited resources: ${JSON.stringify(errorInfo)}`);
-    }
 
-    if (!wasmSupported) {
         showBrowserWarning();
         return;
-    }
-
-    if (!simd) {
-        showError("Your browser is out of date or has some feature disabled. This may affect the functionality of the platform.");
     }
 
     // temporary: remove in the first quarter of 2026
