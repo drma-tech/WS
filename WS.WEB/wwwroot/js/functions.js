@@ -126,8 +126,15 @@ window.checkBrowserFeatures = async function () {
 
         sendLog(`browser with limited resources: ${JSON.stringify(errorInfo)}`);
 
-        showBrowserWarning();
-        return;
+        if (!wasmSupported) {
+            showBrowserWarning();
+            return;
+        }
+
+        if (!simd) {
+            showError("Your browser is out of date or some security mechanism is blocking something essential for the platform to function properly, such as Edge's Enhanced Security Mode.");
+            return;
+        }
     }
 
     // temporary: remove in the first quarter of 2026
@@ -145,6 +152,10 @@ window.checkBrowserFeatures = async function () {
 };
 
 function showBrowserWarning() {
+    const os = getOperatingSystem();
+    const browser = getBrowserName();
+    const version = getBrowserVersion();
+
     document.body.innerHTML = `
         <div style="display:flex; align-items:center; justify-content:center; min-height:100vh; background:#f0f2f5; font-family:'Segoe UI', Roboto, sans-serif; padding:1rem;">
             <div style="background:#fff; padding:1.2rem; border-radius:16px; box-shadow:0 4px 12px rgba(0,0,0,0.1); width:100%; max-width:380px; text-align:center; color:#333;">
@@ -167,6 +178,11 @@ function showBrowserWarning() {
                         <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/windows.svg" width="22" style="margin-right:8px;" />
                         <span><strong>Windows:</strong> run Windows Update (Edge is included)</span>
                     </div>
+                </div>
+                <div style="background:#f9fafb; border-radius:12px; padding:0.8rem; font-size:0.95rem; color:#444; margin-bottom:1rem;">
+                    <strong>Detected environment:</strong><br>
+                    ${os}<br>
+                    ${browser} ${version}
                 </div>
                 <p style="font-size:0.9rem; color:#777; margin-top:1.2rem; text-align:center;">
                     If you cannot update, try opening this app on a newer device.
