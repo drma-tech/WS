@@ -69,7 +69,7 @@ window.addEventListener("unhandledrejection", function (event) {
 
     showError(reasonMessage);
 
-    //if (!/google|baidu|bingbot|duckduckbot|teoma|slurp|yandex|toutiao/i.test(window.navigator.userAgent) && window.navigator.serviceWorker?.register) {
+    //if (!/google|baidu|bingbot|duckduckbot|teoma|slurp|yandex|toutiao|bytespider|applebot/i.test(window.navigator.userAgent) && window.navigator.serviceWorker?.register) {
     //    //just ignore, just a bot
     //    return;
     //}

@@ -1,107 +1,49 @@
 ﻿@page "/support/privacy"
 @inherits PageCore<Privacy>
-@using WS.WEB.Resources
 <SeoHeader Title="Privacy Policy" Description="@SeoTranslations.AppDescription" Url=@($"/support/privacy") Keywords="@(["Privacy Policy"])"></SeoHeader>
 
-<style>
-    .privacy-container {
-        max-width: 900px;
-        margin: 32px auto;
-        padding: 40px 24px 32px 24px;
-        background: var(--mud-palette-background, #fff);
-        border-radius: 12px;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.09);
-    }
-
-    .privacy-title {
-        text-align: center;
-        font-size: 2.2rem;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-        color: var(--mud-palette-text-primary, #222);
-    }
-
-    .privacy-subtitle {
-        text-align: center;
-        color: var(--mud-palette-text-secondary, #555);
-        font-size: 1.1rem;
-        margin-bottom: 2.2rem;
-    }
-
-    .privacy-section {
-        margin-bottom: 2.2rem;
-    }
-
-        .privacy-section h2 {
-            margin-bottom: 0.7rem;
-            color: var(--mud-palette-primary, #1976d2);
-            font-size: 1.18rem;
-            font-weight: 500;
-        }
-
-        .privacy-section p {
-            text-align: justify;
-            margin-bottom: 0.5rem;
-            color: var(--mud-palette-text-primary, #333);
-            line-height: 1.7;
-        }
-
-        .privacy-section ul {
-            text-align: justify;
-            margin-bottom: 0.5rem;
-            color: var(--mud-palette-text-primary, #333);
-            line-height: 1.7;
-            padding-left: 1.4rem;
-            list-style-type: disc;
-        }
-
-            .privacy-section ul li {
-                padding-left: 0.1rem;
-            }
-</style>
-
-<div class="privacy-container">
-    <h1 class="privacy-title">Privacy Policy</h1>
-    <div class="privacy-subtitle">
+<div class="support-container">
+    <h1 class="support-title">Privacy Policy</h1>
+    <div class="support-subtitle">
         Your privacy is a priority at <b>@ProjectTitle</b> (<a href="https://@ProjectDomain" target="_blank">@ProjectDomain</a>).<br />
         Please read this policy carefully to understand how we handle your data.
     </div>
-    <div class="privacy-section">
+    <div class="support-section">
         <h2>1. Data collected</h2>
         <p><b>@ProjectTitle</b> does not require accounts or authentication. The platform is fully anonymous. We do not collect personal identifiers such as names, emails, or precise geolocation.</p>
         <p>Technical data may be collected automatically, including IP address, browser type, device type, and usage patterns. This is used solely for security, diagnostics, and improving the platform.</p>
     </div>
-    <div class="privacy-section">
+    <div class="support-section">
         <h2>2. Cookies and local storage</h2>
         <p>We may use cookies or local storage to remember your preferences and improve user experience. No personal data is stored in these files.</p>
     </div>
-    <div class="privacy-section">
+    <div class="support-section">
         <h2>3. Analytics tools</h2>
         <p>Anonymous analytics may be used to understand platform usage (e.g., most accessed features, session duration). No identifiable data is collected or shared with third parties.</p>
     </div>
-    <div class="privacy-section">
+    <div class="support-section">
         <h2>4. Data sharing</h2>
         <p>We do not sell, rent, or trade your data. Limited technical data may be processed by hosting or analytics providers strictly to ensure platform stability and security.</p>
     </div>
-    <div class="privacy-section">
+    <div class="support-section">
         <h2>5. Data storage and security</h2>
         <p>All data is stored securely with encryption in transit (HTTPS) and restricted access. Since we do not collect personal accounts, no user-identifiable information is retained.</p>
     </div>
-    <div class="privacy-section">
+    <div class="support-section">
         <h2>6. Children and minors</h2>
         <p>This platform is intended for general audiences. We do not knowingly collect personal information from minors.</p>
     </div>
-    <div class="privacy-section">
+    <div class="support-section">
         <h2>7. Legal compliance</h2>
         <p>This policy complies with major privacy regulations (GDPR, LGPD, CCPA/CPRA) by design, since no personal data is required or processed for identification.</p>
     </div>
-    <div class="privacy-section">
+    <div class="support-section">
         <h2>8. Updates to this Policy</h2>
         <p>We may update this Privacy Policy to reflect changes in services, technology, or regulations. Updates will be published on this page with a revised date.</p>
     </div>
-    <div class="privacy-section">
-        <p style="text-align:center; color:#888; font-size:0.9rem;">Last updated: August 21, 2025</p>
-        <p style="text-align:center; color:#888; font-size:0.9rem;">By using the platform, you agree to this Privacy Policy and the <a href="/support/terms">Terms of Use</a>.</p>
+    <div class="support-footer">
+        <p>Last updated: August 21, 2025</p>
+        <p>By using the platform, you agree to this Privacy Policy and the <a href="/support/terms">Terms of Use</a>.</p>
     </div>
 </div>
 

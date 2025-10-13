@@ -6,12 +6,13 @@
 
 @inject IJSRuntime JsRuntime
 
-<SeoHeader Title="Web Developer Tools" Description="@SeoTranslations.AppDescription" Url="/" Keywords="@(["sitemap", "robot.txt", "manifest", "service-worker", "security.txt", "gpc.json", "change-password", "reset-password"])"></SeoHeader>
+<SeoHeader Title="@SeoTranslations.AppSubtitle" Description="@SeoTranslations.AppDescription" Url="/" Keywords="@(["sitemap", "robot.txt", "manifest", "service-worker", "security.txt", "gpc.json", "change-password", "reset-password"])"></SeoHeader>
 @* <GoogleAdSense Section="@GoogleAdSense.AdUnit.Main"></GoogleAdSense> *@
 
-<HeadPage Title="@SeoTranslations.AppName" Text="@SeoTranslations.AppDescription"></HeadPage>
+<PageHeader Image="icon/icon-71.png" Title="@SeoTranslations.AppName" Subtitle="@SeoTranslations.AppSubtitle" Description="@SeoTranslations.AppDescription">
+</PageHeader>
 
-<SectionComponent Title="Discovery & Search" Description="Tell search engines what to index, improve crawling speed, and ensure important pages and media appear in search results." IconName="@IconsFA.Solid.Icon("magnifying-glass").Font">
+<PageSection Title="Discovery & Search" Description="Tell search engines what to index, improve crawling speed, and ensure important pages and media appear in search results." Icon="@IconsFA.Solid.Icon("magnifying-glass").Font">
     <BodyFragment>
         <MudGrid Spacing="2">
             <MudItem xs="12" sm="6" md="4">
@@ -31,9 +32,9 @@
             </MudItem>
         </MudGrid>
     </BodyFragment>
-</SectionComponent>
+</PageSection>
 
-<SectionComponent Title="Device & App Integration" Description="Make your site behave like an app with install support, offline access, proper icons, and consistent cross-device branding." IconName="@IconsFA.Solid.Icon("mobile-screen").Font">
+<PageSection Title="Device & App Integration" Description="Make your site behave like an app with install support, offline access, proper icons, and consistent cross-device branding." Icon="@IconsFA.Solid.Icon("mobile-screen").Font">
     <BodyFragment>
         <MudGrid Spacing="2">
             <MudItem xs="12" sm="6" md="4">
@@ -53,9 +54,9 @@
             </MudItem>
         </MudGrid>
     </BodyFragment>
-</SectionComponent>
+</PageSection>
 
-<SectionComponent Title="Security & Privacy" Description="Protect users, reduce vulnerabilities, and show compliance with privacy standards and security best practices." IconName="@IconsFA.Solid.Icon("lock").Font">
+<PageSection Title="Security & Privacy" Description="Protect users, reduce vulnerabilities, and show compliance with privacy standards and security best practices." Icon="@IconsFA.Solid.Icon("lock").Font">
     <BodyFragment>
         <MudGrid Spacing="2">
             <MudItem xs="12" sm="6" md="4">
@@ -76,9 +77,9 @@
             </MudItem>
         </MudGrid>
     </BodyFragment>
-</SectionComponent>
+</PageSection>
 
-<SectionComponent Title="SEO & Sharing" Description="Control how your site appears in search results and social media shares to boost visibility and engagement." IconName="@IconsFA.Solid.Icon("share-nodes").Font">
+<PageSection Title="SEO & Sharing" Description="Control how your site appears in search results and social media shares to boost visibility and engagement." Icon="@IconsFA.Solid.Icon("share-nodes").Font">
     <BodyFragment>
         <MudGrid Spacing="2">
             <MudItem xs="12" sm="6" md="4">
@@ -99,4 +100,4 @@
             </MudItem>
         </MudGrid>
     </BodyFragment>
-</SectionComponent>
+</PageSection>

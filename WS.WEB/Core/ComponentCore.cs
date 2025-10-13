@@ -85,14 +85,33 @@ public abstract class PageCore<T> : ComponentCore<T>, IBrowserViewportObserver, 
 
     Task IBrowserViewportObserver.NotifyBrowserViewportChangeAsync(BrowserViewportEventArgs browserViewportEventArgs)
     {
-        AppStateStatic.Breakpoint = browserViewportEventArgs.Breakpoint;
-        AppStateStatic.BreakpointChanged?.Invoke(browserViewportEventArgs.Breakpoint);
+        if (AppStateStatic.Breakpoint != browserViewportEventArgs.Breakpoint)
+        {
+            AppStateStatic.Size = GetSizeForBreakpoint(browserViewportEventArgs.Breakpoint);
 
-        AppStateStatic.BrowserWindowSize = browserViewportEventArgs.BrowserWindowSize;
-        AppStateStatic.BrowserWindowSizeChanged?.Invoke(browserViewportEventArgs.BrowserWindowSize);
+            AppStateStatic.Breakpoint = browserViewportEventArgs.Breakpoint;
+            AppStateStatic.BreakpointChanged?.Invoke(browserViewportEventArgs.Breakpoint);
+        }
+
+        if (AppStateStatic.BrowserWindowSize != browserViewportEventArgs.BrowserWindowSize)
+        {
+            AppStateStatic.BrowserWindowSize = browserViewportEventArgs.BrowserWindowSize;
+            AppStateStatic.BrowserWindowSizeChanged?.Invoke(browserViewportEventArgs.BrowserWindowSize);
+        }
 
         return InvokeAsync(StateHasChanged);
     }
+
+    private static Size GetSizeForBreakpoint(Breakpoint breakpoint) => breakpoint switch
+    {
+        Breakpoint.Xs => Size.Small, //mobile view
+        //Breakpoint.Sm => Size.Medium, //tablet view
+        //Breakpoint.Md => Size.Medium,
+        //Breakpoint.Lg => Size.Large,
+        //Breakpoint.Xl => Size.Large,
+        //Breakpoint.Xxl => Size.Large,
+        _ => Size.Medium
+    };
 
     public async ValueTask DisposeAsync()
     {

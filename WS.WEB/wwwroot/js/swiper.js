@@ -5,14 +5,16 @@ window.initSwiper = (id, size) => {
         return;
     }
 
+    let mobile = window.innerHeight < 600 || window.innerWidth < 600;
+
     const el = document.getElementById(id);
     if (!el) return;
-    const posterSize = size ?? 128;
+    const posterSize = size ?? (mobile ? 105 : 128);
     const margin = 8;
 
     var swiper = new Swiper(el, {
         slidesPerView: "auto",
-        spaceBetween: (size <= 100 ? 4 : 8),
+        spaceBetween: 8,
         breakpointsBase: "container",
         navigation:
         {

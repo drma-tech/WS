@@ -1,84 +1,26 @@
 ﻿@page "/support/terms"
 @inherits PageCore<Terms>
-@using WS.WEB.Resources
 <SeoHeader Title="Terms of Use" Description="@SeoTranslations.AppDescription" Url=@($"/support/terms") Keywords="@(["Terms of Use"])"></SeoHeader>
 
-<style>
-    .terms-container {
-        max-width: 900px;
-        margin: 32px auto;
-        padding: 40px 24px 32px 24px;
-        background: var(--mud-palette-background, #fff);
-        border-radius: 12px;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.09);
-    }
-
-    .terms-title {
-        text-align: center;
-        font-size: 2.2rem;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-        color: var(--mud-palette-text-primary, #222);
-    }
-
-    .terms-subtitle {
-        text-align: center;
-        color: var(--mud-palette-text-secondary, #555);
-        font-size: 1.1rem;
-        margin-bottom: 2.2rem;
-    }
-
-    .terms-section {
-        margin-bottom: 2.2rem;
-    }
-
-        .terms-section h2 {
-            margin-bottom: 0.7rem;
-            color: var(--mud-palette-primary, #1976d2);
-            font-size: 1.18rem;
-            font-weight: 500;
-        }
-
-        .terms-section p {
-            text-align: justify;
-            margin-bottom: 0.5rem;
-            color: var(--mud-palette-text-primary, #333);
-            line-height: 1.7;
-        }
-
-        .terms-section ul {
-            text-align: justify;
-            margin-bottom: 0.5rem;
-            color: var(--mud-palette-text-primary, #333);
-            line-height: 1.7;
-            padding-left: 1.4rem;
-            list-style-type: disc;
-        }
-
-            .terms-section ul li {
-                padding-left: 0.1rem;
-            }
-</style>
-
-<div class="terms-container">
-    <h1 class="terms-title">Terms of Use</h1>
-    <div class="terms-subtitle">
+<div class="support-container">
+    <h1 class="support-title">Terms of Use</h1>
+    <div class="support-subtitle">
         Welcome to <b>@ProjectTitle</b> (<a href="https://@ProjectDomain" target="_blank">@ProjectDomain</a>)!<br />
         By accessing or using this service, you agree to these Terms of Use. Please read them carefully.
     </div>
-    <div class="terms-section">
+    <div class="support-section">
         <h2>1. About the Service</h2>
         <p><b>@ProjectTitle</b> provides tools to help developers configure and generate essential files and settings for websites and PWAs, such as sitemaps, manifests, icons, and security configurations.</p>
         <p>The service is operated by Delivering Reliable Modern Apps Tech OÜ, registered in Estonia, and is intended for professional and educational use.</p>
     </div>
-    <div class="terms-section">
+    <div class="support-section">
         <h2>2. Data and Privacy</h2>
         <p><b>@ProjectTitle</b> does not require user accounts or authentication. The platform can be used fully anonymously.</p>
         <p>We do not collect personal data such as names, emails, or precise location. Limited technical data (e.g., IP address, browser type, device information) may be processed automatically for security, diagnostics, and usage analytics.</p>
         <p>We implement reasonable technical and organizational measures to protect such data from unauthorized access or disclosure.</p>
         <p>For details, see our <a href="/support/privacy">Privacy Policy</a>.</p>
     </div>
-    <div class="terms-section">
+    <div class="support-section">
         <h2>3. Features</h2>
         <p><b>@ProjectTitle</b> helps developers generate and configure:</p>
         <ul>
@@ -89,16 +31,16 @@
         </ul>
         <p>The platform is provided “as is” and may evolve with new standards over time.</p>
     </div>
-    <div class="terms-section">
+    <div class="support-section">
         <h2>4. Third-party Content</h2>
         <p>Some generated configurations may rely on public standards or external references (e.g., schema.org for structured data). We do not claim ownership of such standards or third-party assets.</p>
     </div>
-    <div class="terms-section">
+    <div class="support-section">
         <h2>5. Intellectual Property</h2>
         <p>The platform’s structure, tools, and interface are protected by copyright and/or open-source licenses. Generated output belongs to the developer using the tool, unless otherwise noted.</p>
         <p>Reverse engineering, scraping, or unauthorized redistribution of the platform is prohibited.</p>
     </div>
-    <div class="terms-section">
+    <div class="support-section">
         <h2>6. Acceptable Use</h2>
         <p>You agree to use the service lawfully and responsibly. Prohibited actions include:</p>
         <ul>
@@ -107,26 +49,26 @@
             <li>Attempting to disrupt or compromise the service</li>
         </ul>
     </div>
-    <div class="terms-section">
+    <div class="support-section">
         <h2>7. Limitation of Liability and Service Availability</h2>
         <p><b>@ProjectTitle</b> is provided "as is" without warranties of availability, accuracy, or completeness. The service may be modified, suspended, or discontinued at any time without notice.</p>
         <p>We are not responsible for errors in generated files, misuse by developers, or third-party content referenced.</p>
     </div>
-    <div class="terms-section">
+    <div class="support-section">
         <h2>8. Changes to Terms</h2>
         <p>We may update these Terms from time to time. Significant changes will be announced when feasible. Continued use after updates means you accept the revised Terms.</p>
     </div>
-    <div class="terms-section">
+    <div class="support-section">
         <h2>9. Contact</h2>
         <p>For support, feedback, or legal matters, please visit our support page or contact us through the platform.</p>
     </div>
-    <div class="terms-section">
+    <div class="support-section">
         <h2>10. Governing Law</h2>
         <p>These Terms are governed by Estonian law. Any disputes shall be resolved under the jurisdiction of the courts of Tallinn, Estonia, in English, except where local laws require otherwise.</p>
     </div>
-    <div class="privacy-section">
-        <p style="text-align:center; color:#888; font-size:0.9rem;">Last updated: August 21, 2025</p>
-        <p style="text-align:center; color:#888; font-size:0.9rem;">By using the platform, you agree to these Terms of Use and the <a href="/support/privacy">Privacy Policy</a>.</p>
+    <div class="support-footer">
+        <p>Last updated: August 21, 2025</p>
+        <p>By using the platform, you agree to these Terms of Use and the <a href="/support/privacy">Privacy Policy</a>.</p>
     </div>
 </div>
 

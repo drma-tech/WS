@@ -126,4 +126,7 @@
   <data name="AppName" xml:space="preserve">
     <value>WebStandards</value>
   </data>
+  <data name="AppSubtitle" xml:space="preserve">
+    <value>Web Developer Tools</value>
+  </data>
 </root>
