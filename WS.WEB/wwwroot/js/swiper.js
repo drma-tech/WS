@@ -9,12 +9,12 @@ window.initSwiper = (id, size) => {
 
     const el = document.getElementById(id);
     if (!el) return;
-    const posterSize = size ?? (mobile ? 105 : 128);
+    const posterSize = size ?? (mobile ? 98 : 128);
     const margin = 8;
 
     var swiper = new Swiper(el, {
         slidesPerView: "auto",
-        spaceBetween: 8,
+        spaceBetween: mobile ? 4 : 8,
         breakpointsBase: "container",
         navigation:
         {
@@ -90,10 +90,12 @@ window.initGrid = (id) => {
         return;
     }
 
+    let mobile = window.innerHeight < 600 || window.innerWidth < 600;
+
     const el = document.getElementById(id);
     if (!el) return;
     const posterSize = 150;
-    const margin = 4;
+    const margin = mobile ? 4 : 8;
 
     if (el.swiper && typeof el.swiper.destroy === "function") {
         el.swiper.destroy(true, true);

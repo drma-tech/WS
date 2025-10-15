@@ -37,7 +37,8 @@
     @if (Description.NotEmpty())
     {
         <div style="text-align: justify;" class="mt-2">
-            <MudText Typo="@(AppStateStatic.Size == Size.Small ? Typo.caption : Typo.body1)" Align="Align.Justify" Style="line-height: 1.2">
+            <MudText Typo="@(AppStateStatic.Size == Size.Small ? Typo.caption : Typo.body1)" Align="Align.Justify"
+                     Style="@($"line-height: {(IsDesktop ? "1.2" : "1.0")}; letter-spacing: {(IsDesktop ? "inherit" : "normal")};")">
                 @Description
             </MudText>
         </div>
@@ -59,6 +60,8 @@
 
     [Parameter] public RenderFragment? ActionFragment { get; set; }
 
+
+    private bool IsDesktop => Breakpoint > Breakpoint.Xs;
     private string imageSize => AppStateStatic.Size == Size.Small ? "40px" : "48px";
     private string titleFontSize => AppStateStatic.Size == Size.Small ? "20px" : "24px";
     private string subtitleFontSize => AppStateStatic.Size == Size.Small ? "13.5px" : "16px";
