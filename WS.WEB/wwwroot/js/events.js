@@ -59,7 +59,7 @@ window.addEventListener("error", function (event) {
 //Promise.reject(new Error('unhandledrejection test call'));
 
 window.addEventListener("unhandledrejection", function (event) {
-    const reasonMessage = event.reason?.message || 'Unknown error';
+    const reasonMessage = event.reason?.message || event.reason || 'Unknown error';
     //const reasonStack = event.reason?.stack || 'No stack trace';
 
     if (reasonMessage.includes('Failed to fetch')) {

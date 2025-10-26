@@ -159,7 +159,7 @@
         {
             if (!Uri.TryCreate(Search, UriKind.Absolute, out var uri))
             {
-                Snackbar.Add("Invalid URL", Severity.Error);
+                await ShowError("Invalid URL");
                 return;
             }
 
@@ -177,7 +177,7 @@
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 

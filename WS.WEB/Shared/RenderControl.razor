@@ -26,13 +26,16 @@ else if (Status == LoadingStatus.Warning && !PartialComponent)
 }
 else //ShowContent
 {
-    @ChildContent
+    @if (Model != null)
+    {
+        @ChildContent(Model)
+    }
 }
 
 @code {
-    [Parameter][EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
+    [Parameter][EditorRequired] public RenderFragment<TModel> ChildContent { get; set; } = null!;
     [Parameter][EditorRequired] public RenderControlCore<TModel> Core { get; set; } = null!;
-    [Parameter][EditorRequired] public TModel Model { get; set; } = null!;
+    [Parameter][EditorRequired] public TModel Model { get; set; }
     [Parameter][EditorRequired] public Func<TModel, bool> ExpressionEmpty { get; set; } = null!;
 
     [Parameter] public bool PrivateContent { get; set; }
@@ -109,7 +112,7 @@ else //ShowContent
     /// <summary>
     /// </summary>
     /// <param name="msg">Default: no data</param>
-    private void ShowWarning(string? msg)
+    private new void ShowWarning(string? msg)
     {
         if (Status is LoadingStatus.Error) return;
 
@@ -122,7 +125,7 @@ else //ShowContent
     /// <summary>
     /// </summary>
     /// <param name="msg">Default: invalid operation</param>
-    private void ShowError(string? msg)
+    private new void ShowError(string? msg)
     {
         Status = LoadingStatus.Error;
         MessageError = CustomMessageError ?? msg;

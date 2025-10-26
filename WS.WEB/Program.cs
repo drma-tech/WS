@@ -33,9 +33,9 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
 
     collection.AddPWAUpdater();
 
-    collection.AddHttpClient("LocalHttpClient", c => { c.BaseAddress = new Uri(baseAddress); });
+    collection.AddHttpClient("Local", c => { c.BaseAddress = new Uri(baseAddress); });
 
-    collection.AddHttpClient("ExternalHttpClient")
+    collection.AddHttpClient("External", (service, options) => { options.Timeout = TimeSpan.FromSeconds(180); })
         .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
     collection.AddOptions();

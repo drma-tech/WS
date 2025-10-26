@@ -23,7 +23,7 @@ public static class AppStateStatic
     private static Platform? _platform;
     private static readonly SemaphoreSlim _platformSemaphore = new(1, 1);
 
-    public static async Task<Platform> GetPlatform(IJSRuntime? js = null)
+    public static async Task<Platform> GetPlatform(IJSRuntime js)
     {
         await _platformSemaphore.WaitAsync();
         try
@@ -33,12 +33,12 @@ public static class AppStateStatic
                 return _platform.Value;
             }
 
-            var cache = js != null ? await js.InvokeAsync<string>("GetLocalStorage", "platform") : null;
+            var cache = await js.GetLocalStorage("platform");
 
             if (cache.Empty() && js != null) //shouldn't happen (because it's called in index.html)
             {
                 await js.InvokeVoidAsync("LoadAppVariables");
-                cache = await js.InvokeAsync<string>("GetLocalStorage", "platform");
+                cache = await js.GetLocalStorage("platform");
             }
 
             if (cache.NotEmpty())
@@ -50,7 +50,7 @@ public static class AppStateStatic
                 else
                 {
                     _platform = Platform.webapp;
-                    if (js != null) await js.InvokeVoidAsync("SetLocalStorage", "platform", _platform.ToString());
+                    if (js != null) await js.SetLocalStorage("platform", _platform!.ToString()!);
                 }
             }
             else
@@ -75,7 +75,7 @@ public static class AppStateStatic
     private static bool? _darkMode;
     private static readonly SemaphoreSlim _darkModeSemaphore = new(1, 1);
 
-    public static async Task<bool?> GetDarkMode(IJSRuntime? js = null)
+    public static async Task<bool?> GetDarkMode(IJSRuntime js)
     {
         await _darkModeSemaphore.WaitAsync();
         try
@@ -85,7 +85,7 @@ public static class AppStateStatic
                 return _darkMode.Value;
             }
 
-            var cache = js != null ? await js.InvokeAsync<string>("GetLocalStorage", "dark-mode") : null;
+            var cache = await js.GetLocalStorage("dark-mode");
 
             if (cache.NotEmpty())
             {
@@ -96,7 +96,7 @@ public static class AppStateStatic
                 else
                 {
                     _darkMode = false;
-                    if (js != null) await js.InvokeVoidAsync("SetLocalStorage", "dark-mode", _darkMode.ToString()?.ToLower());
+                    if (js != null) await js.SetLocalStorage("dark-mode", _darkMode!.ToString()!.ToLower());
                 }
             }
 
@@ -121,7 +121,7 @@ public static class AppStateStatic
     private static string? _country;
     private static readonly SemaphoreSlim _countrySemaphore = new(1, 1);
 
-    public static async Task<string> GetCountry(IpInfoApi? api, IJSRuntime? js = null)
+    public static async Task<string> GetCountry(IpInfoApi? api, IJSRuntime? js)
     {
         await _countrySemaphore.WaitAsync();
         try
@@ -131,7 +131,7 @@ public static class AppStateStatic
                 return _country;
             }
 
-            var cache = js != null ? await js.InvokeAsync<string>("GetLocalStorage", "country") : null;
+            var cache = js != null ? await js.GetLocalStorage("country") : null;
 
             if (cache.NotEmpty())
             {
@@ -140,7 +140,7 @@ public static class AppStateStatic
             else
             {
                 _country = api != null ? (await api.GetCountry())?.Trim() : "US";
-                if (js != null) await js.InvokeVoidAsync("SetLocalStorage", "country", _country?.ToLower());
+                if (js != null) await js.SetLocalStorage("country", _country!.ToLower());
             }
 
             _country ??= "US";

@@ -9,17 +9,20 @@ namespace WS.WEB.Core.Api;
 public enum ApiType
 {
     Local,
-    Api,
     External
 }
 
 public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType type)
 {
-    protected HttpClient LocalHttp => factory.CreateClient("LocalHttpClient");
-    protected HttpClient ApiHttp => factory.CreateClient("ApiHttpClient");
-    protected HttpClient ExternalHttp => factory.CreateClient("ExternalHttpClient");
+    protected HttpClient LocalHttp => factory.CreateClient("Local");
+    protected HttpClient ExternalHttp => factory.CreateClient("External");
 
-    private HttpClient Http => type == ApiType.Local ? LocalHttp : (type == ApiType.Api ? ApiHttp : ExternalHttp);
+    private HttpClient GetHttp(ApiType type) => type switch
+    {
+        ApiType.Local => LocalHttp,
+        ApiType.External => ExternalHttp,
+        _ => throw new NotImplementedException()
+    };
 
     protected static Dictionary<string, int> CacheVersion { get; set; } = [];
 
@@ -47,8 +50,8 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
             AppStateStatic.ProcessingStarted?.Invoke();
 
             if (key.NotEmpty())
-                return await Http.GetValueAsync(uri.ConfigureParameters(GetVersion()), cancellationToken);
-            return await Http.GetValueAsync(uri.ConfigureParameters(GetSystemVersion()), cancellationToken);
+                return await GetHttp(type).GetValueAsync(uri.ConfigureParameters(GetVersion()), cancellationToken);
+            return await GetHttp(type).GetValueAsync(uri.ConfigureParameters(GetSystemVersion()), cancellationToken);
         }
         finally
         {
@@ -65,8 +68,8 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
             if (setNewVersion) SetNewVersion(key);
 
             if (key.NotEmpty())
-                return await Http.GetJsonFromApi<T>(uri.ConfigureParameters(GetVersion()), cancellationToken);
-            return await Http.GetJsonFromApi<T>(uri.ConfigureParameters(GetSystemVersion()), cancellationToken);
+                return await GetHttp(type).GetJsonFromApi<T>(uri.ConfigureParameters(GetVersion()), cancellationToken);
+            return await GetHttp(type).GetJsonFromApi<T>(uri.ConfigureParameters(GetSystemVersion()), cancellationToken);
         }
         finally
         {
@@ -82,12 +85,12 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
 
             if (key.NotEmpty())
             {
-                var result = await Http.GetJsonFromApi<HashSet<T>>(uri.ConfigureParameters(GetVersion()), cancellationToken);
+                var result = await GetHttp(type).GetJsonFromApi<HashSet<T>>(uri.ConfigureParameters(GetVersion()), cancellationToken);
                 return result ?? [];
             }
             else
             {
-                var result = await Http.GetJsonFromApi<HashSet<T>>(uri.ConfigureParameters(GetSystemVersion()), cancellationToken);
+                var result = await GetHttp(type).GetJsonFromApi<HashSet<T>>(uri.ConfigureParameters(GetSystemVersion()), cancellationToken);
                 return result ?? [];
             }
         }
@@ -105,7 +108,7 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
 
             SetNewVersion(key);
 
-            var response = await Http.PostAsJsonAsync(uri, obj, new JsonSerializerOptions());
+            var response = await GetHttp(type).PostAsJsonAsync(uri, obj, new JsonSerializerOptions());
 
             if (response.StatusCode == HttpStatusCode.NoContent) return default;
 
@@ -128,7 +131,7 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
 
             SetNewVersion(key);
 
-            var response = await Http.PutAsJsonAsync(uri, obj, new JsonSerializerOptions());
+            var response = await GetHttp(type).PutAsJsonAsync(uri, obj, new JsonSerializerOptions());
 
             if (response.StatusCode == HttpStatusCode.NoContent) return default;
 
@@ -151,7 +154,7 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
 
             SetNewVersion(key);
 
-            var response = await Http.DeleteAsync(uri);
+            var response = await GetHttp(type).DeleteAsync(uri);
 
             if (response.StatusCode == HttpStatusCode.NoContent) return default;
 

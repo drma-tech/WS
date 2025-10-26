@@ -139,7 +139,7 @@ window.checkBrowserFeatures = async function () {
 
     // temporary: remove in the first quarter of 2026
     if (!Promise.withResolvers) {
-        showError("Your browser is out of date. We recommend updating it (or your operating system) as soon as possible.");
+        showError("Your system’s web engine is outdated and may not support all features. Please update your device or browser to ensure the best experience.");
         Promise.withResolvers = function () {
             let resolve, reject;
             const promise = new Promise((res, rej) => {
@@ -218,3 +218,39 @@ function getOperatingSystem() {
     if (ua.includes("iOS") || ua.includes("iPhone") || ua.includes("iPad")) return "iOS";
     return "Unknown";
 }
+
+window.alertEffects = {
+    playBeep: (frequency, duration, type) => {
+        try {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            oscillator.type = type; // "sine", "square", "triangle", "sawtooth"
+            oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + duration / 1000);
+        } catch (err) {
+            console.warn("Audio playback failed:", err);
+        }
+    },
+
+    vibrate: (pattern) => {
+        if (navigator.vibrate) navigator.vibrate(pattern);
+    }
+};
+
+window.clearLocalStorage = () => {
+    localStorage.clear();
+};
+
+window.showCache = () => {
+    showToast("userAgent: " + navigator.userAgent +
+        ", app-version: " + GetLocalStorage("app-version") +
+        ", platform: " + GetLocalStorage("platform"));
+};

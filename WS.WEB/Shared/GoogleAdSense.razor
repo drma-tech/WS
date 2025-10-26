@@ -64,7 +64,7 @@
             }
             else
             {
-                await JS.InvokeVoidAsync("createAd", $"ca-pub-{AdClientId}", ((long)Section).ToString(), AdFormat, _containerId);
+                await JavascriptVoidAsync("createAd", $"ca-pub-{AdClientId}", ((long)Section).ToString(), AdFormat, _containerId);
             }
         }
     }

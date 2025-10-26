@@ -59,7 +59,6 @@
 
             AppStateStatic.DarkModeChanged += dark => { _darkMode = dark; StateHasChanged(); };
             AppStateStatic.ShowError = msg => { Snackbar.Add(msg, Severity.Error); };
-
             AppStateStatic.Version = GetAppVersion();
 
             IsLoading = false; StateHasChanged();
@@ -85,10 +84,26 @@
                 var system = await _mudThemeProvider.GetSystemDarkModeAsync();
                 darkMode = system;
 
-                await JsRuntime.InvokeAsync<string>("SetLocalStorage", "dark-mode", darkMode.ToString()?.ToLower());
+                await JsRuntime.SetLocalStorage("dark-mode", darkMode.ToString()!.ToLower());
             }
 
             AppStateStatic.ChangeDarkMode(darkMode ?? false);
+
+            //request an app rating on the second day of access
+            var accesses = await JsRuntime.GetLocalStorage<HashSet<DateTime>>("accesses") ?? new HashSet<DateTime>();
+
+            if (accesses.Count == 1 && accesses.Single() < DateTime.UtcNow.Date)
+            {
+                //todo: ask to rate the app
+            }
+
+            if (accesses.Count > 5) //clear, to try again
+            {
+                accesses.Clear();
+            }
+
+            accesses.Add(DateTime.UtcNow.Date);
+            await JsRuntime.SetLocalStorage("accesses", accesses);
         }
     }
 
