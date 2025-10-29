@@ -1,7 +1,5 @@
 ﻿@inherits ComponentCore<SettingsPopup>
 
-@inject IJSRuntime JsRuntime
-
 <MudDialog Style="width: 100%">
     <DialogContent>
         <MudToggleGroup Value="DarkMode" ValueChanged="(bool vl) => DarkModeChanged(vl)" SelectionMode="SelectionMode.SingleSelection" Vertical="false" Color="Color.Primary" Size="AppStateStatic.Size">
@@ -17,7 +15,7 @@
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="@(async () => { await JavascriptVoidAsync("showCache"); })" Size="AppStateStatic.Size">Show Cache</MudButton>
-        <MudButton OnClick="@(async () => { await JavascriptVoidAsync("clearLocalStorage"); Navigation.NavigateTo("/", true); })" Size="AppStateStatic.Size">Clear Cache</MudButton>
+        @* <MudButton OnClick="@(async () => { await JavascriptVoidAsync("clearLocalStorage"); Navigation.NavigateTo("/", true); })" Size="AppStateStatic.Size">Clear Cache</MudButton> *@
         <MudSpacer></MudSpacer>
         <MudButton OnClick="@(() => { MudDialog?.Close(); })" Size="AppStateStatic.Size">Close</MudButton>
     </DialogActions>

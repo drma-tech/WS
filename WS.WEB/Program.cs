@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.JSInterop;
+using MudBlazor;
 using MudBlazor.Services;
 using Polly;
 using Polly.Extensions.Http;
@@ -29,7 +30,11 @@ await app.RunAsync();
 
 static void ConfigureServices(IServiceCollection collection, string baseAddress)
 {
-    collection.AddMudServices();
+    collection.AddMudServices(config =>
+    {
+        config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight;
+        config.SnackbarConfiguration.PreventDuplicates = false;
+    });
 
     collection.AddPWAUpdater();
 
@@ -47,5 +52,5 @@ static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
 {
     return HttpPolicyExtensions
         .HandleTransientHttpError() // 408,5xx
-        .WaitAndRetryAsync([TimeSpan.FromSeconds(2)]);
+        .WaitAndRetryAsync([TimeSpan.FromSeconds(1)]);
 }

@@ -1,5 +1,3 @@
-﻿using WS.WEB.Core.Api;
-
 namespace WS.WEB.Modules.Subscription.Core
 {
     public class IpInfoApi(IHttpClientFactory factory) : ApiExternal(factory)

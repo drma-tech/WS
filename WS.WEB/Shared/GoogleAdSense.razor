@@ -2,14 +2,13 @@
 @inherits ComponentCore<GoogleAdSense>
 
 @inject IpInfoApi IpInfoApi
-@inject IJSRuntime JS
 
 @if (!Printscreen)
 {
     @if (IsLocalhost)
     {
         <div style="text-align: center;">
-            <MudText Typo="Typo.caption">Advertising</MudText>
+            <MudText Typo="Typo.caption" Color="Color.Secondary">Advertising</MudText>
         </div>
         <div style="text-align: center;" class="mb-4">
             <ins class="@($"adsbygoogle custom-ad {(IsMobile ? " mobile " : "")}")" data-ad-status="unfilled"
@@ -21,7 +20,7 @@
     else
     {
         <div style="text-align: center;">
-            <MudText Typo="Typo.caption">Advertising</MudText>
+            <MudText Typo="Typo.caption" Color="Color.Secondary">Advertising</MudText>
         </div>
         <div id="@_containerId" @key="@_containerId" style="text-align: center;" class="mb-4"></div>
     }
@@ -50,22 +49,29 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender && !IsLocalhost)
+        try
         {
-            var country = await AppStateStatic.GetCountry(IpInfoApi, JS);
+            if (firstRender && !IsLocalhost)
+            {
+                var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime);
 
-            if (country == "CN")
-            {
-                //todo: implement https://www.baiduadvertising.com/
+                if (country == "CN")
+                {
+                    //todo: implement https://www.baiduadvertising.com/
+                }
+                else if (_BlockedCountries.ContainsKey(country))
+                {
+                    //do not show ads
+                }
+                else
+                {
+                    await JavascriptVoidAsync("createAd", $"ca-pub-{AdClientId}", ((long)Section).ToString(), AdFormat, _containerId);
+                }
             }
-            else if (_BlockedCountries.ContainsKey(country))
-            {
-                //do not show ads
-            }
-            else
-            {
-                await JavascriptVoidAsync("createAd", $"ca-pub-{AdClientId}", ((long)Section).ToString(), AdFormat, _containerId);
-            }
+        }
+        catch (Exception ex)
+        {
+            await ProcessException(ex);
         }
     }
 
