@@ -1,12 +1,26 @@
 ﻿"use strict";
 
-//function sendLog(msg) {
+//function sendLog(error) {
 //    const baseUrl = window.location.hostname === "localhost" ? "http://localhost:7071" : "";
+
+//    let msg;
+//    if (error instanceof Error) {
+//        msg = {
+//            message: error.message,
+//            stack: error.stack,
+//            name: error.name,
+//            env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
+//            app: `${GetLocalStorage("platform")} | ${GetLocalStorage("app-version")}`,
+//            userAgent: navigator.userAgent,
+//        };
+//    } else {
+//        msg = error;
+//    }
 
 //    fetch(`${baseUrl}/api/public/logger`, {
 //        method: "POST",
 //        headers: { "Content-Type": "application/json" },
-//        body: msg
+//        body: JSON.stringify(msg)
 //    }).catch(() => { /* do nothing */ });
 //}
 
@@ -32,12 +46,24 @@ function GetLocalStorage(key) {
     return window.localStorage.getItem(key);
 }
 
+function GetSessionStorage(key) {
+    return window.sessionStorage.getItem(key);
+}
+
 function SetLocalStorage(key, value) {
     if (typeof key !== "string" || typeof value !== "string") {
         showError("Key/value must be strings");
         return null;
     }
     return window.localStorage.setItem(key, value);
+}
+
+function SetSessionStorage(key, value) {
+    if (typeof key !== "string" || typeof value !== "string") {
+        showError("Key/value must be strings");
+        return null;
+    }
+    return window.sessionStorage.setItem(key, value);
 }
 
 function LoadAppVariables() {
@@ -77,19 +103,19 @@ function LoadAppVariables() {
 
 //async function getUserInfo() {
 //    try {
-//        if (window.location.host.includes("localhost")) {
-//            const response = await fetch("/dev-env/me.json");
-//            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-//            const userInfo = await response.json();
-//            return userInfo?.clientPrincipal;
-//        }
-//        else {
-//            const response = await fetch("/.auth/me");
-//            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-//            const userInfo = await response.json();
-//            return userInfo?.clientPrincipal;
-//        }
+//        if (!firebaseAuth) return null;
+
+//        const user = firebaseAuth.getUser();
+
+//        if (!user) return null;
+
+//        return {
+//            userId: user.uid,
+//            name: user.displayName || null,
+//            email: user.email || null
+//        };
 //    } catch (error) {
+//        sendLog(error);
 //        showError(error.message);
 //        return null;
 //    }
@@ -111,7 +137,12 @@ function showError(message) {
 
 function showToast(message) {
     const container = document.getElementById("error-container");
-    if (!container) return;
+
+    if (!container) {
+        setTimeout(() => {
+            showToast(message);
+        }, 1000);
+    }
 
     container.textContent = message;
     container.style.display = "block";
@@ -257,6 +288,10 @@ window.alertEffects = {
 
 window.clearLocalStorage = () => {
     localStorage.clear();
+
+    if (WTN) {
+        WTN.clearAppCache(true);
+    }
 };
 
 window.showCache = () => {
@@ -267,3 +302,21 @@ window.showCache = () => {
         ", platform: " + GetLocalStorage("platform")
     );
 };
+
+async function invokeDotNetWhenReady(assembly, method, args) {
+    const retries = 10;
+    const delay = 500;
+
+    for (let i = 0; i < retries; i++) {
+        if (window.DotNet && DotNet.invokeMethodAsync) {
+            try {
+                await DotNet.invokeMethodAsync(assembly, method, args);
+                return;
+            } catch (err) {
+                console.warn("DotNet invocation failed, retrying...", err);
+            }
+        }
+        await new Promise(resolve => setTimeout(resolve, delay));
+    }
+    console.error("DotNet not ready after multiple retries");
+}

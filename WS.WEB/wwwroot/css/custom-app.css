@@ -10,6 +10,11 @@ body .pwa-updater[b-pwa-updater] {
 }
 
 @media (max-width: 599.95px), (max-height: 599.95px) {
+    .mud-toolbar-gutters {
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+    }
+
     .mud-container--gutters {
         padding-left: 8px !important;
         padding-right: 8px !important;
@@ -313,7 +318,7 @@ body .pwa-updater[b-pwa-updater] {
     bottom: 1.25rem;
     left: 12%;
     right: 12%;
-    font-size: 0.8rem !important;
+    font-size: 0.9rem !important;
     line-height: 1.2 !important;
 }
 
@@ -347,6 +352,26 @@ body .pwa-updater[b-pwa-updater] {
 .mud-stepper .mud-stepper-nav .mud-step .mud-step-label .mud-step-label-content-title {
     color: var(--mud-palette-primary);
 }
+
+.icon-text-button {
+    min-width: 48px !important;
+    padding: 6px !important;
+    text-transform: none !important;
+}
+
+    .icon-text-button .mud-button-label {
+        flex-direction: column;
+    }
+
+    .icon-text-button .mud-icon-root {
+        margin-bottom: 2px;
+    }
+
+    .icon-text-button span {
+        font-size: 0.60rem;
+        line-height: 1;
+        margin-inline: inherit !important
+    }
 
 /* FONT AWESOME */
 

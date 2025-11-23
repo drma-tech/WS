@@ -26,7 +26,7 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
     }
 
     /// <summary>
-    /// Non-critical data that may be delayed (popups, javascript handling, authenticated user data, etc.)
+    /// Non-critical data that may be delayed (popups, javascript handling, etc.)
     ///
     /// NOTE: This method cannot depend on previously loaded variables, as events can be executed in parallel.
     /// </summary>

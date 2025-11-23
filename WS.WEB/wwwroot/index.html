@@ -26,14 +26,19 @@
     <!--<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5145928155833172" crossorigin="anonymous"></script>-->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4BSYH92X9W"></script>
 
+    <script>
+        let isBot = /google|baidu|bingbot|duckduckbot|teoma|slurp|yandex|toutiao|bytespider|applebot/i.test(window.navigator.userAgent);
+    </script>
+
     <script src="js/functions.min.js"></script>
     <script src="js/events.min.js"></script>
     <script src="js/services.min.js"></script>
 
     <script type="text/javascript">
-        LoadAppVariables();
-        window.setRobotsMeta();
-        window.initClarity("sy4x3c9jsc");
+        if (!isBot) {
+            LoadAppVariables();
+            window.initClarity("sy4x3c9jsc");
+        }
     </script>
 </head>
 
@@ -64,23 +69,25 @@
     <script src="https://unpkg.com/wasm-feature-detect@1.8.0/dist/umd/index.js" integrity="sha384-WHs/UcbXblETJuoOp/1/SabA6yOoteU6urWZ9Yh+f/Ln4aoXkYtaqEW4X2yRXyB8" crossorigin="anonymous"></script>
     <script type="text/javascript">
         //avoid google (and others) search console execute this
-        if (!/google|baidu|bingbot|duckduckbot|teoma|slurp|yandex|toutiao|bytespider|applebot/i.test(window.navigator.userAgent) && window.navigator.serviceWorker?.register) {
-            navigator.serviceWorker.register('service-worker.js')
-                .catch(err => {
-                    showError("Failed to register the service worker, which may affect platform functionality. This can occur if your browser blocks certain features or if there's a network issue.");
-                });
+        if (!isBot) {
+            if (window.navigator.serviceWorker?.register) {
+                navigator.serviceWorker.register('service-worker.js')
+                    .catch(err => {
+                        showError("Failed to register the service worker, which may affect platform functionality. This can occur if your browser blocks certain features or if there's a network issue.");
+                    });
+            }
+
+            window.checkBrowserFeatures();
+            window.initUserBack();
         }
-
-        window.checkBrowserFeatures();
-        window.initUserBack();
     </script>
-
-    <script rel="preload" src="_framework/blazor.webassembly.js"></script>
 
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
 
-    <script defer src="_content/Toolbelt.Blazor.PWA.Updater.Service/script.min.js"></script>
+    <script src="_content/Toolbelt.Blazor.PWA.Updater.Service/script.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js" crossorigin="anonymous"></script>
     <script src="js/swiper.min.js"></script>
+
+    <script rel="preload" src="_framework/blazor.webassembly.js"></script>
 </body>
 </html>

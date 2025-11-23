@@ -26,6 +26,11 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
 
     protected static Dictionary<string, int> CacheVersion { get; set; } = [];
 
+    public static void ResetCacheVersion()
+    {
+        CacheVersion = [];
+    }
+
     public static void SetNewVersion(string? key)
     {
         if (key.NotEmpty()) CacheVersion[key!] = RandomNumberGenerator.GetInt32(1, 999999);

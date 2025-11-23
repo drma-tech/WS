@@ -57,9 +57,6 @@ else //ShowContent
         ArgumentNullException.ThrowIfNull(Core);
         ArgumentNullException.ThrowIfNull(ExpressionEmpty);
 
-        if (!ExpressionEmpty(Model))
-            Status = LoadingStatus.ShowContent;
-
         Core.LoadingStarted += () => ShowLoading();
         Core.ProcessingStarted += () => ShowLoading("Processing...");
 
@@ -70,11 +67,10 @@ else //ShowContent
         Core.ErrorAction += ShowError;
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override void OnParametersSet()
     {
-        ArgumentNullException.ThrowIfNull(Core);
-
-        await base.OnAfterRenderAsync(firstRender);
+        if (!ExpressionEmpty(Model))
+            Status = LoadingStatus.ShowContent;
     }
 
     private void ShowLoading(string? msg = null)
