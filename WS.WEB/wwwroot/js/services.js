@@ -1,9 +1,11 @@
 // Google Analytics
 window.initGoogleAnalytics = function (code, version) {
     if (isBot) return;
-    if (isLocalhost) return;
 
     SetLocalStorage("app-version", version);
+
+    if (isLocalhost) return;
+
     const PLATFORM = GetLocalStorage("platform");
 
     window.dataLayer = window.dataLayer || [];

@@ -39,19 +39,6 @@ window.addEventListener("error", function (event) {
         showBrowserWarning();
     }
     else {
-        //const errorInfo = {
-        //    message: event.message,
-        //    filename: event.filename,
-        //    errorMessage: event.error?.message,
-        //    errorStack: event.error?.stack,
-        //    env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
-        //    app: `${GetLocalStorage("platform")} | ${GetLocalStorage("app-version")}`,
-        //    userAgent: navigator.userAgent,
-        //    url: window.location.href
-        //};
-
-        //sendLog(`error: ${JSON.stringify(errorInfo)}`);
-
         //ignore bots
         if (!isBot) {
             showError(`error: ${event.message}`);
@@ -96,21 +83,10 @@ function normalizeReason(reason) {
 }
 
 window.addEventListener("unhandledrejection", function (event) {
-    //const obj = {
-    //    reasonMessage: message,
-    //    reasonStack: stack,
-    //    env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
-    //    app: `${GetLocalStorage("platform")} | ${GetLocalStorage("app-version")}`,
-    //    userAgent: navigator.userAgent,
-    //    url: window.location.href
-    //};
-
-    //sendLog(`unhandledrejection: ${JSON.stringify(obj)}`);
+    const { message, stack } = normalizeReason(event.reason);
 
     //ignore bots
     if (!isBot) {
-        const { message, stack } = normalizeReason(event.reason);
-
         if (typeof message === "string" && message.includes('Failed to fetch')) {
             showError("Connection problem detected. Check your internet connection and try reloading.");
             return;
@@ -122,18 +98,6 @@ window.addEventListener("unhandledrejection", function (event) {
 
 window.addEventListener("securitypolicyviolation", (event) => {
     showError(`securitypolicyviolation: violatedDirective: ${event.violatedDirective}, blockedURI: ${event.blockedURI}, sourceFile: ${event.sourceFile}`);
-
-    //const obj = {
-    //    violatedDirective: event.violatedDirective,
-    //    blockedURI: event.blockedURI,
-    //    sourceFile: event.sourceFile,
-    //    lineNumber: event.lineNumber,
-    //    env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
-    //    app: `${GetLocalStorage("platform")} | ${GetLocalStorage("app-version")}`,
-    //    url: window.location.href
-    //};
-
-    //sendLog(`securitypolicyviolation: ${JSON.stringify(obj)}`);
 });
 
 let resizeTimeout;

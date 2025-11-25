@@ -33,6 +33,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     {
         config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight;
         config.SnackbarConfiguration.PreventDuplicates = false;
+        config.SnackbarConfiguration.VisibleStateDuration = 10000;
     });
 
     collection.AddPWAUpdater();
