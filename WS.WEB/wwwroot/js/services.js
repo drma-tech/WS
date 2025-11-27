@@ -9,16 +9,18 @@ window.initGoogleAnalytics = function (code, version) {
     const PLATFORM = GetLocalStorage("platform");
 
     window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
+    function gtag() {
+        dataLayer.push(arguments);
+    }
     gtag("js", new Date());
 
     const config = {
-        'app_version': version,
-        'platform': PLATFORM
+        app_version: version,
+        platform: PLATFORM,
     };
 
     gtag("config", code, config);
-}
+};
 
 // Microsoft Clarity
 window.initClarity = function (code) {
@@ -38,7 +40,7 @@ window.initClarity = function (code) {
             clearInterval(clarityCheckInterval);
         }
     }, 5000);
-}
+};
 
 // userback
 window.initUserBack = function () {
@@ -52,11 +54,11 @@ window.initUserBack = function () {
     const browserLang = navigator.language || navigator.userLanguage;
     Userback.widget_settings = {
         language: GetLocalStorage("language") ?? browserLang.slice(0, 2),
-        logo: window.location.origin + "/icon/icon-71.png"
+        logo: window.location.origin + "/icon/icon-71.png",
     };
     Userback.custom_data = {
         platform: GetLocalStorage("platform"),
-        app_version: GetLocalStorage("app-version")
+        app_version: GetLocalStorage("app-version"),
     };
     //Userback.on_survey_submit = (obj) => {
     //    if (obj.key == "mjj9Ta") {
@@ -64,7 +66,7 @@ window.initUserBack = function () {
     //        SetLocalStorage("survey-rating", rating);
     //    }
     //};
-}
+};
 
 // adsense
 window.createAd = function (adClient, adSlot, adFormat, containerId) {
@@ -79,11 +81,11 @@ window.createAd = function (adClient, adSlot, adFormat, containerId) {
 
         const isMobile = window.innerWidth <= 600 || window.innerHeight <= 600;
 
-        const ins = document.createElement('ins');
-        ins.className = 'adsbygoogle ' + (isMobile ? 'custom-ad-mobile' : 'custom-ad');
-        ins.setAttribute('data-ad-client', adClient);
-        ins.setAttribute('data-ad-slot', adSlot);
-        if (!isMobile) ins.setAttribute('data-ad-format', adFormat); //on mobile, adsense doesnt respect horizontal format
+        const ins = document.createElement("ins");
+        ins.className = "adsbygoogle " + (isMobile ? "custom-ad-mobile" : "custom-ad");
+        ins.setAttribute("data-ad-client", adClient);
+        ins.setAttribute("data-ad-slot", adSlot);
+        if (!isMobile) ins.setAttribute("data-ad-format", adFormat); //on mobile, adsense doesnt respect horizontal format
         //ins.setAttribute('data-full-width-responsive', true); //this forces it to take up half the screen
         container.appendChild(ins);
 

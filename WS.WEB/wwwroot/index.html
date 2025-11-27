@@ -30,16 +30,30 @@
         const isBot = /google|baidu|bingbot|duckduckbot|teoma|slurp|yandex|toutiao|bytespider|applebot/i.test(window.navigator.userAgent);
         const isLocalhost = window.location.host.includes("localhost");
         const isDev = window.location.hostname.includes("dev.");
+        const isWebview = /webtonative/i.test(window.navigator.userAgent);
     </script>
 
-    <script src="js/functions.min.js"></script>
-    <script src="js/events.min.js"></script>
-    <script src="js/services.min.js"></script>
+    <script src="js/functions.js"></script>
+    <script src="js/events.js"></script>
+    <script src="js/services.js"></script>
 
     <script type="text/javascript">
         if (!isBot) {
             LoadAppVariables();
             window.initClarity("sy4x3c9jsc");
+        }
+
+        // temporary: remove in the first quarter of 2026
+        if (typeof Promise.withResolvers !== "function") {
+            showError("Your system’s web engine is outdated and may not support all features. Please update your device or browser to ensure the best experience.");
+            Promise.withResolvers = function () {
+                let resolve, reject;
+                const promise = new Promise((res, rej) => {
+                    resolve = res;
+                    reject = rej;
+                });
+                return { promise, resolve, reject };
+            };
         }
     </script>
 </head>
@@ -66,7 +80,7 @@
         </div>
     </noscript>
 
-    <div id="error-container" class="error-container"></div>
+    <div id="toast-stack"></div>
 
     <script src="https://unpkg.com/wasm-feature-detect@1.8.0/dist/umd/index.js" integrity="sha384-WHs/UcbXblETJuoOp/1/SabA6yOoteU6urWZ9Yh+f/Ln4aoXkYtaqEW4X2yRXyB8" crossorigin="anonymous"></script>
     <script type="text/javascript">
@@ -75,7 +89,7 @@
             if (window.navigator.serviceWorker?.register) {
                 navigator.serviceWorker.register('service-worker.js')
                     .catch(err => {
-                        showError("Failed to register the service worker, which may affect platform functionality. This can occur if your browser blocks certain features or if there's a network issue.");
+                        showError(`Failed to register the service worker, which may affect platform functionality. Details: ${err.message}`);
                     });
             }
 
@@ -88,7 +102,7 @@
 
     <script src="_content/Toolbelt.Blazor.PWA.Updater.Service/script.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js" crossorigin="anonymous"></script>
-    <script src="js/swiper.min.js"></script>
+    <script src="js/swiper.js"></script>
 
     <script rel="preload" src="_framework/blazor.webassembly.js"></script>
 </body>

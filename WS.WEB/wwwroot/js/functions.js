@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 
 function jsSaveAsFile(filename, contentType, content) {
     // Create the URL
@@ -45,76 +45,41 @@ function SetSessionStorage(key, value) {
 function LoadAppVariables() {
     //platform
     if (!GetLocalStorage("platform")) {
-        const isWindows = document.referrer == "app-info://platform/microsoft-store" || /microsoft-store/i.test(navigator.userAgent);
+        const isWindows =
+            document.referrer == "app-info://platform/microsoft-store" ||
+            /microsoft-store/i.test(navigator.userAgent);
         const isAndroid = /(android)/i.test(navigator.userAgent);
         const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
         const isMac = /macintosh|mac os x/i.test(navigator.userAgent);
-        const isHuawei = /huawei|honor/i.test(navigator.userAgent);
-        const isXiaomi = /xiaomi/i.test(navigator.userAgent);
+        const isHuawei = /huawei|honor/i.test(navigator.userAgent); //not working. returns play
+        const isXiaomi = /xiaomi/i.test(navigator.userAgent); //not working. returns play
 
-        if (isWindows)
-            SetLocalStorage("platform", "windows");
-        else if (isAndroid)
-            SetLocalStorage("platform", "play");
-        else if (isIOS || isMac)
-            SetLocalStorage("platform", "ios");
-        else if (isHuawei)
-            SetLocalStorage("platform", "huawei");
-        else if (isXiaomi)
-            SetLocalStorage("platform", "xiaomi");
-        else
-            SetLocalStorage("platform", "webapp");
+        if (isWindows) SetLocalStorage("platform", "windows");
+        else if (isAndroid) SetLocalStorage("platform", "play");
+        else if (isIOS || isMac) SetLocalStorage("platform", "ios");
+        else if (isHuawei) SetLocalStorage("platform", "huawei");
+        else if (isXiaomi) SetLocalStorage("platform", "xiaomi");
+        else SetLocalStorage("platform", "webapp");
     }
-
-    //language for apps from webtonative
-    //if (!GetLocalStorage("app-language")) {
-    //    if (/webtonative/i.test(navigator.userAgent)) {
-    //        WTN.deviceInfo().then(function (value) {
-    //            SetLocalStorage("app-language", value.language);
-    //            location.reload();
-    //        });
-    //    }
-    //}
 }
-
-//function getUser() {
-//    try {
-//        if (typeof firebaseAuth === "undefined" || !firebaseAuth) return null;
-
-//        const user = firebaseAuth.getUser();
-
-//        if (!user) return null;
-
-//        return {
-//            userId: user.uid,
-//            name: user.displayName || null,
-//            email: user.email || null
-//        };
-//    } catch (error) {
-//        sendLog(error);
-//        showError(error.message);
-//        return null;
-//    }
-//}
 
 function showError(message) {
     if (window.DotNet) {
         try {
             DotNet.invokeMethodAsync("WS.WEB", "ShowError", message);
-        }
-        catch {
+        } catch {
             showToast(message);
         }
-    }
-    else {
+    } else {
         showToast(message);
     }
 }
 
 function showToast(message, attempts = 20) {
-    const container = document.getElementById("error-container");
+    const stack = document.getElementById("toast-stack");
+    if (!stack) return;
 
-    if (!container) {
+    if (!stack) {
         if (attempts > 0) {
             setTimeout(() => {
                 showToast(message, attempts - 1);
@@ -125,11 +90,14 @@ function showToast(message, attempts = 20) {
         return;
     }
 
-    container.textContent = message;
-    container.style.display = "block";
+    const toast = document.createElement("div");
+    toast.className = "toast";
+    toast.textContent = message;
+
+    stack.appendChild(toast);
 
     setTimeout(() => {
-        container.style.display = "none";
+        toast.remove();
     }, 10000);
 }
 
@@ -138,38 +106,17 @@ window.checkBrowserFeatures = async function () {
     const simd = await wasmFeatureDetect.simd().catch(() => false);
 
     if (!wasmSupported || !simd) {
-        const errorInfo = {
-            env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
-            app: `${GetLocalStorage("platform")} | ${GetLocalStorage("app-version")}`,
-            features: `wasm-${wasmSupported} | simd-${simd}`,
-            userAgent: navigator.userAgent,
-            url: window.location.href
-        };
-
-        sendLog(`browser with limited resources: ${JSON.stringify(errorInfo)}`);
-
         if (!wasmSupported) {
             showBrowserWarning();
             return;
         }
 
         if (!simd) {
-            showError("Your browser is out of date or some security mechanism is blocking something essential for the platform to function properly, such as Edge's Enhanced Security Mode.");
+            showError(
+                "Your browser is out of date or some security mechanism is blocking something essential for the platform to function properly, such as Edge's Enhanced Security Mode."
+            );
             return;
         }
-    }
-
-    // temporary: remove in the first quarter of 2026
-    if (typeof Promise.withResolvers !== "function") {
-        showError("Your system’s web engine is outdated and may not support all features. Please update your device or browser to ensure the best experience.");
-        Promise.withResolvers = function () {
-            let resolve, reject;
-            const promise = new Promise((res, rej) => {
-                resolve = res;
-                reject = rej;
-            });
-            return { promise, resolve, reject };
-        };
     }
 };
 
@@ -221,13 +168,16 @@ function getBrowserName() {
     if (ua.includes("Chrome/")) return "Chrome";
     if (ua.includes("Safari/")) return "Safari";
     if (ua.includes("OPR/")) return "Opera";
-    if (ua.includes("MSIE") || ua.includes("Trident/")) return "Internet Explorer";
+    if (ua.includes("MSIE") || ua.includes("Trident/"))
+        return "Internet Explorer";
     return "Unknown";
 }
 
 function getBrowserVersion() {
     const ua = navigator.userAgent;
-    const matches = RegExp(/(Firefox|Edg|Chrome|Safari|Version)\/([0-9.]+)/).exec(ua);
+    const matches = RegExp(
+        /(Firefox|Edg|Chrome|Safari|Version)\/([0-9.]+)/
+    ).exec(ua);
     return matches ? matches[2] : "unknown";
 }
 
@@ -237,19 +187,24 @@ function getOperatingSystem() {
     if (ua.includes("Mac")) return "Mac OS";
     if (ua.includes("Linux")) return "Linux";
     if (ua.includes("Android")) return "Android";
-    if (ua.includes("iOS") || ua.includes("iPhone") || ua.includes("iPad")) return "iOS";
+    if (ua.includes("iOS") || ua.includes("iPhone") || ua.includes("iPad"))
+        return "iOS";
     return "Unknown";
 }
 
 window.alertEffects = {
     playBeep: (frequency, duration, type) => {
         try {
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const audioCtx = new (window.AudioContext ||
+                window.webkitAudioContext)();
             const oscillator = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain();
 
             oscillator.type = type; // "sine", "square", "triangle", "sawtooth"
-            oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+            oscillator.frequency.setValueAtTime(
+                frequency,
+                audioCtx.currentTime
+            );
             gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
 
             oscillator.connect(gainNode);
@@ -264,7 +219,7 @@ window.alertEffects = {
 
     vibrate: (pattern) => {
         if (navigator.vibrate) navigator.vibrate(pattern);
-    }
+    },
 };
 
 window.clearLocalStorage = () => {
@@ -297,7 +252,7 @@ async function invokeDotNetWhenReady(assembly, method, args) {
                 console.warn("DotNet invocation failed, retrying...", err);
             }
         }
-        await new Promise(resolve => setTimeout(resolve, delay));
+        await new Promise((resolve) => setTimeout(resolve, delay));
     }
     console.error("DotNet not ready after multiple retries");
 }
