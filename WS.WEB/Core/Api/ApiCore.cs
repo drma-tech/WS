@@ -2,7 +2,6 @@
 using System.Net.Http.Json;
 using System.Security.Cryptography;
 using System.Text.Json;
-using WS.WEB.Core.Helper;
 
 namespace WS.WEB.Core.Api;
 
