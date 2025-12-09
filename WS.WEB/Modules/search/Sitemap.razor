@@ -125,23 +125,6 @@
     private Uri? _baseUri { get; set; }
     private string? ResultXml { get; set; }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            if (Platform.NotEmpty())
-            {
-                await JsRuntime.InvokeAsync<string>("SetLocalStorage", "platform", Platform);
-            }
-            else
-            {
-                await JsRuntime.InvokeAsync<string>("LoadAppVariables");
-            }
-        }
-
-        await base.OnAfterRenderAsync(firstRender);
-    }
-
     private async Task KeyPress(KeyboardEventArgs args)
     {
         if (Search.Empty()) return;

@@ -1,3 +1,5 @@
+using WS.WEB.Core.Models;
+
 namespace WS.WEB.Modules.Subscription.Core
 {
     public class IpInfoApi(IHttpClientFactory factory) : ApiExternal(factory)
@@ -12,6 +14,14 @@ namespace WS.WEB.Modules.Subscription.Core
             {
                 return null;
             }
+        }
+    }
+
+    public class LoggerApi(IHttpClientFactory factory) : ApiCore(factory, null, ApiType.Anonymous)
+    {
+        public async Task SaveLog(LogModel log)
+        {
+            await PostAsync<LogModel, LogModel>("public/logger", log);
         }
     }
 }

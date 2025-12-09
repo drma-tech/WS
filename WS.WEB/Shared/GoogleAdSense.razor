@@ -65,7 +65,7 @@
                 }
                 else
                 {
-                    await JavascriptVoidAsync("createAd", $"ca-pub-{AdClientId}", ((long)Section).ToString(), AdFormat, _containerId);
+                    await JsRuntime.Services().InitAdSense($"ca-pub-{AdClientId}", Section, AdFormat, _containerId);
                 }
             }
         }

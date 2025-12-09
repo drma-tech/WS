@@ -142,7 +142,7 @@ namespace WS.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your search returned nothing. Please try again..
+        ///   Looks up a localized string similar to Your search terms returned no results. Please change them and try again..
         /// </summary>
         public static string SearchReturnedNothing {
             get {
@@ -165,15 +165,6 @@ namespace WS.WEB.Resources {
         public static string Settings {
             get {
                 return ResourceManager.GetString("Settings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Share.
-        /// </summary>
-        public static string Share {
-            get {
-                return ResourceManager.GetString("Share", resourceCulture);
             }
         }
         

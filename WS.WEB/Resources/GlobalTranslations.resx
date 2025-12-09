@@ -145,16 +145,13 @@
     <value>A new version is available</value>
   </data>
   <data name="SearchReturnedNothing" xml:space="preserve">
-    <value>Your search returned nothing. Please try again.</value>
+    <value>Your search terms returned no results. Please change them and try again.</value>
   </data>
   <data name="SeeAllItems" xml:space="preserve">
     <value>See all items</value>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
-  </data>
-  <data name="Share" xml:space="preserve">
-    <value>Share</value>
   </data>
   <data name="WriteReviewMessage" xml:space="preserve">
     <value>Help us reach a larger audience.</value>

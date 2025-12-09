@@ -1,5 +1,5 @@
-﻿@using WS.WEB.Modules.Support.Resources
-@using WS.WEB.Resources
+﻿@using WS.Shared.Enums
+@using WS.WEB.Modules.Support.Resources
 @inherits ComponentCore<FooterComponent>
 
 @if ((Support && Breakpoint <= Breakpoint.Sm) || (!Support && Breakpoint > Breakpoint.Sm))
@@ -24,46 +24,40 @@
         <MudItem xs="12" sm="3" md="2">
             <MudList T="string" Dense="true">
                 <MudListSubheader>
-                    <MudText Color="Color.Secondary">
-                        Company
-                    </MudText>
+                    <MudText Color="Color.Secondary">Company</MudText>
                 </MudListSubheader>
-                <MudListItem Text="About us" Href="/support/about-us" Class="py-0" />
+                <MudListItem Text="About us" Href="/support/about-us" Class="py-0" Disabled="_blockedActions" />
                 <MudListItem Text="Website" Href="https://www.drma-tech.com/" Target="_blank" Class="py-0" />
             </MudList>
         </MudItem>
+        @if (Platform == WS.Shared.Enums.Platform.webapp)
+        {
+            <MudItem xs="12" sm="3" md="2">
+                <MudList T="string" Dense="true">
+                    <MudListSubheader>
+                        <MudText Color="Color.Secondary">Stores</MudText>
+                    </MudListSubheader>
+                    <MudListItem Text="Microsoft Store" Href="https://apps.microsoft.com/detail/9pcf521f26lz" Class="py-0" Target="_blank" />
+                </MudList>
+            </MudItem>
+        }
         <MudItem xs="12" sm="3" md="2">
             <MudList T="string" Dense="true">
                 <MudListSubheader>
-                    <MudText Color="Color.Secondary">
-                        Product
-                    </MudText>
-                </MudListSubheader>
-                <MudListItem Text="Website" Href="https://www.web-standards.com" Target="_blank" Class="py-0" />
-                <MudListItem Text="Microsoft Store" Href="https://apps.microsoft.com/detail/9pcf521f26lz" Class="py-0" Target="_blank" />
-            </MudList>
-        </MudItem>
-        <MudItem xs="12" sm="3" md="2">
-            <MudList T="string" Dense="true">
-                <MudListSubheader>
-                    <MudText Color="Color.Secondary">
-                        Support
-                    </MudText>
+                    <MudText Color="Color.Secondary">Support</MudText>
                 </MudListSubheader>
                 <MudListItem Text="Contact" Href="mailto:support@web-standards.com" Class="py-0" />
-                <MudListItem Text="FAQ" Href="/support/faq" Class="py-0" />
+                <MudListItem Text="FAQ" Href="/support/faq" Class="py-0" Disabled="_blockedActions" />
             </MudList>
         </MudItem>
         <MudItem xs="12" sm="3" md="2">
             <MudList T="string" Dense="true">
                 <MudListSubheader>
-                    <MudText Color="Color.Secondary">
-                        Legal
-                    </MudText>
+                    <MudText Color="Color.Secondary">Legal</MudText>
                 </MudListSubheader>
-                <MudListItem Text="Terms of Use" Href="/support/terms" Class="py-0" />
-                <MudListItem Text="Privacy Policy" Href="/support/privacy" Class="py-0" />
-                <MudListItem Text="Credits" Href="/support/credits" Class="py-0" />
+                <MudListItem Text="Terms of Use" Href="/support/terms" Class="py-0" Disabled="_blockedActions" />
+                <MudListItem Text="Privacy Policy" Href="/support/privacy" Class="py-0" Disabled="_blockedActions" />
+                <MudListItem Text="Credits" Href="/support/credits" Class="py-0" Disabled="_blockedActions" />
             </MudList>
         </MudItem>
     </MudGrid>
@@ -71,4 +65,14 @@
 
 @code {
     [Parameter] public bool Support { get; set; }
+    private bool _blockedActions => Navigation.Uri.Contains("register-user") || Navigation.Uri.Contains("ask-consent");
+
+    private Platform? Platform { get; set; }
+
+    protected override async Task LoadEssentialDataAsync()
+    {
+        var platform = await JsRuntime.Utils().GetLocalStorage("platform");
+        Platform = Enum.Parse<Platform>(platform ?? "webapp");
+    }
+
 }

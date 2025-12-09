@@ -212,23 +212,6 @@ Sitemap: https://yourdomain.com/sitemap.xml
         Config.Sitemaps.Add($"{Domain}/sitemap.xml");
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            if (Platform.NotEmpty())
-            {
-                await JsRuntime.InvokeAsync<string>("SetLocalStorage", "platform", Platform);
-            }
-            else
-            {
-                await JsRuntime.InvokeAsync<string>("LoadAppVariables");
-            }
-        }
-
-        await base.OnAfterRenderAsync(firstRender);
-    }
-
     public void AddTab(Guid id)
     {
         Config.Rules.Add(new RobotsRule { Id = id, UserAgent = "*" });

@@ -14,10 +14,13 @@
         </MudToggleGroup>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="@(async () => { await JavascriptVoidAsync("showCache"); })" Size="AppStateStatic.Size">Show Cache</MudButton>
-        @* <MudButton OnClick="@(async () => { await JavascriptVoidAsync("clearLocalStorage"); Navigation.NavigateTo("/", true); })" Size="AppStateStatic.Size">Clear Cache</MudButton> *@
+        <MudButton OnClick="@(async () => { await JsRuntime.Utils().ShowCache(); })" Size="AppStateStatic.Size">
+            Show Cache
+        </MudButton>
         <MudSpacer></MudSpacer>
-        <MudButton OnClick="@(() => { MudDialog?.Close(); })" Size="AppStateStatic.Size">Close</MudButton>
+        <MudButton OnClick="@(() => { MudDialog?.Close(); })" Size="AppStateStatic.Size">
+            Close
+        </MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -36,7 +39,7 @@
     {
         DarkMode = value;
 
-        await SetLocalStorage("dark-mode", value.ToString()!.ToLower());
+        await JsRuntime.Utils().SetLocalStorage("dark-mode", value.ToString()!.ToLower());
 
         AppStateStatic.ChangeDarkMode(value);
     }

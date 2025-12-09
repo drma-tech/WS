@@ -48,12 +48,12 @@
     {
         await base.OnInitializedAsync();
 
-        Platform = await GetLocalStorage("platform");
+        Platform = await JsRuntime.Utils().GetLocalStorage("platform");
     }
 
     private async Task Reviewed()
     {
-        await JsRuntime.SetLocalStorage("store-reviewed", true.ToString().ToLower());
+        await JsRuntime.Utils().SetLocalStorage("store-reviewed", true.ToString().ToLower());
         MudDialog?.Close();
     }
 }
