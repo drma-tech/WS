@@ -155,7 +155,7 @@
             ResultXml = await helper.RunAsync();
             AppStateStatic.ProcessingFinished?.Invoke();
 
-            await JsRuntime.InvokeVoidAsync("jsSaveAsFile", "sitemap.xml", "application/xml", ResultXml);
+            await JsRuntime.Utils().DownloadFile("sitemap.xml", "application/xml", ResultXml);
         }
         catch (Exception ex)
         {
