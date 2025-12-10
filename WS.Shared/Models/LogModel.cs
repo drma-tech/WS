@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
-using WS.WEB.Core.Enums;
+using WS.Shared.Enums;
 
-namespace WS.WEB.Core.Models
+namespace WS.Shared.Models
 {
     public class LogModel
     {

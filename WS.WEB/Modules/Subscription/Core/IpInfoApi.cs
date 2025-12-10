@@ -1,4 +1,4 @@
-using WS.WEB.Core.Models;
+using WS.Shared.Models;
 
 namespace WS.WEB.Modules.Subscription.Core
 {

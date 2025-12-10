@@ -1,4 +1,4 @@
-﻿namespace WS.WEB.Core;
+﻿namespace WS.Shared.Core;
 
 public class UnhandledException : Exception
 {

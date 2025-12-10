@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<AzureFunctionsVersion>v4</AzureFunctionsVersion>
+		<OutputType>Exe</OutputType>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<RootNamespace>WS.API</RootNamespace>
+		<UserSecretsId>f4b35da4-0931-4cdf-8710-2b8ef1418d93</UserSecretsId>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Azure.Cosmos" Version="3.56.0" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker" Version="2.2.0" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.3.0" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="2.0.7" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.11" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.11" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\WS.Shared\WS.Shared.csproj" />
+	</ItemGroup>
+</Project>

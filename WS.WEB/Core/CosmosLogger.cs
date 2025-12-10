@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
-using WS.WEB.Core.Enums;
-using WS.WEB.Core.Models;
+using WS.Shared.Core;
+using WS.Shared.Enums;
+using WS.Shared.Models;
 using WS.WEB.Modules.Subscription.Core;
 
 namespace WS.WEB.Core;

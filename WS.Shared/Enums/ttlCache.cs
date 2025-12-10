@@ -1,4 +1,4 @@
-﻿namespace WS.WEB.Core.Enums;
+﻿namespace WS.Shared.Enums;
 
 public enum TtlCache
 {
