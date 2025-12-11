@@ -70,7 +70,7 @@ public static class IsolatedFunctionHelper
         log.Body = log.Body ?? req.ReadAsString();
         log.AppVersion = log.AppVersion ?? req.GetQueryParameters()["vs"];
         log.UserId = log.UserId ?? null;
-        log.Ip = log.Ip ?? req.GetUserIP();
+        log.Ip = log.Ip ?? req.GetUserIP(false);
 
         logger.LogError(ex, messageLog, log);
     }
@@ -98,7 +98,7 @@ public static class IsolatedFunctionHelper
             Params = string.Join("|", valueCollection.AllKeys.Select(key => $"{key}={req.GetQueryParameters()[key!]}")),
             AppVersion = req.GetQueryParameters()["vs"],
             UserId = null,
-            Ip = req.GetUserIP(),
+            Ip = req.GetUserIP(false),
         };
 
         logger.LogWarning(messageLog, log);
