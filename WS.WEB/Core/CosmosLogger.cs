@@ -54,6 +54,7 @@ public class CosmosLogger(LoggerApi api) : ILogger
             //UserId = AppStateStatic.UserId,
             Ip = null,
             UserAgent = null,
+            IsBot = null,
             Ttl = (int)TtlCache.ThreeMonths
         };
 

@@ -15,36 +15,6 @@ internal sealed class ApiMiddleware() : IFunctionsWorkerMiddleware
 
         try
         {
-            //todo: validate platform version
-            //var req = await context.GetHttpRequestDataAsync();
-            //if (req != null)
-            //{
-            //    var path = req.Url.AbsolutePath;
-            //    var ignoredPaths = new[]
-            //    {
-            //        "/api/principal/get",
-            //    };
-
-            //    if (ignoredPaths.Contains(path, StringComparer.OrdinalIgnoreCase))
-            //    {
-            //        await next(context);
-            //    }
-            //    else
-            //    {
-            //        var query = System.Web.HttpUtility.ParseQueryString(req.Url.Query);
-            //        var vs = query["vs"];
-
-            //        if (vs.NotEmpty() && DateTime.Parse(vs, CultureInfo.InvariantCulture).Date < DateTime.Now.AddDays(1))
-            //        {
-            //            throw new NotificationException("Old platform version. Please update.");
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    await next(context);
-            //}
-
             await next(context);
         }
         catch (CosmosOperationCanceledException ex)

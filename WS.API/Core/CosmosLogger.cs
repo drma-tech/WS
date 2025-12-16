@@ -55,6 +55,7 @@ public class CosmosLogger(CosmosLogRepository repo) : ILogger
             UserId = context?.UserId,
             Ip = context?.Ip,
             UserAgent = context?.UserAgent,
+            IsBot = context?.IsBot,
             Ttl = (int)TtlCache.ThreeMonths
         };
 

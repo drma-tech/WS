@@ -2,10 +2,12 @@
 
 import { isBot, baseApiUrl } from "./main.js";
 import { simd } from "./wasm-feature-detect.js";
+window.browser = window.bowser.getParser(window.navigator.userAgent);
 
 export const storage = {
     clearLocalStorage() {
         localStorage.clear();
+        sessionStorage.clear();
 
         if (window.WTN?.clearAppCache) {
             window.WTN.clearAppCache(true);
@@ -97,9 +99,8 @@ export const notification = {
                 Platform: storage.getLocalStorage("platform"),
                 AppVersion: storage.getLocalStorage("app-version"),
                 UserAgent: navigator.userAgent,
+                IsBot: navigator.webdriver === true,
             };
-        } else if (typeof error === "object") {
-            log = error;
         } else if (typeof error === "string") {
             log = {
                 Message: error,
@@ -110,10 +111,10 @@ export const notification = {
                 Platform: storage.getLocalStorage("platform"),
                 AppVersion: storage.getLocalStorage("app-version"),
                 UserAgent: navigator.userAgent,
+                IsBot: navigator.webdriver === true,
             };
         } else {
-            notification.showError("sendLog: invalid error type");
-            return;
+            log = error;
         }
 
         fetch(`${baseApiUrl}/api/public/logger`, {
@@ -196,17 +197,17 @@ export const environment = {
     detectPlatform() {
         if (!storage.getLocalStorage("platform")) {
             const isWindows = document.referrer === "app-info://platform/microsoft-store";
+            const isHuawei = /huawei|honor/i.test(navigator.userAgent); //not working. returns play
+            const isXiaomi = /xiaomi/i.test(navigator.userAgent); //not working. returns play
             const isAndroid = /(android)/i.test(navigator.userAgent);
             const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
             const isMac = /macintosh|mac os x/i.test(navigator.userAgent);
-            const isHuawei = /huawei|honor/i.test(navigator.userAgent); //not working. returns play
-            const isXiaomi = /xiaomi/i.test(navigator.userAgent); //not working. returns play
 
             if (isWindows) storage.setLocalStorage("platform", "windows");
-            else if (isAndroid) storage.setLocalStorage("platform", "play");
-            else if (isIOS || isMac) storage.setLocalStorage("platform", "ios");
             else if (isHuawei) storage.setLocalStorage("platform", "huawei");
             else if (isXiaomi) storage.setLocalStorage("platform", "xiaomi");
+            else if (isAndroid) storage.setLocalStorage("platform", "play");
+            else if (isIOS || isMac) storage.setLocalStorage("platform", "ios");
             else storage.setLocalStorage("platform", "webapp");
         }
     },
@@ -229,30 +230,13 @@ export const environment = {
         }
     },
     getBrowserName() {
-        const ua = navigator.userAgent;
-        if (ua.includes("Firefox/")) return "Firefox";
-        if (ua.includes("Edg/")) return "Edge";
-        if (ua.includes("Chrome/")) return "Chrome";
-        if (ua.includes("Safari/")) return "Safari";
-        if (ua.includes("OPR/")) return "Opera";
-        if (ua.includes("MSIE") || ua.includes("Trident/")) return "Internet Explorer";
-        return "Unknown";
+        return window.browser.getBrowserName();
     },
     getBrowserVersion() {
-        const ua = navigator.userAgent;
-        const matches = new RegExp(
-            /(Firefox|Edg|Chrome|Safari|Version)\/([0-9.]+)/
-        ).exec(ua);
-        return matches ? matches[2] : "unknown";
+        return window.browser.getBrowserVersion();
     },
     getOperatingSystem() {
-        const ua = navigator.userAgent;
-        if (ua.includes("Windows")) return "Windows";
-        if (ua.includes("Mac")) return "Mac OS";
-        if (ua.includes("Linux")) return "Linux";
-        if (ua.includes("Android")) return "Android";
-        if (ua.includes("iOS") || ua.includes("iPhone") || ua.includes("iPad")) return "iOS";
-        return "Unknown";
+        return window.browser.getOSName();
     },
 };
 

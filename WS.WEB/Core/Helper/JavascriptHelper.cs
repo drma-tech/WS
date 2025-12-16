@@ -105,7 +105,5 @@ namespace WS.WEB.Core.Helper
         public Task InitGoogleAnalytics(string version) => InvokeVoid("services.initGoogleAnalytics", version);
 
         public Task InitUserBack(string version) => InvokeVoid("services.initUserBack", version);
-
-        public Task InitAdSense(string adClient, GoogleAdSense.AdUnit adSlot, string? adFormat, string containerId) => InvokeVoid("services.initAdSense", adClient, ((long)adSlot).ToString(), adFormat, containerId);
     }
 }

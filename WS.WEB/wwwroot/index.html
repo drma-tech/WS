@@ -23,6 +23,7 @@
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4BSYH92X9W"></script>
     <script src="https://static.userback.io/widget/v1.js"></script>
+    <script src="https://unpkg.com/bowser@2.13.1/es5.js"></script>
 
     <script type="module" src="js/main.js"></script>
     <script type="module" src="js/utils.js"></script>
@@ -92,10 +93,11 @@
         //avoid google (and others) search console execute this
         if (!isBot) {
             if (navigator.serviceWorker?.register) {
-                navigator.serviceWorker.register('service-worker.js').catch(err => {
-                    notification.showError(`Failed to register the service worker, which may affect platform functionality. Details: ${err.message}`);
-                    notification.sendLog(err);
-                });
+                navigator.serviceWorker.register('service-worker.js')
+                    .catch(err => {
+                        notification.showError(`Failed to register the service worker, which may affect platform functionality. Details: ${err.message}`);
+                        notification.sendLog(err);
+                    });
             }
         }
     </script>

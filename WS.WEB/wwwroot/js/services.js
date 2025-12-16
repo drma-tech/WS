@@ -1,6 +1,6 @@
 "use strict";
 
-import { isBot, isLocalhost, servicesConfig } from "./main.js";
+import { isBot, isLocalhost, isDev, servicesConfig } from "./main.js";
 import { storage, notification } from "./utils.js";
 
 export const services = {
@@ -69,6 +69,7 @@ export const services = {
     initAdSense(adClient, adSlot, adFormat, containerId) {
         if (isBot) return;
         if (isLocalhost) return;
+        if (isDev) return;
 
         try {
             const container = document.getElementById(containerId);
