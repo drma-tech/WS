@@ -3,7 +3,6 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Middleware;
 using System.Diagnostics;
 using System.Net;
-using WS.API.Core;
 
 namespace WS.API.Core;
 

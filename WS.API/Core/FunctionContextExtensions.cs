@@ -1,7 +1,6 @@
 ﻿using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using System.Net;
-using WS.API.Core;
 
 namespace WS.API.Core;
 

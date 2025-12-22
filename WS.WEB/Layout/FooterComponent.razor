@@ -1,5 +1,4 @@
-﻿@using WS.Shared.Enums
-@using WS.WEB.Modules.Support.Resources
+﻿@using WS.WEB.Modules.Support.Resources
 @inherits ComponentCore<FooterComponent>
 
 @if ((Support && Breakpoint <= Breakpoint.Sm) || (!Support && Breakpoint > Breakpoint.Sm))
@@ -10,14 +9,23 @@
             <MudList T="string" Color="Color.Surface" Dense="true">
                 <MudListSubheader>
                     <MudText Color="Color.Primary" Typo="Typo.subtitle1">
-                        @SeoTranslations.AppName
+                        DRMA Tech
+                    </MudText>
+                    <MudText Color="Color.Secondary" Typo="Typo.subtitle2">
+                        @GlobalTranslations.DiscoverProducts
                     </MudText>
                 </MudListSubheader>
-                <MudListItem Style="text-align: justify" Class="py-0">
-                    @SeoTranslations.AppDescriptionShort
+                <MudListItem Href="https://www.streamingdiscovery.com/" Target="_blank" Class="py-0">
+                    <ChildContent>
+                        <MudImage Src="https://www.streamingdiscovery.com/icon/icon-71.png" Class="me-2" Style="width: 20px; vertical-align: top;" />
+                        Streaming Discovery
+                    </ChildContent>
                 </MudListItem>
-                <MudListItem Style="text-align: justify" Class="py-0">
-                    @AppStateStatic.Version
+                <MudListItem Href="https://www.modern-matchmaker.com/" Target="_blank" Class="py-0">
+                    <ChildContent>
+                        <MudImage Src="https://www.modern-matchmaker.com/icon/icon-71.png" Class="me-2" Style="width: 20px; vertical-align: top;" />
+                        Modern Matchmaker
+                    </ChildContent>
                 </MudListItem>
             </MudList>
         </MudItem>
@@ -37,7 +45,12 @@
                     <MudListSubheader>
                         <MudText Color="Color.Secondary">Stores</MudText>
                     </MudListSubheader>
-                    <MudListItem Text="Microsoft Store" Href="https://apps.microsoft.com/detail/9pcf521f26lz" Class="py-0" Target="_blank" />
+                    <MudListItem Href="https://apps.microsoft.com/detail/9pcf521f26lz" Target="_blank" Class="py-0">
+                        <ChildContent>
+                            <MudImage Src="/logo/microsoft-store.png" Class="me-2" Style="width: 20px; vertical-align: top;" />
+                            Microsoft Store
+                        </ChildContent>
+                    </MudListItem>
                 </MudList>
             </MudItem>
         }

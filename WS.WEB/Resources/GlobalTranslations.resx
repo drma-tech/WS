@@ -126,6 +126,9 @@
   <data name="CustomVisibilityNoData" xml:space="preserve">
     <value>Data not available</value>
   </data>
+  <data name="DiscoverProducts" xml:space="preserve">
+    <value>Discover our other products</value>
+  </data>
   <data name="FeatureUnavailableDescription" xml:space="preserve">
     <value>Wait for news...</value>
   </data>

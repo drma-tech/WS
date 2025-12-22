@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
-using WS.API.Repository;
 
 namespace WS.API.Core;
 
