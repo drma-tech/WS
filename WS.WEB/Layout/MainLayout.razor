@@ -67,9 +67,16 @@
 
         if (firstRender)
         {
-            await ApplyDarkMode();
-            // await ShowCustomerSatisfactionPopup();
-            // await AskUSerForReview();
+            try
+            {
+                await ApplyDarkMode();
+                // await ShowCustomerSatisfactionPopup();
+                // await AskUSerForReview();
+            }
+            catch (Exception ex)
+            {
+                ex.ProcessException(Snackbar, Logger);
+            }
         }
     }
 

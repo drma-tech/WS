@@ -1,8 +1,7 @@
 "use strict";
 
-import { isBot, baseApiUrl } from "./main.js";
+import { isBot, isOldBrowser, baseApiUrl } from "./main.js";
 import { simd } from "./wasm-feature-detect.js";
-window.browser = window.bowser.getParser(window.navigator.userAgent);
 
 export const storage = {
     clearLocalStorage() {
@@ -99,7 +98,7 @@ export const notification = {
                 Platform: storage.getLocalStorage("platform"),
                 AppVersion: storage.getLocalStorage("app-version"),
                 UserAgent: navigator.userAgent,
-                IsBot: navigator.webdriver === true,
+                IsBot: isBot || isOldBrowser,
             };
         } else if (typeof error === "string") {
             log = {
@@ -111,7 +110,7 @@ export const notification = {
                 Platform: storage.getLocalStorage("platform"),
                 AppVersion: storage.getLocalStorage("app-version"),
                 UserAgent: navigator.userAgent,
-                IsBot: navigator.webdriver === true,
+                IsBot: isBot || isOldBrowser,
             };
         } else {
             log = error;
@@ -132,7 +131,7 @@ export const notification = {
 
         document.body.innerHTML = `
         <div style="display:flex; align-items:center; justify-content:center; min-height:100vh; background:#f0f2f5; font-family:'Segoe UI', Roboto, sans-serif; padding:1rem;">
-            <div style="background:#fff; padding:1.2rem; border-radius:16px; box-shadow:0 4px 12px rgba(0,0,0,0.1); width:100%; max-width:380px; text-align:center; color:#333;">
+            <div style="background:#fff; padding:1.2rem; border-radius:16px; box-shadow:0 4px 12px rgba(0,0,0,0.1); width:100%; max-width:450px; text-align:center; color:#333;">
                 <div style="font-size:2.2rem; margin-bottom:0.5rem;">⚠️</div>
                 <h2 style="font-size:1.3rem; margin-bottom:0.75rem;">Your browser is too old</h2>
                 <p style="font-size:1rem; line-height:1.5; margin-bottom:1rem;">
@@ -215,8 +214,8 @@ export const environment = {
         const wasmSupported = typeof WebAssembly === "object";
         const simdSupported = await simd();
 
-        if (!wasmSupported || !simdSupported) {
-            if (!wasmSupported) {
+        if (!wasmSupported || !simdSupported || isOldBrowser) {
+            if (!wasmSupported || isOldBrowser) {
                 notification.showBrowserWarning();
                 return;
             }
