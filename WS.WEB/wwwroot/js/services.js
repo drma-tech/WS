@@ -65,6 +65,12 @@ export const services = {
                 storage.setLocalStorage("survey-rating", rating);
             }
         };
+
+        (function (d) {
+            let s = d.createElement('script'); s.async = true;
+            s.src = 'https://static.userback.io/widget/v1.js';
+            (d.head || d.body).appendChild(s);
+        })(document);
     },
     initAdSense(adClient, adSlot, adFormat, containerId) {
         if (isBot) return;
