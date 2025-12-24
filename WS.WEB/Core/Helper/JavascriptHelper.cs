@@ -49,6 +49,8 @@ namespace WS.WEB.Core.Helper
         public async Task HistoryBack() => await js.InvokeVoidAsync("history.back");
 
         public async Task InvokeVoidAsync(string identifier, params object?[]? args) => await js.InvokeVoidAsync(identifier, args);
+
+        public async Task<T> InvokeAsync<T>(string identifier, params object?[]? args) => await js.InvokeAsync<T>(identifier, args);
     }
 
     public class UtilsJs(IJSRuntime js) : JsModuleBase(js, "./js/utils.js")
@@ -105,5 +107,7 @@ namespace WS.WEB.Core.Helper
         public Task InitGoogleAnalytics(string version) => InvokeVoid("services.initGoogleAnalytics", version);
 
         public Task InitUserBack(string version) => InvokeVoid("services.initUserBack", version);
+
+        public Task InitAdSense(string adClient, GoogleAdSense.AdUnit adSlot, string? adFormat, string containerId) => InvokeVoid("services.initAdSense", adClient, ((long)adSlot).ToString(), adFormat, containerId);
     }
 }

@@ -156,10 +156,16 @@
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
   </data>
-  <data name="WriteReviewMessage" xml:space="preserve">
-    <value>Help us reach a larger audience.</value>
+  <data name="WriteReviewSubtitle" xml:space="preserve">
+    <value>Your feedback helps us keep improving and makes it easier for new users to discover the platform.</value>
+  </data>
+  <data name="WriteReviewSubtitleStore" xml:space="preserve">
+    <value>If the store link doesn't work, try going directly to the website.</value>
+  </data>
+  <data name="WriteReviewSubtitleWebapp" xml:space="preserve">
+    <value>Choose your preferred platform to leave a review:</value>
   </data>
   <data name="WriteReviewTitle" xml:space="preserve">
-    <value>Write a review</value>
+    <value>Want to help {0} grow?</value>
   </data>
 </root>

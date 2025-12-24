@@ -178,16 +178,34 @@ namespace WS.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Help us reach a larger audience..
+        ///   Looks up a localized string similar to Your feedback helps us keep improving and makes it easier for new users to discover the platform..
         /// </summary>
-        public static string WriteReviewMessage {
+        public static string WriteReviewSubtitle {
             get {
-                return ResourceManager.GetString("WriteReviewMessage", resourceCulture);
+                return ResourceManager.GetString("WriteReviewSubtitle", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Write a review.
+        ///   Looks up a localized string similar to If the store link doesn&apos;t work, try going directly to the website..
+        /// </summary>
+        public static string WriteReviewSubtitleStore {
+            get {
+                return ResourceManager.GetString("WriteReviewSubtitleStore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose your preferred platform to leave a review:.
+        /// </summary>
+        public static string WriteReviewSubtitleWebapp {
+            get {
+                return ResourceManager.GetString("WriteReviewSubtitleWebapp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Want to help {0} grow?.
         /// </summary>
         public static string WriteReviewTitle {
             get {

@@ -3,27 +3,34 @@
 <MudDialog Style="width: 100%">
     <DialogContent>
         <MudText Typo="Typo.subtitle1" Color="Color.Primary" Class="mb-3" Style="text-align: center;">
-            Your feedback helps us keep improving and makes it easier for new users to discover the platform.
+            @GlobalTranslations.WriteReviewSubtitle
         </MudText>
 
-        @if (Platform != null && Platform != "webapp")
+        @if (Platform != WS.Shared.Enums.Platform.webapp)
         {
             <div style="text-align: center;">
-                @if (Platform == "windows")
+                @if (Platform == WS.Shared.Enums.Platform.windows)
                 {
-                    <MudButton Href="@_windowsReview" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled">
-                        <MudImage Src="/logo/microsoft-store.png" Class="me-2" Style="max-width: 20px;"></MudImage> Microsoft Store
+                    <MudButton Href="@_windowsReview" OnClick="Reviewed" Variant="Variant.Filled" Color="Color.Primary" Class="me-2">
+                        <MudImage Src="/logo/microsoft-store.png" Class="me-2" Style="max-width: 20px;"></MudImage> Microsoft Store (Store)
+                    </MudButton>
+                    <MudButton Href="@_windowsStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" Color="Color.Secondary">
+                        <MudImage Src="/logo/microsoft-store.png" Class="me-2" Style="max-width: 20px;"></MudImage> Microsoft Store (Website)
                     </MudButton>
                 }
             </div>
+
+            <MudText Typo="Typo.subtitle2" Color="Color.Secondary" Class="my-3" Style="text-align: center;">
+                @GlobalTranslations.WriteReviewSubtitleStore
+            </MudText>
         }
-        else
+        else //webapp
         {
             <MudText Typo="Typo.subtitle2" Color="Color.Secondary" Class="mb-3" Style="text-align: center;">
-                Choose your preferred platform to leave a review:
+                @GlobalTranslations.WriteReviewSubtitleWebapp
             </MudText>
 
-            <MudGrid Spacing="2">
+            <MudGrid Spacing="2" Class="mb-3">
                 <MudItem xs="12" md="6">
                     <MudButton Href="@_windowsStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true">
                         <MudImage Src="/logo/microsoft-store.png" Class="me-2" Style="max-width: 20px;"></MudImage> Microsoft Store
@@ -38,22 +45,21 @@
 @code {
     [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
 
-    public string? Platform { get; set; }
+    public WS.Shared.Enums.Platform Platform { get; set; }
 
-    private readonly string _windowsReview = "ms-windows-store://review/?ProductId=9pb1pkrdd8l0";
+    private readonly string _windowsReview = "ms-windows-store://review/?ProductId=9pcf521f26lz"; //its working
 
-    private readonly string _windowsStore = "https://apps.microsoft.com/detail/9pb1pkrdd8l0";
+    private readonly string _windowsStore = "https://apps.microsoft.com/detail/9pcf521f26lz";
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
 
-        Platform = await JsRuntime.Utils().GetLocalStorage("platform");
+        Platform = await AppStateStatic.GetPlatform(JsRuntime);
     }
 
     private async Task Reviewed()
     {
         await JsRuntime.Utils().SetLocalStorage("store-reviewed", true.ToString().ToLower());
-        MudDialog?.Close();
     }
 }

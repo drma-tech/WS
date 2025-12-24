@@ -1,0 +1,64 @@
+﻿@using WS.WEB.Modules.Subscription.Core
+@inherits ComponentCore<GoogleAdSense>
+
+@inject IpInfoApi IpInfoApi
+
+@if (!Printscreen && !IsLocalhost)
+{
+    <div id="@_containerId" @key="@_containerId" style="text-align: center;" class="mb-4"></div>
+}
+
+@code {
+    [Parameter][SupplyParameterFromQuery(Name = "printscreen")] public bool Printscreen { get; set; } = false;
+
+    [Parameter][EditorRequired] public AdUnit Section { get; set; } = AdUnit.Index;
+    [Parameter] public string? Format { get; set; }
+
+    private bool IsMobile => AppStateStatic.BrowserWindowSize?.Width <= 600 || AppStateStatic.BrowserWindowSize?.Height <= 600;
+    private string? AdFormat => Format ?? (IsMobile ? "horizontal" : "auto");
+    private bool IsLocalhost => Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev");
+
+    private const string AdClientId = "5145928155833172";
+    private readonly string _containerId = $"ad-container-{Guid.NewGuid()}";
+
+    private readonly Dictionary<string, string> _BlockedCountries = new()
+    {
+        { "CU", "Cuba" },
+        { "IR", "Iran" },
+        { "KP", "North Korea" },
+        { "CN", "China (Mainland)" }
+    };
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            if (firstRender && !IsLocalhost)
+            {
+                var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime);
+
+                if (country == "CN")
+                {
+                    //todo: implement https://www.baiduadvertising.com/
+                }
+                else if (_BlockedCountries.ContainsKey(country))
+                {
+                    //do not show ads
+                }
+                else
+                {
+                    await JsRuntime.Services().InitAdSense($"ca-pub-{AdClientId}", Section, AdFormat, _containerId);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            await ProcessException(ex);
+        }
+    }
+
+    public enum AdUnit : long
+    {
+        Index = 4046112630,
+    }
+}

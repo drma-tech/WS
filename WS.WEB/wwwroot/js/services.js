@@ -1,12 +1,11 @@
 "use strict";
 
-import { isBot, isLocalhost, isDev, servicesConfig } from "./main.js";
+import { isBot, isOldBrowser, isLocalhost, isDev, servicesConfig } from "./main.js";
 import { storage, notification } from "./utils.js";
 
 export const services = {
     initGoogleAnalytics(version) {
         if (isBot) return;
-
         if (isLocalhost) return;
 
         const PLATFORM = storage.getLocalStorage("platform");
@@ -59,12 +58,6 @@ export const services = {
             platform: storage.getLocalStorage("platform"),
             app_version: version,
         };
-        window.Userback.on_survey_submit = (obj) => {
-            if (obj.key === servicesConfig.UserBackSurveyKey) {
-                let rating = obj.data[0].question_answer;
-                storage.setLocalStorage("survey-rating", rating);
-            }
-        };
 
         (function (d) {
             let s = d.createElement('script'); s.async = true;
@@ -74,6 +67,7 @@ export const services = {
     },
     initAdSense(adClient, adSlot, adFormat, containerId) {
         if (isBot) return;
+        if (isOldBrowser) return;
         if (isLocalhost) return;
         if (isDev) return;
 
