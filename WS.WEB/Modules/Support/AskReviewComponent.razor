@@ -1,0 +1,95 @@
+﻿@inherits ComponentCore<AskReviewComponent>
+
+@if (CustomHeader != null)
+{
+    @CustomHeader
+}
+else
+{
+    <MudText Typo="Typo.subtitle1" Color="Color.Primary" Class="mb-3" Style="text-align: center;">
+        @GlobalTranslations.WriteReviewSubtitle
+    </MudText>
+}
+
+@if (Platform != WS.Shared.Enums.Platform.webapp)
+{
+    <div style="width: 100%;">
+        <MudGrid Spacing="2" Class="mb-2" Justify="Justify.Center" Style="max-width: 700px; justify-self: center;">
+            @if (Platform == WS.Shared.Enums.Platform.windows)
+            {
+                <MudItem xs="12" sm="6">
+                    <MudButton Href="@_windowsReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor">
+                        <MudImage Src="/logo/microsoft-store.png" Class="me-2" Style="max-width: 20px;"></MudImage> Microsoft Store (Store)
+                    </MudButton>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudButton Href="@_windowsStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor">
+                        <MudImage Src="/logo/microsoft-store.png" Class="me-2" Style="max-width: 20px;"></MudImage> Microsoft Store (Site)
+                    </MudButton>
+                </MudItem>
+            }            
+        </MudGrid>
+    </div>
+
+    <MudText Typo="Typo.subtitle2" Class="my-1" Style="text-align: center;">
+        @GlobalTranslations.WriteReviewSubtitleStore
+    </MudText>
+}
+else //webapp
+{
+    <div class="store-grid mb-3">
+        <MudButton Href="@_windowsStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor">
+            <MudImage Src="/logo/microsoft-store.png" Class="me-2" Style="max-width: 20px;"></MudImage> Microsoft Store
+        </MudButton>
+    </div>
+}
+
+@if (ShowOtherApps)
+{
+    <MudText Typo="Typo.subtitle1" Color="Color.Primary" Class="my-3" Style="text-align: center;">
+        @GlobalTranslations.CheckOurApps
+    </MudText>
+
+    <div class="store-grid mb-3">
+        <MudButton Href="https://www.streamingdiscovery.com/" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor">
+            <MudImage Src="/logo/streamingdiscovery.png" Class="me-2" Style="max-width: 20px;"></MudImage> Streaming Discovery
+        </MudButton>
+        <MudButton Href="https://www.modern-matchmaker.com" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor">
+            <MudImage Src="/logo/modern-matchmaker.png" Class="me-2" Style="max-width: 20px;"></MudImage> Modern Matchmaker
+        </MudButton>
+    </div>
+}
+
+<style>
+    .store-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 8px;
+    }
+</style>
+
+@code {
+    [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
+
+    [Parameter] public RenderFragment? CustomHeader { get; set; }
+    [Parameter] public bool ShowOtherApps { get; set; } = true;
+    [Parameter] public Color ActionColor { get; set; } = Color.Primary;
+
+    public WS.Shared.Enums.Platform Platform { get; set; }
+
+    private readonly string _windowsReview = "ms-windows-store://review/?ProductId=9pcf521f26lz"; //its working
+
+    private readonly string _windowsStore = "https://apps.microsoft.com/detail/9pcf521f26lz";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        Platform = await AppStateStatic.GetPlatform(JsRuntime);
+    }
+
+    private async Task Reviewed()
+    {
+        await JsRuntime.Utils().SetLocalStorage("store-reviewed", true.ToString().ToLower());
+    }
+}

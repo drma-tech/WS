@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace WS.WEB.Core;
 
-public static class ExtensionMethods
+public static class ExtensionMethodsWeb
 {
     public static NameValueCollection QueryString(this NavigationManager navigationManager)
     {

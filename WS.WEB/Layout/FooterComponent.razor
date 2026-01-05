@@ -38,22 +38,19 @@
                 <MudListItem Text="Website" Href="https://www.drma-tech.com/" Target="_blank" Class="py-0" />
             </MudList>
         </MudItem>
-        @if (Platform == WS.Shared.Enums.Platform.webapp)
-        {
-            <MudItem xs="12" sm="3" md="2">
-                <MudList T="string" Dense="true">
-                    <MudListSubheader>
-                        <MudText Color="Color.Secondary">Stores</MudText>
-                    </MudListSubheader>
-                    <MudListItem Href="https://apps.microsoft.com/detail/9pcf521f26lz" Target="_blank" Class="py-0">
-                        <ChildContent>
-                            <MudImage Src="/logo/microsoft-store.png" Class="me-2" Style="width: 20px; vertical-align: top;" />
-                            Microsoft Store
-                        </ChildContent>
-                    </MudListItem>
-                </MudList>
-            </MudItem>
-        }
+        <MudItem xs="12" sm="3" md="2">
+            <MudList T="string" Dense="true">
+                <MudListSubheader>
+                    <MudText Color="Color.Secondary">Stores</MudText>
+                </MudListSubheader>
+                <MudListItem Href="https://apps.microsoft.com/detail/9pcf521f26lz" Target="_blank" Class="py-0">
+                    <ChildContent>
+                        <MudImage Src="/logo/microsoft-store.png" Class="me-2" Style="width: 20px; vertical-align: top;" />
+                        Microsoft Store
+                    </ChildContent>
+                </MudListItem>
+            </MudList>
+        </MudItem>
         <MudItem xs="12" sm="3" md="2">
             <MudList T="string" Dense="true">
                 <MudListSubheader>
@@ -79,13 +76,4 @@
 @code {
     [Parameter] public bool Support { get; set; }
     private bool _blockedActions => Navigation.Uri.Contains("register-user") || Navigation.Uri.Contains("ask-consent");
-
-    private Platform? Platform { get; set; }
-
-    protected override async Task LoadEssentialDataAsync()
-    {
-        var platform = await JsRuntime.Utils().GetLocalStorage("platform");
-        Platform = Enum.Parse<Platform>(platform ?? "webapp");
-    }
-
 }
