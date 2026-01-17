@@ -89,7 +89,7 @@
             var system = await _mudThemeProvider.GetSystemDarkModeAsync();
             darkMode = system;
 
-            await JsRuntime.Utils().SetLocalStorage("dark-mode", darkMode.ToString()?.ToLower() ?? "false");
+            await JsRuntime.Utils().SetStorage("dark-mode", darkMode ?? false);
         }
 
         AppStateStatic.ChangeDarkMode(darkMode ?? false);
@@ -97,7 +97,7 @@
 
     private async Task AskUSerForReview()
     {
-        var accesses = await JsRuntime.Utils().GetLocalStorage<HashSet<DateTime>>("session-accesses") ?? new HashSet<DateTime>();
+        var accesses = await JsRuntime.Utils().GetStorage<HashSet<DateTime>>("session-accesses") ?? new HashSet<DateTime>();
         var hasPreviousAccess = accesses.Count > 0;
         var lastAccess = hasPreviousAccess ? accesses.Max() : (DateTime?)null;
         bool isTooSoon = false;
@@ -108,10 +108,10 @@
             isTooSoon = hoursSinceLast < 12;
         }
 
-        var reviewed = await JsRuntime.Utils().GetLocalStorage("store-reviewed");
+        var reviewed = await JsRuntime.Utils().GetStorage<bool>("store-reviewed");
 
         //ask for app store review if ratings are 4 or 5 stars
-        if (accesses.Count >= 2 && reviewed.Empty() && !isTooSoon)
+        if (accesses.Count >= 2 && !reviewed && !isTooSoon)
         {
             _ = Task.Run(async () =>
             {
@@ -123,7 +123,7 @@
 
     private async Task RegisterSessionAccesses()
     {
-        var accesses = await JsRuntime.Utils().GetLocalStorage<HashSet<DateTime>>("session-accesses") ?? new HashSet<DateTime>();
+        var accesses = await JsRuntime.Utils().GetStorage<HashSet<DateTime>>("session-accesses") ?? new HashSet<DateTime>();
         var hasPreviousAccess = accesses.Count > 0;
         var lastAccess = hasPreviousAccess ? accesses.Max() : (DateTime?)null;
         bool isTooSoon = false;
@@ -143,7 +143,7 @@
                 accesses = accesses.OrderByDescending(x => x).Take(10).ToHashSet();
             }
 
-            await JsRuntime.Utils().SetLocalStorage("session-accesses", accesses);
+            await JsRuntime.Utils().SetStorage("session-accesses", accesses);
         }
     }
 

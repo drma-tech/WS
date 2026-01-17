@@ -17,6 +17,7 @@ namespace WS.Shared.Models
         public string? AppVersion { get; set; }
         public string? UserId { get; set; }
         public string? Ip { get; set; }
+        public string? Country { get; set; }
         public string? UserAgent { get; set; }
         public bool? IsBot { get; set; }
         public DateTimeOffset DateTime { get; set; } = DateTimeOffset.UtcNow;

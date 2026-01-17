@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CheckOurApps" xml:space="preserve">
-    <value>Or check out our other apps:</value>
+    <value>Explore our other amazing apps:</value>
   </data>
   <data name="CustomVisibilityInvalid" xml:space="preserve">
     <value>Invalid operation. Please try again.</value>
@@ -160,12 +160,12 @@
     <value>Settings</value>
   </data>
   <data name="WriteReviewSubtitle" xml:space="preserve">
-    <value>Leave a review and help us reach more users:</value>
+    <value>Rate the app and share it with your friends!</value>
   </data>
   <data name="WriteReviewSubtitleStore" xml:space="preserve">
     <value>If the store link doesn't work, try going directly to the website.</value>
   </data>
   <data name="WriteReviewTitle" xml:space="preserve">
-    <value>Want to help {0} grow?</value>
+    <value>Help {0} grow!</value>
   </data>
 </root>
