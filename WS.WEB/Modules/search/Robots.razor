@@ -12,7 +12,7 @@
 
 <MudGrid Justify="Justify.Center">
     <MudItem xs="12" md="10">
-        <PageHeader Title="robots.txt generator" Icon="@IconsFA.Solid.Icon("robot").Font" Description="Tells crawlers which areas to scan or block. Prevents private paths from being indexed and focuses search engines on the right content."></PageHeader>
+        <NewPageSection Title="robots.txt generator" Icon="@IconsFA.Solid.Icon("robot").Font" Description="Tells crawlers which areas to scan or block. Prevents private paths from being indexed and focuses search engines on the right content."></NewPageSection>
     </MudItem>
     @*  <MudItem xs="12" md="10">
         <MudAlert Severity="Severity.Info" Variant="Variant.Filled" NoIcon="true" Class="mb-4" ContentAlignment="HorizontalAlignment.Center" Style="text-align: center;">
@@ -171,6 +171,10 @@ Sitemap: https://yourdomain.com/sitemap.xml
         </MudPaper>
     </MudItem>
 </MudGrid>
+
+<div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
+    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" OnClick="@(() => JsRuntime.Window().HistoryBack())" Size="Size.Medium" />
+</div>
 
 <style>
     ul {

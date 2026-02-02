@@ -16,9 +16,9 @@ namespace WS.WEB.Modules.Search.Core
     {
         private readonly Uri _baseUri = new(baseUrl);
 
-        private readonly bool _includeImages = includeImages;
-        private readonly bool _includeVideos = includeVideos;
-        private readonly bool _includeNews = includeNews;
+        //private readonly bool _includeImages = includeImages;
+        //private readonly bool _includeVideos = includeVideos;
+        //private readonly bool _includeNews = includeNews;
 
         private readonly List<PageData> _pages = [];
 
@@ -57,47 +57,47 @@ namespace WS.WEB.Modules.Search.Core
 
                 var page = new PageData { Url = url };
 
-                if (_includeImages)
-                {
-                    var images = doc.DocumentNode
-                        .SelectNodes("//img[@src]")
-                        ?.Select(img => new Uri(_baseUri, img.GetAttributeValue("src", "")).ToString())
-                        .Distinct()
-                        .ToList() ?? [];
-                    page.Images = images;
-                }
+                //if (_includeImages)
+                //{
+                //    var images = doc.DocumentNode
+                //        .SelectNodes("//img[@src]")
+                //        ?.Select(img => new Uri(_baseUri, img.GetAttributeValue("src", "")).ToString())
+                //        .Distinct()
+                //        .ToList() ?? [];
+                //    page.Images = images;
+                //}
 
-                if (_includeVideos)
-                {
-                    var videos = doc.DocumentNode
-                        .SelectNodes("//video/source[@src] | //video[@src]")
-                        ?.Select(v =>
-                            v.GetAttributeValue("src", "") is { } s && !string.IsNullOrWhiteSpace(s)
-                                ? new Uri(_baseUri, s).ToString()
-                                : null
-                        )
-                        .Where(s => s != null)
-                        .Distinct()
-                        .ToList() ?? [];
-                    page.Videos = videos;
-                }
+                //if (_includeVideos)
+                //{
+                //    var videos = doc.DocumentNode
+                //        .SelectNodes("//video/source[@src] | //video[@src]")
+                //        ?.Select(v =>
+                //            v.GetAttributeValue("src", "") is { } s && !string.IsNullOrWhiteSpace(s)
+                //                ? new Uri(_baseUri, s).ToString()
+                //                : null
+                //        )
+                //        .Where(s => s != null)
+                //        .Distinct()
+                //        .ToList() ?? [];
+                //    page.Videos = videos;
+                //}
 
-                if (_includeNews)
-                {
-                    var title = doc.DocumentNode.SelectSingleNode("//title")?.InnerText?.Trim();
-                    var pubDate = doc.DocumentNode.SelectSingleNode("//meta[@name='pubdate']")?.GetAttributeValue("content", null)
-                                  ?? doc.DocumentNode.SelectSingleNode("//meta[@property='article:published_time']")?.GetAttributeValue("content", null);
+                //if (_includeNews)
+                //{
+                //    var title = doc.DocumentNode.SelectSingleNode("//title")?.InnerText?.Trim();
+                //    var pubDate = doc.DocumentNode.SelectSingleNode("//meta[@name='pubdate']")?.GetAttributeValue("content", null)
+                //                  ?? doc.DocumentNode.SelectSingleNode("//meta[@property='article:published_time']")?.GetAttributeValue("content", null);
 
-                    if (pubDate != null)
-                    {
-                        page.News = new NewsData
-                        {
-                            Title = title ?? "",
-                            PublicationDate = pubDate,
-                            PublicationName = _baseUri.Host
-                        };
-                    }
-                }
+                //    if (pubDate != null)
+                //    {
+                //        page.News = new NewsData
+                //        {
+                //            Title = title ?? "",
+                //            PublicationDate = pubDate,
+                //            PublicationName = _baseUri.Host
+                //        };
+                //    }
+                //}
 
                 _pages.Add(page);
 
@@ -116,7 +116,7 @@ namespace WS.WEB.Modules.Search.Core
                         && absUri.Host == _baseUri.Host
                         && (absUri.Scheme == Uri.UriSchemeHttp || absUri.Scheme == Uri.UriSchemeHttps)
                         && (!ignoreNoFollow || !link.rel.Contains("nofollow", StringComparison.OrdinalIgnoreCase))
-                        && (ignoreTarget == null || !link.target.Equals(ignoreTarget, StringComparison.OrdinalIgnoreCase))
+                        //&& (ignoreTarget == null || !link.target.Equals(ignoreTarget, StringComparison.OrdinalIgnoreCase))
                     )
                     .Select(link => new Uri(_baseUri, link.href).ToString())
                     .Distinct()
@@ -135,9 +135,9 @@ namespace WS.WEB.Modules.Search.Core
         private string? GenerateSitemap()
         {
             XNamespace ns = "http://www.sitemaps.org/schemas/sitemap/0.9";
-            XNamespace nsImg = "http://www.google.com/schemas/sitemap-image/1.1";
-            XNamespace nsVid = "http://www.google.com/schemas/sitemap-video/1.1";
-            XNamespace nsNews = "http://www.google.com/schemas/sitemap-news/0.9";
+            //XNamespace nsImg = "http://www.google.com/schemas/sitemap-image/1.1";
+            //XNamespace nsVid = "http://www.google.com/schemas/sitemap-video/1.1";
+            //XNamespace nsNews = "http://www.google.com/schemas/sitemap-news/0.9";
             XNamespace xsi = "http://www.w3.org/2001/XMLSchema-instance";
 
             var urlset = new XElement(ns + "urlset",
@@ -147,9 +147,9 @@ namespace WS.WEB.Modules.Search.Core
                     "http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd")
             );
 
-            if (_includeImages) urlset.Add(new XAttribute(XNamespace.Xmlns + "image", nsImg));
-            if (_includeVideos) urlset.Add(new XAttribute(XNamespace.Xmlns + "video", nsVid));
-            if (_includeNews) urlset.Add(new XAttribute(XNamespace.Xmlns + "news", nsNews));
+            //if (_includeImages) urlset.Add(new XAttribute(XNamespace.Xmlns + "image", nsImg));
+            //if (_includeVideos) urlset.Add(new XAttribute(XNamespace.Xmlns + "video", nsVid));
+            //if (_includeNews) urlset.Add(new XAttribute(XNamespace.Xmlns + "news", nsNews));
 
             foreach (var page in _pages)
             {
@@ -158,38 +158,38 @@ namespace WS.WEB.Modules.Search.Core
                     new XElement(ns + "lastmod", DateTime.UtcNow.ToString("yyyy-MM-dd"))
                 );
 
-                if (_includeImages)
-                {
-                    foreach (var img in page.Images)
-                    {
-                        urlEl.Add(new XElement(nsImg + "image",
-                            new XElement(nsImg + "loc", img)
-                        ));
-                    }
-                }
+                //if (_includeImages)
+                //{
+                //    foreach (var img in page.Images)
+                //    {
+                //        urlEl.Add(new XElement(nsImg + "image",
+                //            new XElement(nsImg + "loc", img)
+                //        ));
+                //    }
+                //}
 
-                if (_includeVideos)
-                {
-                    foreach (var vid in page.Videos)
-                    {
-                        urlEl.Add(new XElement(nsVid + "video",
-                            new XElement(nsVid + "content_loc", vid),
-                            new XElement(nsVid + "thumbnail_loc", vid + "?thumb=1") // placeholder
-                        ));
-                    }
-                }
+                //if (_includeVideos)
+                //{
+                //    foreach (var vid in page.Videos)
+                //    {
+                //        urlEl.Add(new XElement(nsVid + "video",
+                //            new XElement(nsVid + "content_loc", vid),
+                //            new XElement(nsVid + "thumbnail_loc", vid + "?thumb=1") // placeholder
+                //        ));
+                //    }
+                //}
 
-                if (_includeNews && page.News != null)
-                {
-                    urlEl.Add(new XElement(nsNews + "news",
-                        new XElement(nsNews + "publication",
-                            new XElement(nsNews + "name", page.News.PublicationName),
-                            new XElement(nsNews + "language", "en")
-                        ),
-                        new XElement(nsNews + "publication_date", page.News.PublicationDate),
-                        new XElement(nsNews + "title", page.News.Title)
-                    ));
-                }
+                //if (_includeNews && page.News != null)
+                //{
+                //    urlEl.Add(new XElement(nsNews + "news",
+                //        new XElement(nsNews + "publication",
+                //            new XElement(nsNews + "name", page.News.PublicationName),
+                //            new XElement(nsNews + "language", "en")
+                //        ),
+                //        new XElement(nsNews + "publication_date", page.News.PublicationDate),
+                //        new XElement(nsNews + "title", page.News.Title)
+                //    ));
+                //}
 
                 urlset.Add(urlEl);
             }

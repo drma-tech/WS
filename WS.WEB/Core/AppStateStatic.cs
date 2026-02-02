@@ -1,7 +1,6 @@
 ﻿using Microsoft.JSInterop;
 using MudBlazor;
 using MudBlazor.Services;
-using WS.Shared.Enums;
 using WS.WEB.Modules.Subscription.Core;
 
 namespace WS.WEB.Core;

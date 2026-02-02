@@ -12,7 +12,7 @@
 
 <MudGrid Justify="Justify.Center">
     <MudItem xs="12" md="10">
-        <PageHeader Title="extensions sitemap generator" Icon="@IconsFA.Solid.Icon("sitemap").Font" Description="Extends sitemaps to media. Helps search engines properly index images and videos, improving visibility in media searches.."></PageHeader>
+        <NewPageSection Title="extensions sitemap generator" Icon="@IconsFA.Solid.Icon("sitemap").Font" Description="Extends sitemaps to media. Helps search engines properly index images and videos, improving visibility in media searches.."></NewPageSection>
     </MudItem>
     <MudItem xs="12" md="10">
         <MudAlert Severity="Severity.Info" Variant="Variant.Filled" NoIcon="true" Class="mb-4" ContentAlignment="HorizontalAlignment.Center" Style="text-align: center;">
@@ -109,6 +109,10 @@
         </MudPaper>
     </MudItem>
 </MudGrid>
+
+<div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
+    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" OnClick="@(() => JsRuntime.Window().HistoryBack())" Size="Size.Medium" />
+</div>
 
 <style>
     ul {
