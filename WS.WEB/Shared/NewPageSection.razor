@@ -2,7 +2,7 @@
 
 @if (Visible)
 {
-    <div class="mb-8">
+    <div class="@BodyClass">
         @if (IsPageHeader)
         {
             <MudPaper Class="@($"pa-{margin}")" Style="@($"background-color: transparent; {(HasActions ? "border-radius: 4px 4px 0px 0px;" : "")}")" Outlined="true" Elevation="0">
@@ -132,6 +132,7 @@
     [Parameter] public string? Image { get; set; }
     [Parameter] public string? ImageStyle { get; set; }
     [Parameter] public bool Visible { get; set; } = true;
+    [Parameter] public string? BodyClass { get; set; }
 
     //Fragments
     [Parameter] public RenderFragment? ActionsFragment { get; set; }
@@ -148,6 +149,18 @@
 
     private bool HasActions => ActionsFragment != null;
     private bool HasBody => BodyFragment != null;
+
+    protected override void OnInitialized()
+    {
+        if (IsPageHeader)
+        {
+            BodyClass ??= "mb-8";
+        }
+        else
+        {
+            BodyClass ??= $"mb-{margin}";
+        }
+    }
 
     private string GetImageStyle(bool header)
     {
