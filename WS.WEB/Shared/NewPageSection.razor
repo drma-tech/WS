@@ -152,14 +152,7 @@
 
     protected override void OnInitialized()
     {
-        if (IsPageHeader)
-        {
-            BodyClass ??= "mb-8";
-        }
-        else
-        {
-            BodyClass ??= $"mb-{margin}";
-        }
+        BodyClass ??= "mb-8";
     }
 
     private string GetImageStyle(bool header)
