@@ -6,7 +6,7 @@
 }
 else
 {
-    <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Outlined" Class="mb-3" NoIcon="true" ContentAlignment="HorizontalAlignment.Center">
+    <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Outlined" Class="@Css.Build().Small("mb")" NoIcon="true" ContentAlignment="HorizontalAlignment.Center">
         <MudText Typo="Typo.subtitle1">
             @GlobalTranslations.WriteReviewSubtitle
         </MudText>
@@ -16,7 +16,7 @@ else
 @if (Platform != WS.Shared.Enums.Platform.webapp)
 {
     <div style="width: 100%;">
-        <MudGrid Spacing="2" Class="mb-2" Justify="Justify.Center" Style="max-width: 700px; justify-self: center;">
+        <MudGrid Spacing="@Css.SpaceSmall" Class="@Css.Build().Small("mb")" Justify="Justify.Center" Style="max-width: 700px; justify-self: center;">
             @if (Platform == WS.Shared.Enums.Platform.windows)
             {
                 <MudItem xs="12" sm="6">
@@ -39,7 +39,7 @@ else
 }
 else //webapp
 {
-    <div class="store-grid mb-3">
+    <div class="@Css.Build().Raw("store-grid").Small("mb")">
         <MudButton Href="@_windowsStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor">
             <MudImage Src="/logo/microsoft-store.png" Class="me-2" Style="max-width: 20px;"></MudImage> Microsoft Store
         </MudButton>
@@ -48,13 +48,13 @@ else //webapp
 
 @if (ShowOtherApps)
 {
-    <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Outlined" Class="mb-3 mt-8" NoIcon="true" ContentAlignment="HorizontalAlignment.Center">
+    <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Outlined" Class="@Css.Build().Small("mb").Large("mt")" NoIcon="true" ContentAlignment="HorizontalAlignment.Center">
         <MudText Typo="Typo.subtitle1">
             @GlobalTranslations.CheckOurApps
         </MudText>
     </MudAlert>
 
-    <div class="store-grid mb-3">
+    <div class="@Css.Build().Raw("store-grid").Small("mb")">
         <MudButton Href="https://www.streamingdiscovery.com/" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor">
             <MudImage Src="/logo/streamingdiscovery.png" Class="me-2" Style="max-width: 20px;"></MudImage> Streaming Discovery
         </MudButton>

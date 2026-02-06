@@ -6,7 +6,7 @@
 
 @if (!Printscreen && !IsLocalhost)
 {
-    <div id="@_containerId" @key="@_containerId" style="text-align: center;" class="mb-8"></div>
+    <div id="@_containerId" @key="@_containerId" style="text-align: center;" class="@Css.Build().Large("mb")"></div>
 }
 
 @code {
