@@ -61,7 +61,16 @@ namespace WS.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Or check out our other apps:.
+        ///   Looks up a localized string similar to This platform is still under development. Some modules may be partially functional or not yet implemented..
+        /// </summary>
+        public static string Beta {
+            get {
+                return ResourceManager.GetString("Beta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Explore our other amazing apps:.
         /// </summary>
         public static string CheckOurApps {
             get {
@@ -187,7 +196,7 @@ namespace WS.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Leave a review and help us reach more users:.
+        ///   Looks up a localized string similar to Rate the app and share it with your friends!.
         /// </summary>
         public static string WriteReviewSubtitle {
             get {
@@ -205,7 +214,7 @@ namespace WS.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Want to help {0} grow?.
+        ///   Looks up a localized string similar to Help {0} grow!.
         /// </summary>
         public static string WriteReviewTitle {
             get {

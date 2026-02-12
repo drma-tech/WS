@@ -24,9 +24,7 @@
     <HeadLayout></HeadLayout>
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="@Css.Build().Medium("my")" Style="min-height: calc(100vh - 64px - 32px);">
-            <MudAlert Variant="Variant.Outlined" Severity="Severity.Warning" Dense="true" Class="@Css.Build().Small("my")">
-                <strong>Beta: </strong>This platform is still under development. Some modules may be partially functional or not yet implemented.
-            </MudAlert>
+            <Beta></Beta>
             @Body
         </MudContainer>
         <FooterComponent></FooterComponent>
@@ -76,6 +74,7 @@
                 await ApplyDarkMode();
                 await AskUSerForReview();
                 await RegisterSessionAccesses();
+                // await ShowOnBoardingPopup();
             }
             catch (Exception ex)
             {
@@ -150,6 +149,23 @@
             await JsRuntime.Utils().SetStorage("session-accesses", accesses);
         }
     }
+
+    // private async Task ShowOnBoardingPopup()
+    // {
+    //     if (Navigation.Uri.Contains("printscreen"))
+    //     {
+    //         return;
+    //     }
+
+    //     var onboarding = await JsRuntime.Utils().GetStorage<bool>("onboarding-popup");
+
+    //     //show only once
+    //     if (!onboarding)
+    //     {
+    //         await DialogService.OnboardingPopup();
+    //         await JsRuntime.Utils().SetStorage("onboarding-popup", true);
+    //     }
+    // }
 
     [JSInvokable]
     public static void ShowError(string error)
