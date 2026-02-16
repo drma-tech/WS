@@ -42,7 +42,9 @@
 {
     <MudDrawer @bind-Open="@_open" Anchor="Anchor.Right" Elevation="1" OverlayAutoClose="true">
         <MudDrawerHeader>
-            <MudText Typo="Typo.h6">@SeoTranslations.AppName</MudText>
+            <MudText Typo="Typo.h6">
+                @SeoTranslations.AppName
+            </MudText>
         </MudDrawerHeader>
         <MudNavMenu>
             <MudNavLink Icon="@IconsFA.Solid.Icon("cog").Font" OnClick="@OpenConfigurations">

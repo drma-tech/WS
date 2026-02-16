@@ -1,0 +1,205 @@
+@page "/tags"
+
+@using System.Text.Json
+@using System.Text.Encodings.Web
+@using WS.WEB.Modules.Search.Core
+@inherits PageCore<Tags>
+
+<SeoHeader Title="HTML tags & metadata" Keywords="@(new[] { "open graph", "twitter cards", "meta tags", "json-ld" })"
+           Description="Generate common meta tags and snippets (Open Graph, Twitter Cards, JSON-LD) that you can paste into your HTML pages." Url="/tags"></SeoHeader>
+
+<MudGrid Justify="Justify.Center">
+    <MudItem xs="12" md="10">
+        <NewPageSection IsPageHeader="true" Title="HTML tags & metadata" Icon="@IconsFA.Solid.Icon("tags").Font" Description="Generate common meta tags and snippets (Open Graph, Twitter Cards, JSON-LD) that you can paste into your HTML pages."></NewPageSection>
+    </MudItem>
+
+    <MudItem xs="12" md="10">
+        <MudTextField T="string" Label="Title" @bind-Text="Title" Immediate="true" Class="mb-2" Variant="Variant.Outlined" />
+        <MudTextField T="string" Label="Description" @bind-Text="Description" Immediate="true" Class="mb-2" Variant="Variant.Outlined" />
+        <MudTextField T="string" Label="Page URL" @bind-Text="PageUrl" Immediate="true" Class="mb-2" Variant="Variant.Outlined" />
+        <MudTextField T="string" Label="Image URL" @bind-Text="ImageUrl" Immediate="true" Class="mb-2" Variant="Variant.Outlined" />
+        <MudTextField T="string" Label="Site name" @bind-Text="SiteName" Immediate="true" Class="mb-2" Variant="Variant.Outlined" />
+        <MudTextField T="string" Label="@("Twitter site (e.g. @site)")" @bind-Text="TwitterSite" Immediate="true" Class="mb-2" Variant="Variant.Outlined" />
+        <MudTextField T="string" Label="@("Twitter creator (e.g. @author)")" @bind-Text="TwitterCreator" Immediate="true" Class="mb-2" Variant="Variant.Outlined" />
+
+        <MudSelect T="string" @bind-Value="OgType" Label="Open Graph type" Variant="Variant.Outlined" Class="mb-2">
+            <MudSelectItem Value="@("website")">website</MudSelectItem>
+            <MudSelectItem Value="@("article")">article</MudSelectItem>
+            <MudSelectItem Value="@("video.movie")">video.movie</MudSelectItem>
+        </MudSelect>
+
+        <MudTextField T="string" Label="Locale" @bind-Text="Locale" Placeholder="en_US" Immediate="true" Class="mb-2" Variant="Variant.Outlined" />
+        <MudTextField T="string" Label="Theme color (meta theme-color)" @bind-Text="ThemeColor" Placeholder="#0d6efd" Immediate="true" Class="mb-2" Variant="Variant.Outlined" />
+
+        <MudToolBar Gutters="false" Class="mb-4">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="GenerateTags">Generate</MudButton>
+            <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="CopyToClipboard" Class="ms-2">Copy to clipboard</MudButton>
+            <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="DownloadTags" Class="ms-2">Download HTML</MudButton>
+        </MudToolBar>
+
+        <MudPaper Elevation="0" Outlined="true">
+            <MudTextField T="string" FullWidth="true" Lines="18" ReadOnly="true" Text="@Preview"></MudTextField>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="12" md="10">
+        <MudPaper Class="pa-6 mt-6">
+            <MudText Typo="Typo.h5" Color="Color.Secondary" GutterBottom="true">About these tags</MudText>
+            <MudText Typo="Typo.body1" Class="mb-4" Align="Align.Justify">
+                These snippets include useful metadata for SEO and social sharing. Paste the generated tags into the <code>&lt;head&gt;</code> of your HTML page.
+            </MudText>
+
+            <MudText Typo="Typo.h6" GutterBottom="true">Open Graph</MudText>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                Used by Facebook, LinkedIn and many services to build rich previews.
+            </MudText>
+
+            <MudText Typo="Typo.h6" GutterBottom="true">Twitter Cards</MudText>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                Used by Twitter/X to show media-rich previews. Set <code>twitter:card</code> to <code>summary_large_image</code> for large image previews.
+            </MudText>
+
+            <MudText Typo="Typo.h6" GutterBottom="true">Structured data (JSON-LD)</MudText>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                JSON-LD helps search engines understand your page content for rich results. Customize the type property as needed (Article, Event, Product, etc.).
+            </MudText>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
+    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" OnClick="@(() => JsRuntime.Window().HistoryBack())" Size="Size.Medium" />
+</div>
+
+<style>
+    ul {
+        text-align: justify;
+        margin-bottom: 0.5rem;
+        line-height: 1.7;
+        padding-left: 1.4rem;
+        list-style-type: disc;
+    }
+
+        ul li {
+            padding-left: 0.1rem;
+        }
+</style>
+
+@code {
+    [Parameter][SupplyParameterFromQuery(Name = "language")] public string? Language { get; set; }
+    [Parameter][SupplyParameterFromQuery(Name = "platform")] public string? Platform { get; set; }
+
+    public string? Title { get; set; } = "My page title";
+    public string? Description { get; set; } = "A short description of the page for search engines and previews.";
+    public string? PageUrl { get; set; } = "https://www.example.com/page";
+    public string? ImageUrl { get; set; } = "https://www.example.com/og-image.png";
+    public string? SiteName { get; set; } = "My Site";
+    public string? TwitterSite { get; set; } = "@mysite";
+    public string? TwitterCreator { get; set; } = "@author";
+    public string OgType { get; set; } = "website";
+    public string? Locale { get; set; } = "en_US";
+    public string? ThemeColor { get; set; } = "#0d6efd";
+
+    public string? Preview { get; set; }
+
+    private void GenerateTags()
+    {
+        var sb = new System.Text.StringBuilder();
+
+        // Basic meta
+        sb.AppendLine("<!-- Basic meta -->");
+        sb.AppendLine($"<title>{HtmlEncode(Title)}</title>");
+        sb.AppendLine($"<meta name=\"description\" content=\"{HtmlEncode(Description)}\" />");
+        sb.AppendLine($"<meta name=\"theme-color\" content=\"{HtmlEncode(ThemeColor)}\" />");
+        sb.AppendLine();
+
+        // Open Graph
+        sb.AppendLine("<!-- Open Graph -->");
+        sb.AppendLine($"<meta property=\"og:type\" content=\"{OgType}\" />");
+        sb.AppendLine($"<meta property=\"og:title\" content=\"{HtmlEncode(Title)}\" />");
+        sb.AppendLine($"<meta property=\"og:description\" content=\"{HtmlEncode(Description)}\" />");
+        sb.AppendLine($"<meta property=\"og:url\" content=\"{HtmlEncode(PageUrl)}\" />");
+        sb.AppendLine($"<meta property=\"og:site_name\" content=\"{HtmlEncode(SiteName)}\" />");
+        if (!string.IsNullOrWhiteSpace(ImageUrl))
+            sb.AppendLine($"<meta property=\"og:image\" content=\"{HtmlEncode(ImageUrl)}\" />");
+        if (!string.IsNullOrWhiteSpace(Locale))
+            sb.AppendLine($"<meta property=\"og:locale\" content=\"{HtmlEncode(Locale)}\" />");
+        sb.AppendLine();
+
+        // Twitter
+        sb.AppendLine("<!-- Twitter Cards -->");
+        sb.AppendLine("<meta name=\"twitter:card\" content=\"summary_large_image\" />");
+        if (!string.IsNullOrWhiteSpace(TwitterSite)) sb.AppendLine($"<meta name=\"twitter:site\" content=\"{HtmlEncode(TwitterSite)}\" />");
+        if (!string.IsNullOrWhiteSpace(TwitterCreator)) sb.AppendLine($"<meta name=\"twitter:creator\" content=\"{HtmlEncode(TwitterCreator)}\" />");
+        sb.AppendLine($"<meta name=\"twitter:title\" content=\"{HtmlEncode(Title)}\" />");
+        sb.AppendLine($"<meta name=\"twitter:description\" content=\"{HtmlEncode(Description)}\" />");
+        if (!string.IsNullOrWhiteSpace(ImageUrl)) sb.AppendLine($"<meta name=\"twitter:image\" content=\"{HtmlEncode(ImageUrl)}\" />");
+        sb.AppendLine();
+
+        // Link rel manifest
+        sb.AppendLine("<!-- Manifest -->");
+        sb.AppendLine("<link rel=\"manifest\" href=\"/manifest.webmanifest\" />");
+        sb.AppendLine();
+
+        // JSON-LD example
+        sb.AppendLine("<!-- Structured data (JSON-LD) example -->");
+        var jsonLd = new Dictionary<string, object?>
+        {
+            ["@context"] = "https://schema.org",
+            ["@type"] = OgType == "article" ? "Article" : "WebSite",
+            ["name"] = Title,
+            ["url"] = PageUrl,
+            ["description"] = Description,
+            ["publisher"] = new Dictionary<string, object?> { ["@type"] = "Organization", ["name"] = SiteName }
+        };
+        if (!string.IsNullOrWhiteSpace(ImageUrl)) jsonLd["image"] = ImageUrl;
+
+        var json = JsonSerializer.Serialize(jsonLd, new JsonSerializerOptions { WriteIndented = true });
+        sb.AppendLine("<script type=\"application/ld+json\">\n" + json + "\n</script>");
+        sb.AppendLine();
+
+        // Usage note
+        sb.AppendLine("<!-- Paste the tags above into the <head> of your HTML page. -->");
+
+        Preview = sb.ToString();
+    }
+
+    private async Task CopyToClipboard()
+    {
+        if (Preview.Empty())
+        {
+            await ShowError("No content to copy. Generate tags first.");
+            return;
+        }
+
+        try
+        {
+            await JsRuntime.Window().InvokeVoidAsync("navigator.clipboard.writeText", Preview);
+            await ShowInfo("Copied to clipboard");
+        }
+        catch (Exception ex)
+        {
+            await ProcessException(ex);
+        }
+    }
+
+    private async Task DownloadTags()
+    {
+        if (Preview.Empty())
+        {
+            await ShowError("No content to download. Generate tags first.");
+            return;
+        }
+
+        try
+        {
+            await JsRuntime.Utils().DownloadFile("tags.html", "text/html", Preview);
+        }
+        catch (Exception ex)
+        {
+            await ProcessException(ex);
+        }
+    }
+
+    private static string HtmlEncode(string? value) => HtmlEncoder.Default.Encode(value ?? string.Empty);
+}

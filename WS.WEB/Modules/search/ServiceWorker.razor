@@ -1,0 +1,194 @@
+@page "/service-worker"
+
+@using System.Text
+@using WS.WEB.Modules.Search.Core
+@inherits PageCore<ServiceWorker>
+
+<SeoHeader Title="service-worker generator" Keywords="@(new[] { "service worker", "service-worker", "pwa", "offline" })"
+           Description="Generate a basic service worker script to enable caching and offline support. Useful starting point for PWAs." Url="/service-worker"></SeoHeader>
+
+<MudGrid Justify="Justify.Center">
+    <MudItem xs="12" md="10">
+        <NewPageSection IsPageHeader="true" Title="service-worker generator" Icon="@IconsFA.Solid.Icon("server").Font" Description="Generate a basic service worker script to enable caching and offline support. Useful starting point for PWAs."></NewPageSection>
+    </MudItem>
+
+    <MudItem xs="12" md="10">
+        <MudTextField T="string" Label="Cache name" @bind-Text="CacheName" Immediate="true" Class="mb-2" Variant="Variant.Outlined" />
+        <MudTextField T="string" Label="Version" @bind-Text="Version" Immediate="true" Class="mb-2" Variant="Variant.Outlined" />
+
+        <MudText Typo="Typo.h6">Assets to cache (one per line)</MudText>
+        <MudTextField T="string" Lines="6" @bind-Text="AssetsText" Placeholder="/\n/index.html\n/styles.css" Immediate="true" Class="mb-2" Variant="Variant.Outlined" />
+
+        <MudSelect T="string" @bind-Value="Strategy" Label="Caching strategy" Variant="Variant.Outlined" Class="mb-2">
+            <MudSelectItem Value="@("cache-first")">cache-first</MudSelectItem>
+            <MudSelectItem Value="@("network-first")">network-first</MudSelectItem>
+            <MudSelectItem Value="@("stale-while-revalidate")">stale-while-revalidate</MudSelectItem>
+        </MudSelect>
+
+        <MudTextField T="string" Label="Offline fallback page (optional)" @bind-Text="OfflinePage" Placeholder="/offline.html" Immediate="true" Class="mb-2" Variant="Variant.Outlined" />
+
+        <MudToolBar Gutters="false" Class="mb-4">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="GenerateScript">Generate preview</MudButton>
+            <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="DownloadScript" Class="ms-2">Download service-worker.js</MudButton>
+        </MudToolBar>
+
+        <MudPaper Elevation="0" Outlined="true">
+            <MudTextField T="string" FullWidth="true" Lines="18" ReadOnly="true" Text="@PreviewScript"></MudTextField>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="12" md="10">
+        <MudPaper Class="pa-6 mt-6">
+            <MudText Typo="Typo.h5" Color="Color.Secondary" GutterBottom="true">About service workers</MudText>
+            <MudText Typo="Typo.body1" Class="mb-4" Align="Align.Justify">
+                Service workers run in the background and enable caching, offline experiences and push notifications.
+                This generator creates a simple install/fetch/activate service worker to get started. Adapt the script to your app needs and test thoroughly.
+            </MudText>
+
+            <MudText Typo="Typo.h5" Color="Color.Secondary" GutterBottom="true">Common tips</MudText>
+            <ul class="mb-4">
+                <li>Use a versioned cache name to force updates when the app changes.</li>
+                <li>Prefer network-first for dynamic content and cache-first for static assets.</li>
+                <li>Provide an offline fallback page for navigation requests when offline.</li>
+                <li>Combine with a manifest and HTTPS to enable installable PWA behavior.</li>
+            </ul>
+
+            <MudText Typo="Typo.h5" Color="Color.Secondary" GutterBottom="true">Registration</MudText>
+            <MudPaper Class="pa-3 mb-4" Outlined="true">
+                <pre><code>if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/service-worker.js').then(function(reg) {
+      console.log('ServiceWorker registration successful with scope: ', reg.scope);
+    }, function(err) {
+      console.log('ServiceWorker registration failed: ', err);
+    });
+  });
+}
+                </code></pre>
+            </MudPaper>
+
+            <MudText Typo="Typo.body2" Class="mt-4" Align="Align.Justify">
+                Tip: Serve the generated service-worker script from your site's root as <code>/service-worker.js</code> and ensure it's updated when assets change.
+            </MudText>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
+    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" OnClick="@(() => JsRuntime.Window().HistoryBack())" Size="Size.Medium" />
+</div>
+
+<style>
+    ul {
+        text-align: justify;
+        margin-bottom: 0.5rem;
+        line-height: 1.7;
+        padding-left: 1.4rem;
+        list-style-type: disc;
+    }
+
+        ul li {
+            padding-left: 0.1rem;
+        }
+</style>
+
+@code {
+    [Parameter][SupplyParameterFromQuery(Name = "language")] public string? Language { get; set; }
+    [Parameter][SupplyParameterFromQuery(Name = "platform")] public string? Platform { get; set; }
+
+    public string CacheName { get; set; } = "site-cache";
+    public string Version { get; set; } = "v1";
+    public string AssetsText { get; set; } = "/\n/index.html\n/styles.css\n/app.js";
+    public string Strategy { get; set; } = "cache-first";
+    public string? OfflinePage { get; set; }
+
+    public string? PreviewScript { get; set; }
+
+    private void GenerateScript()
+    {
+        var assets = AssetsText?.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).Where(s => !string.IsNullOrWhiteSpace(s)).ToList() ?? new List<string>();
+        var cacheKey = $"{CacheName}-{Version}";
+        var sb = new StringBuilder();
+
+        sb.AppendLine("const CACHE_NAME = '" + cacheKey + "';");
+        sb.AppendLine("const ASSETS_TO_CACHE = [");
+        foreach (var a in assets)
+        {
+            sb.AppendLine("  '" + a.Replace("'", "\\'") + "',");
+        }
+        sb.AppendLine("];\n");
+
+        sb.AppendLine("self.addEventListener('install', event => {");
+        sb.AppendLine("  event.waitUntil((async () => {");
+        sb.AppendLine("    const cache = await caches.open(CACHE_NAME);");
+        sb.AppendLine("    await cache.addAll(ASSETS_TO_CACHE);");
+        sb.AppendLine("  })());");
+        sb.AppendLine("});\n");
+
+        sb.AppendLine("self.addEventListener('activate', event => {");
+        sb.AppendLine("  event.waitUntil((async () => {");
+        sb.AppendLine("    const keys = await caches.keys();");
+        sb.AppendLine("    await Promise.all(keys.map(k => { if (k !== CACHE_NAME) return caches.delete(k); }));");
+        sb.AppendLine("  })());");
+        sb.AppendLine("});\n");
+
+        // Fetch handler based on strategy
+        if (Strategy == "network-first")
+        {
+            sb.AppendLine("self.addEventListener('fetch', event => {");
+            sb.AppendLine("  event.respondWith((async () => {");
+            sb.AppendLine("    try { const response = await fetch(event.request); return response; } catch (err) { return caches.match(event.request); }");
+            sb.AppendLine("  })());");
+            sb.AppendLine("});\n");
+        }
+        else if (Strategy == "stale-while-revalidate")
+        {
+            sb.AppendLine("self.addEventListener('fetch', event => {");
+            sb.AppendLine("  event.respondWith((async () => {");
+            sb.AppendLine("    const cacheResponse = await caches.match(event.request);");
+            sb.AppendLine("    const networkFetch = fetch(event.request).then(resp => { caches.open(CACHE_NAME).then(c => c.put(event.request, resp.clone())); return resp; }).catch(() => {});");
+            sb.AppendLine("    return cacheResponse || networkFetch;");
+            sb.AppendLine("  })());");
+            sb.AppendLine("});\n");
+        }
+        else // cache-first
+        {
+            sb.AppendLine("self.addEventListener('fetch', event => {");
+            sb.AppendLine("  event.respondWith((async () => {");
+            sb.AppendLine("    const cached = await caches.match(event.request);");
+            sb.AppendLine("    if (cached) return cached;");
+            sb.AppendLine("    const network = await fetch(event.request);");
+            sb.AppendLine("    return network;");
+            sb.AppendLine("  })());");
+            sb.AppendLine("});\n");
+        }
+
+        if (!string.IsNullOrWhiteSpace(OfflinePage))
+        {
+            sb.AppendLine("// Offline fallback for navigation requests");
+            sb.AppendLine("self.addEventListener('fetch', event => {");
+            sb.AppendLine("  if (event.request.mode === 'navigate') {");
+            sb.AppendLine("    event.respondWith((async () => {");
+            sb.AppendLine("      try { return await fetch(event.request); } catch (err) { return caches.match('" + OfflinePage.Replace("'", "\\'") + "'); }");
+            sb.AppendLine("    })());");
+            sb.AppendLine("  }");
+            sb.AppendLine("});\n");
+        }
+
+        PreviewScript = sb.ToString();
+    }
+
+    private async Task DownloadScript()
+    {
+        try
+        {
+            GenerateScript();
+            var content = PreviewScript ?? string.Empty;
+            await JsRuntime.Utils().DownloadFile("service-worker.js", "application/javascript", content);
+        }
+        catch (Exception ex)
+        {
+            await ProcessException(ex);
+        }
+    }
+}

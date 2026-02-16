@@ -1,0 +1,152 @@
+@page "/manifest"
+
+@using System.Text.Json
+@using WS.WEB.Modules.Search.Core
+@inherits PageCore<Manifest>
+
+<SeoHeader Title="manifest.webmanifest generator" Keywords="@(new[] { "manifest generator", "webmanifest" })"
+           Description="Create a web app manifest to make your site installable as a PWA. Helps define name, icons, colors and launch behavior." Url="/manifest"></SeoHeader>
+
+<MudGrid Justify="Justify.Center">
+    <MudItem xs="12" md="10">
+        <NewPageSection IsPageHeader="true" Title="manifest.webmanifest generator" Icon="@IconsFA.Solid.Icon("file-lines").Font" Description="Create a web app manifest to make your site installable as a PWA. Helps define name, icons, colors and launch behavior."></NewPageSection>
+    </MudItem>
+
+    <MudItem xs="12" md="10">
+        <MudTextField T="string" Label="App name" @bind-Text="Name" Immediate="true" Class="mb-2" Variant="Variant.Outlined" />
+        <MudTextField T="string" Label="Short name" @bind-Text="ShortName" Immediate="true" Class="mb-2" Variant="Variant.Outlined" />
+        <MudTextField T="string" Label="Start URL" @bind-Text="StartUrl" Immediate="true" Class="mb-2" Variant="Variant.Outlined" />
+        <MudSelect T="string" @bind-Value="Display" Label="Display" Variant="Variant.Outlined" Class="mb-2">
+            <MudSelectItem Value="@("standalone")">standalone</MudSelectItem>
+            <MudSelectItem Value="@("fullscreen")">fullscreen</MudSelectItem>
+            <MudSelectItem Value="@("minimal-ui")">minimal-ui</MudSelectItem>
+            <MudSelectItem Value="@("browser")">browser</MudSelectItem>
+        </MudSelect>
+        <MudTextField T="string" Label="Background color" @bind-Text="BackgroundColor" Placeholder="#ffffff" Immediate="true" Class="mb-2" Variant="Variant.Outlined" />
+        <MudTextField T="string" Label="Theme color" @bind-Text="ThemeColor" Placeholder="#0d6efd" Immediate="true" Class="mb-2" Variant="Variant.Outlined" />
+        <MudTextField T="string" Label="Scope" @bind-Text="Scope" Placeholder="/" Immediate="true" Class="mb-2" Variant="Variant.Outlined" />
+
+        <MudText Typo="Typo.h6">Icons</MudText>
+        <MudPaper Elevation="0" Outlined="true" Class="pa-2 mb-3">
+            <MudTextField T="string" Label="Icon URL" @bind-Text="NewIcon" Immediate="true" Adornment="Adornment.End" AdornmentIcon="@MudBlazor.Icons.Material.Filled.Add" OnAdornmentClick="@(()=>{ if (!string.IsNullOrWhiteSpace(NewIcon)) { Icons.Add(NewIcon); NewIcon = string.Empty; } })" />
+            <MudList T="string" Dense="true" Gutters="false" Class="mt-2">
+                @foreach (var ico in Icons)
+                {
+                    <MudChip T="string" Color="Color.Default" OnClose="@(()=> Icons.Remove(ico))">@ico</MudChip>
+                }
+            </MudList>
+        </MudPaper>
+
+        <MudToolBar Gutters="false" Class="mb-4">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="GenerateManifest">Generate preview</MudButton>
+            <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="DownloadManifest" Class="ms-2">Download manifest.webmanifest</MudButton>
+        </MudToolBar>
+
+        <MudPaper Elevation="0" Outlined="true">
+            <MudTextField T="string" FullWidth="true" Lines="12" ReadOnly="true" Text="@PreviewJson"></MudTextField>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="12" md="10">
+        <MudPaper Class="pa-6 mt-6">
+            <MudText Typo="Typo.h5" Color="Color.Secondary" GutterBottom="true">About web app manifest</MudText>
+            <MudText Typo="Typo.body1" Class="mb-4" Align="Align.Justify">
+                The <code>manifest.webmanifest</code> (or <code>manifest.json</code>) describes how your web app should behave when installed on a device.
+                It contains information such as the app name, icons, theme and background colors, and how the app should be displayed.
+            </MudText>
+
+            <MudText Typo="Typo.h5" Color="Color.Secondary" GutterBottom="true">Why it matters</MudText>
+            <ul class="mb-4">
+                <li>Enables users to install your web app to their home screen.</li>
+                <li>Controls the launch experience (standalone, fullscreen, etc.).</li>
+                <li>Provides icons for different device sizes and resolutions.</li>
+            </ul>
+
+            <MudText Typo="Typo.h5" Color="Color.Secondary" GutterBottom="true">Best practices</MudText>
+            <ul class="mb-4">
+                <li>Provide multiple icon sizes (e.g., 192x192, 512x512) and use PNG or WebP formats.</li>
+                <li>Keep <code>start_url</code> and <code>scope</code> consistent with your app routing.</li>
+                <li>Define <code>theme_color</code> and <code>background_color</code> to match your branding.</li>
+                <li>Serve the manifest from the root or reference it in your HTML head: <code>&lt;link rel="manifest" href="/manifest.webmanifest"&gt;</code></li>
+            </ul>
+
+            <MudText Typo="Typo.body2" Class="mt-4" Align="Align.Justify">
+                Tip: Use a service worker in combination with a manifest to enable offline installable experiences.
+            </MudText>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
+    <MudFab Color="Color.Secondary" StartIcon="@MudBlazor.Icons.Material.Filled.ArrowBack" OnClick="@(() => JsRuntime.Window().HistoryBack())" Size="Size.Medium" />
+</div>
+
+<style>
+    ul {
+        text-align: justify;
+        margin-bottom: 0.5rem;
+        line-height: 1.7;
+        padding-left: 1.4rem;
+        list-style-type: disc;
+    }
+
+        ul li {
+            padding-left: 0.1rem;
+        }
+</style>
+
+@code {
+
+    [Parameter][SupplyParameterFromQuery(Name = "language")] public string? Language { get; set; }
+    [Parameter][SupplyParameterFromQuery(Name = "platform")] public string? Platform { get; set; }
+
+    public string? Name { get; set; } = "My App";
+    public string? ShortName { get; set; } = "App";
+    public string? StartUrl { get; set; } = "/";
+    public string Display { get; set; } = "standalone";
+    public string? BackgroundColor { get; set; } = "#ffffff";
+    public string? ThemeColor { get; set; } = "#0d6efd";
+    public string? Scope { get; set; } = "/";
+
+    public List<string> Icons { get; set; } = new();
+    public string? NewIcon { get; set; }
+
+    public string? PreviewJson { get; set; }
+
+    private void GenerateManifest()
+    {
+        var manifest = new Dictionary<string, object?>
+        {
+            { "name", Name },
+            { "short_name", ShortName },
+            { "start_url", StartUrl },
+            { "display", Display },
+            { "background_color", BackgroundColor },
+            { "theme_color", ThemeColor },
+            { "scope", Scope }
+        };
+
+        if (Icons.Any())
+        {
+            var icons = Icons.Select(u => new Dictionary<string, object?> { { "src", u }, { "sizes", "512x512" }, { "type", "image/png" } }).ToList();
+            manifest.Add("icons", icons);
+        }
+
+        PreviewJson = JsonSerializer.Serialize(manifest, new JsonSerializerOptions { WriteIndented = true });
+    }
+
+    private async Task DownloadManifest()
+    {
+        try
+        {
+            GenerateManifest();
+            var content = PreviewJson ?? string.Empty;
+            await JsRuntime.Utils().DownloadFile("manifest.webmanifest", "application/manifest+json", content);
+        }
+        catch (Exception ex)
+        {
+            await ProcessException(ex);
+        }
+    }
+
+}

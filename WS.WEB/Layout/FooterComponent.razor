@@ -35,7 +35,7 @@
                         Company
                     </MudText>
                 </MudListSubheader>
-                <MudListItem Text="About us" Href="/support/about-us" Class="py-0" Disabled="_blockedActions" />
+                <MudListItem Text="About us" Href="/support/about-us" Class="py-0" />
                 <MudListItem Text="Website" Href="https://www.drma-tech.com/" Target="_blank" Class="py-0" />
             </MudList>
         </MudItem>
@@ -62,7 +62,7 @@
                     </MudText>
                 </MudListSubheader>
                 <MudListItem Text="Contact" Href="mailto:support@web-standards.com" Class="py-0" />
-                <MudListItem Text="FAQ" Href="/support/faq" Class="py-0" Disabled="_blockedActions" />
+                <MudListItem Text="FAQ" Href="/support/faq" Class="py-0" />
             </MudList>
         </MudItem>
         <MudItem xs="12" sm="3" md="2">
@@ -72,9 +72,9 @@
                         Legal
                     </MudText>
                 </MudListSubheader>
-                <MudListItem Text="Terms of Use" Href="/support/terms" Class="py-0" Disabled="_blockedActions" />
-                <MudListItem Text="Privacy Policy" Href="/support/privacy" Class="py-0" Disabled="_blockedActions" />
-                <MudListItem Text="Credits" Href="/support/credits" Class="py-0" Disabled="_blockedActions" />
+                <MudListItem Text="Terms of Use" Href="/support/terms" Class="py-0" />
+                <MudListItem Text="Privacy Policy" Href="/support/privacy" Class="py-0" />
+                <MudListItem Text="Credits" Href="/support/credits" Class="py-0" />
             </MudList>
         </MudItem>
     </MudGrid>
@@ -82,7 +82,6 @@
 
 @code {
     [Parameter] public bool Support { get; set; }
-    private bool _blockedActions => Navigation.Uri.Contains("register-user") || Navigation.Uri.Contains("ask-consent");
 
     protected override void OnInitialized()
     {
