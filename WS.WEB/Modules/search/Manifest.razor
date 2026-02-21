@@ -156,7 +156,9 @@
                 <MudList T="string">
                     @foreach (var mode in Model.LaunchHandler.ClientMode)
                     {
-                        <MudChip T="string" OnClose="@(() => Model.LaunchHandler.ClientMode.Remove(mode))">@mode</MudChip>
+                        <MudChip T="string" OnClose="@(() => Model.LaunchHandler.ClientMode.Remove(mode))">
+                            @mode
+                        </MudChip>
                     }
                 </MudList>
             </MudItem>
@@ -166,7 +168,7 @@
                 <MudTextField T="string" Label="IARC Rating ID" @bind-Text="Model.IarcRatingId" Variant="Variant.Outlined" />
             </MudItem>
             <MudItem xs="12" md="4">
-                <MudCheckBox T="bool" Label="Prefer Related Applications" @bind-Checked="Model.PreferRelatedApplications" />
+                <MudCheckBox T="bool" Label="Prefer Related Applications" @bind-Value="Model.PreferRelatedApplications" />
             </MudItem>
 
         </MudGrid>
