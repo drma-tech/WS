@@ -102,7 +102,7 @@
                 <MudText Typo="Typo.h6">Icons</MudText>
                 <MudTextField T="string" Label="Icon URL" @bind-Text="NewIcon"
                               Adornment="Adornment.End" AdornmentIcon="@MudBlazor.Icons.Material.Filled.Add"
-                              OnAdornmentClick="@(() => { if(!string.IsNullOrWhiteSpace(NewIcon)) { Model.Icons.Add(new Models.Icon { Src = NewIcon }); NewIcon = string.Empty; } })" />
+                              OnAdornmentClick="@(() => { if(!string.IsNullOrWhiteSpace(NewIcon)) { Model.Icons.Add(new WS.WEB.Modules.Search.Models.Icon { Src = NewIcon }); NewIcon = string.Empty; } })" />
                 <MudList T="string">
                     @foreach (var ico in Model.Icons)
                     {
