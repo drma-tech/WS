@@ -1,7 +1,9 @@
 @page "/manifest"
 
 @using System.Text.Json
+@using HtmlAgilityPack
 @using WS.WEB.Modules.Search.Core
+@using WS.WEB.Modules.Search.Models
 @inherits PageCore<Manifest>
 
 <SeoHeader Title="manifest.webmanifest generator" Keywords="@(new[] { "manifest generator", "webmanifest" })"
@@ -11,31 +13,165 @@
     <MudItem xs="12" md="10">
         <NewPageSection IsPageHeader="true" Title="manifest.webmanifest generator" Icon="@IconsFA.Solid.Icon("file-lines").Font" Description="Create a web app manifest to make your site installable as a PWA. Helps define name, icons, colors and launch behavior."></NewPageSection>
     </MudItem>
-
     <MudItem xs="12" md="10">
-        <MudTextField T="string" Label="App name" @bind-Text="Name" Immediate="true" Class="mb-2" Variant="Variant.Outlined" />
-        <MudTextField T="string" Label="Short name" @bind-Text="ShortName" Immediate="true" Class="mb-2" Variant="Variant.Outlined" />
-        <MudTextField T="string" Label="Start URL" @bind-Text="StartUrl" Immediate="true" Class="mb-2" Variant="Variant.Outlined" />
-        <MudSelect T="string" @bind-Value="Display" Label="Display" Variant="Variant.Outlined" Class="mb-2">
-            <MudSelectItem Value="@("standalone")">standalone</MudSelectItem>
-            <MudSelectItem Value="@("fullscreen")">fullscreen</MudSelectItem>
-            <MudSelectItem Value="@("minimal-ui")">minimal-ui</MudSelectItem>
-            <MudSelectItem Value="@("browser")">browser</MudSelectItem>
-        </MudSelect>
-        <MudTextField T="string" Label="Background color" @bind-Text="BackgroundColor" Placeholder="#ffffff" Immediate="true" Class="mb-2" Variant="Variant.Outlined" />
-        <MudTextField T="string" Label="Theme color" @bind-Text="ThemeColor" Placeholder="#0d6efd" Immediate="true" Class="mb-2" Variant="Variant.Outlined" />
-        <MudTextField T="string" Label="Scope" @bind-Text="Scope" Placeholder="/" Immediate="true" Class="mb-2" Variant="Variant.Outlined" />
+        <MudToolBar Gutters="false" WrapContent="true">
+            <MudTextField T="string" Label="Enter your domain to load your current manifest." @bind-Text="@Search" Immediate="true" OnKeyDown="@KeyPress" Class="mb-2"
+                          AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="@(Search.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
+                          OnAdornmentClick="@(()=>PopulateData(Search))" Clearable="true">
+            </MudTextField>
+        </MudToolBar>
+    </MudItem>
+    <MudItem xs="12" md="10">
+        <MudGrid Spacing="@Css.SpaceSmall">
 
-        <MudText Typo="Typo.h6">Icons</MudText>
-        <MudPaper Elevation="0" Outlined="true" Class="pa-2 mb-3">
-            <MudTextField T="string" Label="Icon URL" @bind-Text="NewIcon" Immediate="true" Adornment="Adornment.End" AdornmentIcon="@MudBlazor.Icons.Material.Filled.Add" OnAdornmentClick="@(()=>{ if (!string.IsNullOrWhiteSpace(NewIcon)) { Icons.Add(NewIcon); NewIcon = string.Empty; } })" />
-            <MudList T="string" Dense="true" Gutters="false" Class="mt-2">
-                @foreach (var ico in Icons)
-                {
-                    <MudChip T="string" Color="Color.Default" OnClose="@(()=> Icons.Remove(ico))">@ico</MudChip>
-                }
-            </MudList>
-        </MudPaper>
+            <!-- Campos simples -->
+            <MudItem xs="12" md="4">
+                <MudTextField T="string" Label="ID" @bind-Text="Model.Id" Variant="Variant.Outlined" />
+            </MudItem>
+            <MudItem xs="12" md="4">
+                <MudTextField T="string" Label="App Name" @bind-Text="Model.Name" Variant="Variant.Outlined" />
+            </MudItem>
+            <MudItem xs="12" md="4">
+                <MudTextField T="string" Label="Short Name" @bind-Text="Model.ShortName" Variant="Variant.Outlined" />
+            </MudItem>
+            <MudItem xs="12">
+                <MudTextField T="string" Label="Description" @bind-Text="Model.Description" Variant="Variant.Outlined" />
+            </MudItem>
+            <MudItem xs="12" md="4">
+                <MudTextField T="string" Label="Start URL" @bind-Text="Model.StartUrl" Variant="Variant.Outlined" />
+            </MudItem>
+            <MudItem xs="12" md="4">
+                <MudTextField T="string" Label="Scope" @bind-Text="Model.Scope" Variant="Variant.Outlined" />
+            </MudItem>
+            <MudItem xs="12" md="4">
+                <MudTextField T="string" Label="Dir" @bind-Text="Model.Dir" Variant="Variant.Outlined" />
+            </MudItem>
+            <MudItem xs="12" md="4">
+                <MudTextField T="string" Label="Lang" @bind-Text="Model.Lang" Variant="Variant.Outlined" />
+            </MudItem>
+            <MudItem xs="12" md="4">
+                <MudTextField T="string" Label="Orientation" @bind-Text="Model.Orientation" Variant="Variant.Outlined" />
+            </MudItem>
+            <MudItem xs="12" md="4">
+                <MudSelect T="string" @bind-Value="Model.Display" Label="Display" Variant="Variant.Outlined">
+                    <MudSelectItem Value="@("standalone")">standalone</MudSelectItem>
+                    <MudSelectItem Value="@("fullscreen")">fullscreen</MudSelectItem>
+                    <MudSelectItem Value="@("minimal-ui")">minimal-ui</MudSelectItem>
+                    <MudSelectItem Value="@("browser")">browser</MudSelectItem>
+                </MudSelect>
+            </MudItem>
+
+            <!-- Cores -->
+            <MudItem xs="12" md="4">
+                <MudColorPicker Label="Background Color" @bind-Text="Model.BackgroundColor" Variant="Variant.Outlined" />
+            </MudItem>
+            <MudItem xs="12" md="4">
+                <MudColorPicker Label="Theme Color" @bind-Text="Model.ThemeColor" Variant="Variant.Outlined" />
+            </MudItem>
+
+            <!-- Display Override -->
+            <MudItem xs="12" md="6">
+                <MudText Typo="Typo.h6">Display Override</MudText>
+                <MudTextField T="string" Label="Add override" @bind-Text="NewDisplayOverride"
+                              Adornment="Adornment.End" AdornmentIcon="@MudBlazor.Icons.Material.Filled.Add"
+                              OnAdornmentClick="@(() => { if(!string.IsNullOrWhiteSpace(NewDisplayOverride)) { Model.DisplayOverride.Add(NewDisplayOverride); NewDisplayOverride = string.Empty; }             })" />
+                <MudList T="string">
+                    @foreach (var item in Model.DisplayOverride)
+                    {
+                        <MudChip T="string" OnClose="@(() => Model.DisplayOverride.Remove(item))">@item</MudChip>
+                    }
+                </MudList>
+            </MudItem>
+
+            <!-- Categories -->
+            <MudItem xs="12" md="6">
+                <MudText Typo="Typo.h6">Categories</MudText>
+                <MudTextField T="string" Label="Add category" @bind-Text="NewCategory"
+                              Adornment="Adornment.End" AdornmentIcon="@MudBlazor.Icons.Material.Filled.Add"
+                              OnAdornmentClick="@(() => { if(!string.IsNullOrWhiteSpace(NewCategory)) { Model.Categories.Add(NewCategory); NewCategory = string.Empty; } })" />
+                <MudList T="string">
+                    @foreach (var cat in Model.Categories)
+                    {
+                        <MudChip T="string" OnClose="@(() => Model.Categories.Remove(cat))">@cat</MudChip>
+                    }
+                </MudList>
+            </MudItem>
+
+            <!-- Icons -->
+            <MudItem xs="12" md="6">
+                <MudText Typo="Typo.h6">Icons</MudText>
+                <MudTextField T="string" Label="Icon URL" @bind-Text="NewIcon"
+                              Adornment="Adornment.End" AdornmentIcon="@MudBlazor.Icons.Material.Filled.Add"
+                              OnAdornmentClick="@(() => { if(!string.IsNullOrWhiteSpace(NewIcon)) { Model.Icons.Add(new Models.Icon { Src = NewIcon }); NewIcon = string.Empty; } })" />
+                <MudList T="string">
+                    @foreach (var ico in Model.Icons)
+                    {
+                        <MudChip T="string" OnClose="@(() => Model.Icons.Remove(ico))">@ico.Src</MudChip>
+                    }
+                </MudList>
+            </MudItem>
+
+            <!-- Related Applications -->
+            <MudItem xs="12" md="6">
+                <MudText Typo="Typo.h6">Related Applications</MudText>
+                <MudTextField T="string" Label="Platform" @bind-Text="NewRelatedAppPlatform" />
+                <MudTextField T="string" Label="URL" @bind-Text="NewRelatedAppUrl" />
+                <MudTextField T="string" Label="ID" @bind-Text="NewRelatedAppId"
+                              Adornment="Adornment.End" AdornmentIcon="@MudBlazor.Icons.Material.Filled.Add"
+                              OnAdornmentClick="@(() => { if(!string.IsNullOrWhiteSpace(NewRelatedAppPlatform)) { Model.RelatedApplications.Add(new RelatedApplication { Platform = NewRelatedAppPlatform, Url = NewRelatedAppUrl, Id = NewRelatedAppId }); NewRelatedAppPlatform = NewRelatedAppUrl = NewRelatedAppId = string.Empty; } })" />
+                <MudList T="string">
+                    @foreach (var app in Model.RelatedApplications)
+                    {
+                        <MudChip T="string" OnClose="@(() => Model.RelatedApplications.Remove(app))">
+                            @($"{app.Platform} - {app.Url}")
+                        </MudChip>
+                    }
+                </MudList>
+            </MudItem>
+
+            <!-- Screenshots -->
+            <MudItem xs="12" md="6">
+                <MudText Typo="Typo.h6">Screenshots</MudText>
+                <MudTextField T="string" Label="Src" @bind-Text="NewScreenshotSrc" />
+                <MudTextField T="string" Label="Type" @bind-Text="NewScreenshotType" />
+                <MudTextField T="string" Label="Sizes" @bind-Text="NewScreenshotSizes" />
+                <MudTextField T="string" Label="Form Factor" @bind-Text="NewScreenshotFormFactor" />
+                <MudTextField T="string" Label="Label" @bind-Text="NewScreenshotLabel"
+                              Adornment="Adornment.End" AdornmentIcon="@MudBlazor.Icons.Material.Filled.Add"
+                              OnAdornmentClick="@(() => { if(!string.IsNullOrWhiteSpace(NewScreenshotSrc)) { Model.Screenshots.Add(new Screenshot { Src = NewScreenshotSrc, Type = NewScreenshotType, Sizes = NewScreenshotSizes, FormFactor = NewScreenshotFormFactor, Label = NewScreenshotLabel }); NewScreenshotSrc = NewScreenshotType = NewScreenshotSizes = NewScreenshotFormFactor = NewScreenshotLabel = string.Empty; } })" />
+                <MudList T="string">
+                    @foreach (var sc in Model.Screenshots)
+                    {
+                        <MudChip T="string" OnClose="@(() => Model.Screenshots.Remove(sc))">@sc.Src</MudChip>
+                    }
+                </MudList>
+            </MudItem>
+
+            <!-- Launch Handler ClientMode -->
+            <MudItem xs="12" md="6">
+                <MudText Typo="Typo.h6">Launch Handler Client Mode</MudText>
+                <MudTextField T="string" Label="Add mode" @bind-Text="NewClientMode"
+                              Adornment="Adornment.End" AdornmentIcon="@MudBlazor.Icons.Material.Filled.Add"
+                              OnAdornmentClick="@(() => { if(!string.IsNullOrWhiteSpace(NewClientMode)) { Model.LaunchHandler.ClientMode.Add(NewClientMode); NewClientMode = string.Empty; } })" />
+                <MudList T="string">
+                    @foreach (var mode in Model.LaunchHandler.ClientMode)
+                    {
+                        <MudChip T="string" OnClose="@(() => Model.LaunchHandler.ClientMode.Remove(mode))">@mode</MudChip>
+                    }
+                </MudList>
+            </MudItem>
+
+            <!-- Outros campos -->
+            <MudItem xs="12" md="4">
+                <MudTextField T="string" Label="IARC Rating ID" @bind-Text="Model.IarcRatingId" Variant="Variant.Outlined" />
+            </MudItem>
+            <MudItem xs="12" md="4">
+                <MudCheckBox T="bool" Label="Prefer Related Applications" @bind-Checked="Model.PreferRelatedApplications" />
+            </MudItem>
+
+        </MudGrid>
+    </MudItem>
+    <MudItem xs="12" md="10">
 
         <MudToolBar Gutters="false" Class="mb-4">
             <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="GenerateManifest">Generate preview</MudButton>
@@ -100,39 +236,88 @@
     [Parameter][SupplyParameterFromQuery(Name = "language")] public string? Language { get; set; }
     [Parameter][SupplyParameterFromQuery(Name = "platform")] public string? Platform { get; set; }
 
-    public string? Name { get; set; } = "My App";
-    public string? ShortName { get; set; } = "App";
-    public string? StartUrl { get; set; } = "/";
-    public string Display { get; set; } = "standalone";
-    public string? BackgroundColor { get; set; } = "#ffffff";
-    public string? ThemeColor { get; set; } = "#0d6efd";
-    public string? Scope { get; set; } = "/";
+    public WebAppManifest Model { get; set; } = new();
 
     public List<string> Icons { get; set; } = new();
-    public string? NewIcon { get; set; }
+
+    private string NewDisplayOverride = "";
+    private string NewCategory = "";
+    private string NewIcon = "";
+    private string NewRelatedAppPlatform = "";
+    private string NewRelatedAppUrl = "";
+    private string NewRelatedAppId = "";
+    private string NewScreenshotSrc = "";
+    private string NewScreenshotType = "";
+    private string NewScreenshotSizes = "";
+    private string NewScreenshotFormFactor = "";
+    private string NewScreenshotLabel = "";
+    private string NewClientMode = "";
 
     public string? PreviewJson { get; set; }
+    public string? Search { get; set; }
+
+    private async Task KeyPress(KeyboardEventArgs args)
+    {
+        if (Search.Empty()) return;
+
+        if (args.Key == "Enter")
+        {
+            await PopulateData(Search);
+        }
+    }
+
+    private async Task PopulateData(string? url)
+    {
+        using var http = new HttpClient();
+        var html = await http.GetStringAsync(Search);
+
+        var doc = new HtmlDocument();
+        doc.LoadHtml(html);
+
+        var manifestNode = doc.DocumentNode.SelectSingleNode("//link[@rel='manifest']");
+
+        if (manifestNode == null)
+        {
+            await ShowError("No manifest link found in the page.");
+            return;
+        }
+
+        var manifestUrl = manifestNode.GetAttributeValue("href", "");
+
+        // http.DefaultRequestHeaders.UserAgent.ParseAdd(
+        //     "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+        // );
+
+        var json = await http.GetStringAsync(url);
+
+        var options = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
+
+        Model = JsonSerializer.Deserialize<WebAppManifest>(json, options) ?? new();
+    }
 
     private void GenerateManifest()
     {
-        var manifest = new Dictionary<string, object?>
-        {
-            { "name", Name },
-            { "short_name", ShortName },
-            { "start_url", StartUrl },
-            { "display", Display },
-            { "background_color", BackgroundColor },
-            { "theme_color", ThemeColor },
-            { "scope", Scope }
-        };
+        // var manifest = new Dictionary<string, object?>
+        // {
+        //     { "name", Name },
+        //     { "short_name", ShortName },
+        //     { "start_url", StartUrl },
+        //     { "display", Display },
+        //     { "background_color", BackgroundColor },
+        //     { "theme_color", ThemeColor },
+        //     { "scope", Scope }
+        // };
 
-        if (Icons.Any())
-        {
-            var icons = Icons.Select(u => new Dictionary<string, object?> { { "src", u }, { "sizes", "512x512" }, { "type", "image/png" } }).ToList();
-            manifest.Add("icons", icons);
-        }
+        // if (Icons.Any())
+        // {
+        //     var icons = Icons.Select(u => new Dictionary<string, object?> { { "src", u }, { "sizes", "512x512" }, { "type", "image/png" } }).ToList();
+        //     manifest.Add("icons", icons);
+        // }
 
-        PreviewJson = JsonSerializer.Serialize(manifest, new JsonSerializerOptions { WriteIndented = true });
+        PreviewJson = JsonSerializer.Serialize(Model, new JsonSerializerOptions { WriteIndented = true });
     }
 
     private async Task DownloadManifest()
