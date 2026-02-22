@@ -49,23 +49,23 @@ namespace WS.WEB.Modules.Search.Models
 
     public class RelatedApplication
     {
-        public string Platform { get; set; }
-        public string Url { get; set; }
-        public string Id { get; set; }
+        public required string Platform { get; set; }
+        public required string Url { get; set; }
+        public required string Id { get; set; }
     }
 
     public class Icon
     {
-        public string Src { get; set; }
-        public string Type { get; set; }
-        public string Sizes { get; set; }
+        public required string Src { get; set; }
+        public string Type { get; set; } = "image/png";
+        public string Sizes { get; set; } = "512x512";
     }
 
     public class Screenshot
     {
-        public string Src { get; set; }
-        public string Type { get; set; }
-        public string Sizes { get; set; }
+        public required string Src { get; set; }
+        public required string Type { get; set; }
+        public required string Sizes { get; set; }
 
         [JsonPropertyName("form_factor")]
         public string? FormFactor { get; set; }

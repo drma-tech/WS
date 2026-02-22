@@ -1,7 +1,7 @@
 "use strict";
 
 import { isBot, isOldBrowser, isLocalhost, isDev, servicesConfig } from "./main.js";
-import { storage, notification } from "./utils.js";
+import { storage, notification, environment } from "./utils.js";
 
 export const services = {
     initGoogleAnalytics(version) {
@@ -68,13 +68,16 @@ export const services = {
             (d.head || d.body).appendChild(s);
         })(document);
     },
-    initAdSense(adClient, adSlot, adFormat, containerId) {
+    initAdSense(adClient, adSlot, containerId) {
         if (isBot) return;
         if (isOldBrowser) return;
         if (isLocalhost) return;
         if (isDev) return;
 
         try {
+            const scraping = environment.isScraping();
+            if (scraping) return;
+
             const container = document.getElementById(containerId);
             if (!container) return;
 
@@ -86,13 +89,13 @@ export const services = {
             ins.className = "adsbygoogle " + (isMobile ? "custom-ad-mobile" : "custom-ad");
             ins.setAttribute("data-ad-client", adClient);
             ins.setAttribute("data-ad-slot", adSlot);
-            if (!isMobile) ins.setAttribute("data-ad-format", adFormat); //on mobile, adsense doesnt respect horizontal format
-            //ins.setAttribute('data-full-width-responsive', true); //this forces it to take up half the screen
+            ins.setAttribute("data-ad-format", "auto");
+            //ins.setAttribute('data-full-width-responsive', true); //this forces it to take up half the screen on mobile
             container.appendChild(ins);
 
             (window.adsbygoogle = window.adsbygoogle || []).push({});
         } catch (error) {
-            notification.sendLog(error);
+            notification.sendLog(error, "initAdSense");
             notification.showError(error.message);
         }
     },

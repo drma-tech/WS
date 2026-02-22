@@ -108,7 +108,7 @@
         if (lastAccess != null)
         {
             var hoursSinceLast = (DateTime.UtcNow - lastAccess.Value).TotalHours;
-            isTooSoon = hoursSinceLast < 12;
+            isTooSoon = hoursSinceLast < 24;
         }
 
         var reviewed = await JsRuntime.Utils().GetStorage<bool>("store-reviewed");

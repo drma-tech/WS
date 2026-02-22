@@ -51,7 +51,7 @@
                         <MudDivider Class="my-3"></MudDivider>
 
                         <MudTextField T="string" Label="Disallow" Placeholder="Routes you want to disable for the robot" @bind-Text="@item.NewDisallow" Immediate="true" Class="mb-2"
-                                      Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Add" OnAdornmentClick="@(()=>{ item.Disallow.Add(item.NewDisallow); })">
+                                      Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Add" OnAdornmentClick="@(()=>{ item.Disallow.Add(item.NewDisallow!); })">
                         </MudTextField>
                         <MudList T="string" Dense="true" Gutters="false">
                             @foreach (var value in item.Disallow)
@@ -63,7 +63,7 @@
                         <MudDivider Class="my-3"></MudDivider>
 
                         <MudTextField T="string" Label="Allow" Placeholder="Routes you want to enable for the robot" @bind-Text="@item.NewAllow" Immediate="true" Class="mb-2"
-                                      Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Add" OnAdornmentClick="@(()=>{ item.Allow.Add(item.NewAllow); })">
+                                      Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Add" OnAdornmentClick="@(()=>{ item.Allow.Add(item.NewAllow!); })">
                         </MudTextField>
                         <MudList T="string" Dense="true" Gutters="false">
                             @foreach (var value in item.Allow)
