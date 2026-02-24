@@ -1,5 +1,3 @@
-using WS.Shared.Models;
-
 namespace WS.WEB.Modules.Subscription.Core
 {
     public class IpInfoApi(IHttpClientFactory factory) : ApiExternal(factory)
@@ -14,29 +12,6 @@ namespace WS.WEB.Modules.Subscription.Core
             {
                 return null;
             }
-        }
-    }
-
-    public class IpInfoServerApi(IHttpClientFactory factory) : ApiCore(factory, null, ApiType.Anonymous)
-    {
-        public async Task<string?> GetCountry()
-        {
-            try
-            {
-                return await GetValueAsync("public/country");
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-    }
-
-    public class LoggerApi(IHttpClientFactory factory) : ApiCore(factory, null, ApiType.Anonymous)
-    {
-        public async Task SaveLog(LogModel log)
-        {
-            await PostAsync<LogModel, LogModel>("public/logger", log);
         }
     }
 }

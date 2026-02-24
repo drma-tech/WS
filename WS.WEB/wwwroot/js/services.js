@@ -95,7 +95,7 @@ export const services = {
 
             (window.adsbygoogle = window.adsbygoogle || []).push({});
         } catch (error) {
-            notification.sendLog(error, "initAdSense");
+            Sentry.captureException(error);
             notification.showError(error.message);
         }
     },

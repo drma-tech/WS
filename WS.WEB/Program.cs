@@ -1,25 +1,42 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.JSInterop;
-using MudBlazor;
 using MudBlazor.Services;
 using Polly;
 using Polly.Extensions.Http;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
-using WS.WEB;
-using WS.WEB.Modules.Subscription.Core;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
+builder.UseSentry(options =>
+{
+    options.Dsn = "https://8ab8efd6c3c6bb26d8d7bdb5a557a911@o4510938040041472.ingest.us.sentry.io/4510942895276032";
+    options.DiagnosticLevel = SentryLevel.Warning;
+
+    options.TracePropagationTargets = []; //Disable tracing because it breaks communication with external APIs.
+
+    options.SetBeforeSend(evt =>
+    {
+        evt.SetTag("custom.version", AppStateStatic.Version ?? "error");
+        evt.SetTag("custom.platform", AppStateStatic.GetSavedPlatform()?.ToString() ?? "error");
+
+        evt.SetExtra("browser_name", AppStateStatic.BrowserName);
+        evt.SetExtra("browser_version", AppStateStatic.BrowserVersion);
+        evt.SetExtra("operation_system", AppStateStatic.OperatingSystem);
+
+        return evt;
+    });
+});
+
+builder.Logging.SetMinimumLevel(LogLevel.Warning);
+
 if (builder.RootComponents.Empty())
 {
-    builder.RootComponents.Add<App>("#app");
+    builder.RootComponents.Add<WS.WEB.App>("#app");
     builder.RootComponents.Add<HeadOutlet>("head::after");
 }
 
 ConfigureServices(builder.Services, builder.HostEnvironment.BaseAddress, builder.Configuration);
-
-builder.Services.AddSingleton<ILoggerProvider, CosmosLoggerProvider>();
 
 var app = builder.Build();
 
@@ -60,8 +77,6 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
         .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
     collection.AddAuthorizationCore();
-
-    collection.AddScoped<LoggerApi>();
 }
 
 //https://github.com/App-vNext/Polly/wiki/Polly-and-HttpClientFactory

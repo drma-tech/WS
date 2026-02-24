@@ -2,7 +2,6 @@
 @inherits ComponentCore<GoogleAdSense>
 
 @inject IpInfoApi IpInfoApi
-@inject IpInfoServerApi IpInfoServerApi
 
 @if (!Printscreen && !IsLocalhost)
 {
@@ -33,7 +32,7 @@
         {
             if (firstRender && !IsLocalhost)
             {
-                var country = await AppStateStatic.GetCountry(IpInfoApi, IpInfoServerApi, JsRuntime);
+                var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime);
 
                 if (country == "CN")
                 {
