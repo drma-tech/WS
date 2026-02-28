@@ -19,7 +19,6 @@ public static class AppStateStatic
     public static string? BrowserVersion { get; set; }
 
     public static string? OperatingSystem { get; set; }
-    public static string? UserAgent { get; set; }
 
     public static async Task<string> GetAppVersion(IJSRuntime js)
     {
