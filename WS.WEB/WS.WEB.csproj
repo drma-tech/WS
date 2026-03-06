@@ -8,54 +8,59 @@
 	<ItemGroup>
 		<PackageReference Include="BlazorWasmPreRendering.Build" Version="7.0.0" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
-		<PackageReference Include="Humanizer.Core" Version="3.0.1" />
-		<PackageReference Include="Humanizer.Core.es" Version="3.0.1" />
-		<PackageReference Include="Humanizer.Core.pt" Version="3.0.1" />
+		<PackageReference Include="Humanizer.Core" Version="3.0.8" />
+		<PackageReference Include="Humanizer.Core.es" Version="3.0.8" />
+		<PackageReference Include="Humanizer.Core.pt" Version="3.0.8" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.3">
 			<TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.3" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.Extensions.Http.Polly" Version="10.0.3" />
-		<PackageReference Include="MudBlazor" Version="9.0.0" />
+		<PackageReference Include="MudBlazor" Version="9.1.0" />
 		<PackageReference Include="Sentry.AspNetCore.Blazor.WebAssembly" Version="6.1.0" />
 		<PackageReference Include="Toolbelt.Blazor.PWA.Updater" Version="3.2.0" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\WS.Shared\WS.Shared.csproj" />
+		<ProjectReference Include="..\WS.Shared\WS.Shared.csproj" />
+		<TrimmerRootAssembly Include="WS.WEB" />
+		<TrimmerRootAssembly Include="WS.Shared" />
 	</ItemGroup>
 	<ItemGroup>
 		<ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Compile Update="Properties\Resources.Designer.cs">
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	    <DependentUpon>Resources.resx</DependentUpon>
-	  </Compile>
-	  <Compile Update="Resources\GlobalTranslations.Designer.cs">
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	    <DependentUpon>GlobalTranslations.resx</DependentUpon>
-	  </Compile>
-	  <Compile Update="Resources\SeoTranslations.Designer.cs">
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	    <DependentUpon>SeoTranslations.resx</DependentUpon>
-	  </Compile>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\GlobalTranslations.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>GlobalTranslations.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\SeoTranslations.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>SeoTranslations.resx</DependentUpon>
+		</Compile>
 	</ItemGroup>
 	<ItemGroup>
-	  <EmbeddedResource Update="Properties\Resources.resx">
-	    <Generator>PublicResXFileCodeGenerator</Generator>
-	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-	  </EmbeddedResource>
-	  <EmbeddedResource Update="Resources\GlobalTranslations.resx">
-	    <Generator>PublicResXFileCodeGenerator</Generator>
-	    <LastGenOutput>GlobalTranslations.Designer.cs</LastGenOutput>
-	  </EmbeddedResource>
-	  <EmbeddedResource Update="Resources\SeoTranslations.resx">
-	    <Generator>PublicResXFileCodeGenerator</Generator>
-	    <LastGenOutput>SeoTranslations.Designer.cs</LastGenOutput>
-	  </EmbeddedResource>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\GlobalTranslations.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>GlobalTranslations.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\SeoTranslations.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>SeoTranslations.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="wwwroot\screenshots\" />
 	</ItemGroup>
 	<PropertyGroup>
 		<BlazorWasmPrerenderingMode>Static</BlazorWasmPrerenderingMode>

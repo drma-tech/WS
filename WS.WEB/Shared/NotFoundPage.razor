@@ -1,4 +1,6 @@
-﻿<PageTitle>404 - Not found</PageTitle>
+﻿@page "/not-found"
+
+<PageTitle>404 - Not found</PageTitle>
 <HeadContent>
     <meta name="robots" content="noindex, nofollow" />
 </HeadContent>
@@ -9,7 +11,7 @@
     }
 
     .container {
-        height: 100vh;
+        height: calc(100vh - 64px - 32px - 48px - 24px);
         display: flex;
         align-items: center;
         justify-content: center;

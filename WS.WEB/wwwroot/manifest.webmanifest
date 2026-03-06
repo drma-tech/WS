@@ -50,15 +50,6 @@
       "sizes": "512x512"
     }
   ],
-  "screenshots": [
-    {
-      "src": "screenshots/index_desktop.png",
-      "type": "image/jpg",
-      "sizes": "1440x900",
-      "form_factor": "wide",
-      "label": "Index"
-    }
-  ],
   "launch_handler": {
     "client_mode": [
       "navigate-existing",
