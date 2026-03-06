@@ -3,7 +3,11 @@
 		<TargetFramework>net10.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
 		<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+		<PublishTrimmed>true</PublishTrimmed>
+		<TrimMode>full</TrimMode>
+		<EnableTrimAnalyzer>true</EnableTrimAnalyzer>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="BlazorWasmPreRendering.Build" Version="7.0.0" />
@@ -58,9 +62,6 @@
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>SeoTranslations.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-	</ItemGroup>
-	<ItemGroup>
-		<Folder Include="wwwroot\screenshots\" />
 	</ItemGroup>
 	<PropertyGroup>
 		<BlazorWasmPrerenderingMode>Static</BlazorWasmPrerenderingMode>
