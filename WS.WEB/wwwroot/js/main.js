@@ -46,7 +46,7 @@ if (isDev) {
     document.head.appendChild(meta);
 }
 
-// temporary: remove in the end of 2026
+// todo: remove in the end of 2026
 if (typeof Promise.withResolvers !== "function") {
     Promise.withResolvers = function () {
         let resolve, reject;
