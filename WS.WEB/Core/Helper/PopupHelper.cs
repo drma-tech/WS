@@ -17,15 +17,17 @@ public static class PopupHelper
 
     public static async Task AskReviewPopup(this IDialogService service)
     {
-        await service.ShowAsync<AskReview>(string.Format(GlobalTranslations.WriteReviewTitle, SeoTranslations.AppName), Options(MaxWidth.Small));
+        await service.ShowAsync<AskReview>(string.Format(GlobalTranslations.WriteReviewTitle, SeoTranslations.AppName), Options(MaxWidth.Small, false, false));
     }
 
-    public static DialogOptions Options(MaxWidth width)
+    public static DialogOptions Options(MaxWidth width, bool allowClose = true, bool showHeader = true)
     {
         return new DialogOptions
         {
-            CloseOnEscapeKey = true,
-            CloseButton = true,
+            CloseOnEscapeKey = allowClose,
+            CloseButton = allowClose,
+            BackdropClick = allowClose,
+            NoHeader = !showHeader,
             Position = DialogPosition.Center,
             MaxWidth = width
         };

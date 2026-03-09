@@ -12,9 +12,9 @@
 	<ItemGroup>
 		<PackageReference Include="BlazorWasmPreRendering.Build" Version="7.0.0" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
-		<PackageReference Include="Humanizer.Core" Version="3.0.8" />
-		<PackageReference Include="Humanizer.Core.es" Version="3.0.8" />
-		<PackageReference Include="Humanizer.Core.pt" Version="3.0.8" />
+		<PackageReference Include="Humanizer.Core" Version="3.0.10" />
+		<PackageReference Include="Humanizer.Core.es" Version="3.0.10" />
+		<PackageReference Include="Humanizer.Core.pt" Version="3.0.10" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.3">
 			<TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
@@ -69,6 +69,6 @@
 		<CurrentDate>$([System.DateTime]::Now.ToString(yyyy.MM.dd))</CurrentDate>
 	</PropertyGroup>
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-		<WriteLinesToFile File="$(ProjectDir)wwwroot\build-date.txt" Lines="$(CurrentDate)" Overwrite="true" />
+		<WriteLinesToFile File="$(ProjectDir)wwwroot\js\app-version.js" Lines="export const appVersion = '$(CurrentDate)';" Overwrite="true" />
 	</Target>
 </Project>
