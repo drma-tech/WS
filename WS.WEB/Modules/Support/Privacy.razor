@@ -1,7 +1,7 @@
 ﻿@page "/support/privacy"
 @inherits PageCore<Privacy>
 
-<SeoHeader Title="Privacy Policy" Description="@SeoTranslations.AppDescription" Url=@($"/support/privacy") Keywords="@(["Privacy Policy"])"></SeoHeader>
+<SeoMeta Title="Privacy Policy" Description="@SeoTranslations.AppDescription" Url=@($"/support/privacy") Index="true"></SeoMeta>
 
 <div class="support-container">
     <h1 class="support-title">Privacy Policy</h1>
@@ -49,6 +49,6 @@
 </div>
 
 @code {
-    public string? ProjectTitle => SeoTranslations.AppName;
+    public string? ProjectTitle => SeoTranslations.AppTitle;
     public string ProjectDomain => "www.web-standards.com";
 }

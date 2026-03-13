@@ -123,7 +123,7 @@
   <data name="AppDescriptionShort" xml:space="preserve">
     <value>Toolkit to set up sitemaps, manifests, icons, SEO, and security for Websites.</value>
   </data>
-  <data name="AppName" xml:space="preserve">
+  <data name="AppTitle" xml:space="preserve">
     <value>WebStandards</value>
   </data>
   <data name="AppSubtitle" xml:space="preserve">

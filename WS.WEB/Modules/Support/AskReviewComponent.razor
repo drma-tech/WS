@@ -18,13 +18,13 @@ else
             @if (Platform == WS.Shared.Enums.Platform.windows)
             {
                 <MudItem xs="12" sm="6">
-                    <MudButton Href="@_windowsReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor">
-                        <MudImage Src="/logo/microsoft-store.png" Class="me-2" Style="max-width: 20px;"></MudImage> Microsoft Store (Store)
+                    <MudButton Href="@_windowsReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+                        <MudImage Src="/logo/microsoft-store.png" Style="max-width: 35px;"></MudImage> Microsoft Store (Store)
                     </MudButton>
                 </MudItem>
                 <MudItem xs="12" sm="6">
-                    <MudButton Href="@_windowsStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor">
-                        <MudImage Src="/logo/microsoft-store.png" Class="me-2" Style="max-width: 20px;"></MudImage> Microsoft Store (Site)
+                    <MudButton Href="@_windowsStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+                        <MudImage Src="/logo/microsoft-store.png" Style="max-width: 35px;"></MudImage> Microsoft Store (Site)
                     </MudButton>
                 </MudItem>
             }
@@ -34,8 +34,8 @@ else
 else //webapp
 {
     <div class="@Css.Build().Raw("store-grid").Small("mb")">
-        <MudButton Href="@_windowsStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor">
-            <MudImage Src="/logo/microsoft-store.png" Class="me-2" Style="max-width: 20px;"></MudImage> Microsoft Store
+        <MudButton Href="@_windowsStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+            <MudImage Src="/logo/microsoft-store.png" Style="max-width: 35px;"></MudImage> Microsoft Store
         </MudButton>
     </div>
 }
@@ -47,15 +47,15 @@ else //webapp
     </MudText>
 
     <div class="@Css.Build().Raw("store-grid").Small("mb")">
-        <MudButton Href="https://www.streamingdiscovery.com/" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor">
-            <MudImage Src="/logo/streamingdiscovery.png" Class="me-2" Style="max-width: 20px;"></MudImage> Streaming Discovery
+        <MudButton Href="https://www.streamingdiscovery.com/" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+            <MudImage Src="/logo/streamingdiscovery.png" Style="max-width: 35px;"></MudImage> Streaming Discovery
         </MudButton>
-        <MudButton Href="https://www.modern-matchmaker.com" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor">
-            <MudImage Src="/logo/modern-matchmaker.png" Class="me-2" Style="max-width: 20px;"></MudImage> Modern Matchmaker
+        <MudButton Href="https://www.modern-matchmaker.com" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+            <MudImage Src="/logo/modern-matchmaker.png" Style="max-width: 35px;"></MudImage> Modern Matchmaker
         </MudButton>
         <MudBadge Content="@("Beta")" Overlap="true" Color="Color.Warning">
-            <MudButton Href="https://www.my-next-spot.com" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor">
-                <MudImage Src="/logo/next-spot.png" Class="me-2" Style="max-width: 20px;"></MudImage> My Next Spot
+            <MudButton Href="https://www.my-next-spot.com" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+                <MudImage Src="/logo/next-spot.png" Style="max-width: 35px;"></MudImage> My Next Spot
             </MudButton>
         </MudBadge>
     </div>
@@ -79,7 +79,7 @@ else //webapp
 <style>
     .store-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(85px, 1fr));
         gap: 8px;
     }
 </style>

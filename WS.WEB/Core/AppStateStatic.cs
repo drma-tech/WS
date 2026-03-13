@@ -163,7 +163,6 @@ public static class AppStateStatic
 
     #endregion Region Country
 
-    public static Action<string>? ShowError { get; set; }
     public static Action? ProcessingStarted { get; set; }
     public static Action? ProcessingFinished { get; set; }
 }

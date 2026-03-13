@@ -4,10 +4,10 @@
 
 @inherits PageCore<Index>
 
-<SeoHeader Title="@SeoTranslations.AppSubtitle" Description="@SeoTranslations.AppDescription" Url="/" Keywords="@(["sitemap", "robot.txt", "manifest", "service-worker", "security.txt", "gpc.json", "change-password", "reset-password"])"></SeoHeader>
+<SeoMeta Title="@SeoTranslations.AppTitle" Description="@SeoTranslations.AppDescription" Url="/" Index="true" ForceTitle="true"></SeoMeta>
 @* <GoogleAdSense Section="@GoogleAdSense.AdUnit.Main"></GoogleAdSense> *@
 
-<NewPageSection IsPageHeader="true" Image="icon/icon-71.png" Title="@SeoTranslations.AppName" Subtitle="@SeoTranslations.AppSubtitle" Description="@SeoTranslations.AppDescription">
+<NewPageSection IsPageHeader="true" Image="icon/icon-71.png" Title="@SeoTranslations.AppTitle" Subtitle="@SeoTranslations.AppSubtitle" Description="@SeoTranslations.AppDescription">
 </NewPageSection>
 
 <NewPageSection Title="Discovery & Search" Description="Tell search engines what to index, improve crawling speed, and ensure important pages and media appear in search results." Icon="@IconsFA.Solid.Icon("magnifying-glass").Font">
