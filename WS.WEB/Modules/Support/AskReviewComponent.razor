@@ -13,22 +13,16 @@ else
 
 @if (Platform != WS.Shared.Enums.Platform.webapp)
 {
-    <div style="width: 100%;">
-        <MudGrid Spacing="@Css.SpaceSmall" Class="@Css.Build().Small("mb")" Justify="Justify.Center" Style="max-width: 700px; justify-self: center;">
-            @if (Platform == WS.Shared.Enums.Platform.windows)
-            {
-                <MudItem xs="12" sm="6">
-                    <MudButton Href="@_windowsReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
-                        <MudImage Src="/logo/microsoft-store.png" Style="max-width: 35px;"></MudImage> Microsoft Store (Store)
-                    </MudButton>
-                </MudItem>
-                <MudItem xs="12" sm="6">
-                    <MudButton Href="@_windowsStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
-                        <MudImage Src="/logo/microsoft-store.png" Style="max-width: 35px;"></MudImage> Microsoft Store (Site)
-                    </MudButton>
-                </MudItem>
-            }
-        </MudGrid>
+    <div class="@Css.Build().Raw("store-grid").Small("mb")">
+        @if (Platform == WS.Shared.Enums.Platform.windows)
+        {
+            <MudButton Href="@_windowsReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+                <MudImage Src="/logo/microsoft-store.png" Style="max-width: 35px;"></MudImage> Microsoft Store (Store)
+            </MudButton>
+            <MudButton Href="@_windowsStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+                <MudImage Src="/logo/microsoft-store.png" Style="max-width: 35px;"></MudImage> Microsoft Store (Site)
+            </MudButton>
+        }
     </div>
 }
 else //webapp
