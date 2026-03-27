@@ -113,8 +113,9 @@
 
         var reviewed = await JsRuntime.Utils().GetStorage<bool>("store-reviewed");
 
-        //ask for app store review if ratings are 4 or 5 stars
-        if (accesses.Count >= 2 && !reviewed && !isTooSoon)
+        bool isOddAccess = accesses.Count % 2 == 1;
+
+        if (accesses.Count >= 3 && isOddAccess && !reviewed && !isTooSoon)
         {
             _ = Task.Run(async () =>
             {
