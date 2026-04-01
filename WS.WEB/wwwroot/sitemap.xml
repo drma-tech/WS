@@ -2,38 +2,42 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
 		<loc>https://www.web-standards.com/</loc>
-		<lastmod>2025-09-29</lastmod>
+		<lastmod>2026-04-01</lastmod>
 	</url>
 	<url>
-		<loc>https://www.web-standards.com/support</loc>
-		<lastmod>2025-09-29</lastmod>
+		<loc>https://www.web-standards.com/help</loc>
+		<lastmod>2026-04-01</lastmod>
 	</url>
 	<url>
 		<loc>https://www.web-standards.com/robots</loc>
-		<lastmod>2025-09-29</lastmod>
+		<lastmod>2026-04-01</lastmod>
 	</url>
 	<url>
 		<loc>https://www.web-standards.com/sitemap</loc>
-		<lastmod>2025-09-29</lastmod>
+		<lastmod>2026-04-01</lastmod>
 	</url>
 	<url>
 		<loc>https://www.web-standards.com/extensions-sitemap</loc>
-		<lastmod>2025-09-29</lastmod>
+		<lastmod>2026-04-01</lastmod>
 	</url>
 	<url>
-		<loc>https://www.web-standards.com/support/faq</loc>
-		<lastmod>2025-09-29</lastmod>
+		<loc>https://www.web-standards.com/manifest</loc>
+		<lastmod>2026-04-01</lastmod>
 	</url>
 	<url>
-		<loc>https://www.web-standards.com/support/terms</loc>
-		<lastmod>2025-09-29</lastmod>
+		<loc>https://www.web-standards.com/service-worker</loc>
+		<lastmod>2026-04-01</lastmod>
 	</url>
 	<url>
-		<loc>https://www.web-standards.com/support/privacy</loc>
-		<lastmod>2025-09-29</lastmod>
+		<loc>https://www.web-standards.com/tags</loc>
+		<lastmod>2026-04-01</lastmod>
 	</url>
 	<url>
-		<loc>https://www.web-standards.com/support/credits</loc>
-		<lastmod>2025-09-29</lastmod>
+		<loc>https://www.web-standards.com/help/faq</loc>
+		<lastmod>2026-04-01</lastmod>
+	</url>
+	<url>
+		<loc>https://www.web-standards.com/company/about-us</loc>
+		<lastmod>2026-04-01</lastmod>
 	</url>
 </urlset>
