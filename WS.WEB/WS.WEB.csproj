@@ -33,7 +33,7 @@
 		<ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Update="Modules\Support\Resources\Translations.Designer.cs">
+		<Compile Update="Modules\Help\Resources\Translations.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Translations.resx</DependentUpon>
@@ -55,7 +55,7 @@
 		</Compile>
 	</ItemGroup>
 	<ItemGroup>
-		<EmbeddedResource Update="Modules\Support\Resources\Translations.resx">
+		<EmbeddedResource Update="Modules\Help\Resources\Translations.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>Translations.Designer.cs</LastGenOutput>
 		</EmbeddedResource>

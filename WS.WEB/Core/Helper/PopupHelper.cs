@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using WS.WEB.Modules.Support;
-using WS.WEB.Resources;
+using WS.WEB.Modules.Help;
 using WS.WEB.Shared;
 
 namespace WS.WEB.Core.Helper;
