@@ -15,19 +15,15 @@
 </HeadContent>
 
 @code {
-
-    private const string LongProjectName = "WebStandards";
-    private const string ProjectUrl = "https://web-standards.com";
-
     [Parameter, EditorRequired] public string? Title { get; set; }
     [Parameter] public string? Description { get; set; }
     [Parameter, EditorRequired] public string? Url { get; set; }
     [Parameter, EditorRequired] public bool Index { get; set; }
     [Parameter] public bool ForceTitle { get; set; }
 
-    private string? TitleFull => ForceTitle ? Title : $"{Title} - {LongProjectName}";
+    private string? TitleFull => ForceTitle ? Title : $"{Title} - {AppInfo.Title}";
 
     private string? DescriptionNormalized => Description?.TrimEnd('.') + ".";
 
-    private string? CanonicalUrl => ProjectUrl + Url;
+    private string? CanonicalUrl => AppInfo.WebSite + Url;
 }

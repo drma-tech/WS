@@ -13,7 +13,7 @@
     [Parameter][EditorRequired] public AdUnit Section { get; set; } = AdUnit.Index;
 
     private bool IsMobile => AppStateStatic.BrowserWindowSize?.Width <= 600 || AppStateStatic.BrowserWindowSize?.Height <= 600;
-    private bool IsLocalhost => Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev");
+    private bool IsLocalhost => Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("develop");
 
     private const string AdClientId = "5145928155833172";
     private readonly string _containerId = $"ad-container-{Guid.NewGuid()}";

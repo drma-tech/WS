@@ -21,7 +21,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.5" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.Extensions.Http.Polly" Version="10.0.5" />
 		<PackageReference Include="MudBlazor" Version="9.2.0" />
-		<PackageReference Include="Sentry.AspNetCore.Blazor.WebAssembly" Version="6.2.0" />
+		<PackageReference Include="Sentry.AspNetCore.Blazor.WebAssembly" Version="6.3.0" />
 		<PackageReference Include="Toolbelt.Blazor.PWA.Updater" Version="3.2.0" />
 	</ItemGroup>
 	<ItemGroup>
@@ -33,6 +33,11 @@
 		<ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
 	</ItemGroup>
 	<ItemGroup>
+		<Compile Update="Modules\Support\Resources\Translations.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Translations.resx</DependentUpon>
+		</Compile>
 		<Compile Update="Properties\Resources.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
@@ -50,6 +55,10 @@
 		</Compile>
 	</ItemGroup>
 	<ItemGroup>
+		<EmbeddedResource Update="Modules\Support\Resources\Translations.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Translations.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 		<EmbeddedResource Update="Properties\Resources.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>Resources.Designer.cs</LastGenOutput>

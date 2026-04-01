@@ -15,10 +15,6 @@
         </MudToggleGroup>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="@(async () => { await JsRuntime.Utils().ShowCache(); })">
-            Show Cache
-        </MudButton>
-        <MudSpacer></MudSpacer>
         <MudButton OnClick="@(() => { MudDialog?.Close(); })">
             Close
         </MudButton>

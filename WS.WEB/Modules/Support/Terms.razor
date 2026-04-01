@@ -6,24 +6,24 @@
 <div class="support-container">
     <h1 class="support-title">Terms of Use</h1>
     <div class="support-subtitle">
-        Welcome to <b>@ProjectTitle</b> (<a href="https://@ProjectDomain" target="_blank">@ProjectDomain</a>)!<br />
+        Welcome to <b>@AppInfo.Title</b> (<a href="https://@AppInfo.WebSite" target="_blank">@AppInfo.WebSite</a>)!<br />
         By accessing or using this service, you agree to these Terms of Use. Please read them carefully.
     </div>
     <div class="support-section">
         <h2>1. About the Service</h2>
-        <p><b>@ProjectTitle</b> provides tools to help developers configure and generate essential files and settings for websites and PWAs, such as sitemaps, manifests, icons, and security configurations.</p>
+        <p><b>@AppInfo.Title</b> provides tools to help developers configure and generate essential files and settings for websites and PWAs, such as sitemaps, manifests, icons, and security configurations.</p>
         <p>The service is operated by Delivering Reliable Modern Apps Tech OÜ, registered in Estonia, and is intended for professional and educational use.</p>
     </div>
     <div class="support-section">
         <h2>2. Data and Privacy</h2>
-        <p><b>@ProjectTitle</b> does not require user accounts or authentication. The platform can be used fully anonymously.</p>
+        <p><b>@AppInfo.Title</b> does not require user accounts or authentication. The platform can be used fully anonymously.</p>
         <p>We do not collect personal data such as names, emails, or precise location. Limited technical data (e.g., IP address, browser type, device information) may be processed automatically for security, diagnostics, and usage analytics.</p>
         <p>We implement reasonable technical and organizational measures to protect such data from unauthorized access or disclosure.</p>
         <p>For details, see our <a href="/support/privacy">Privacy Policy</a>.</p>
     </div>
     <div class="support-section">
         <h2>3. Features</h2>
-        <p><b>@ProjectTitle</b> helps developers generate and configure:</p>
+        <p><b>@AppInfo.Title</b> helps developers generate and configure:</p>
         <ul>
             <li>Sitemaps, robots.txt, and SEO-related metadata</li>
             <li>Web app manifests, icons, and PWA integration files</li>
@@ -52,7 +52,7 @@
     </div>
     <div class="support-section">
         <h2>7. Limitation of Liability and Service Availability</h2>
-        <p><b>@ProjectTitle</b> is provided "as is" without warranties of availability, accuracy, or completeness. The service may be modified, suspended, or discontinued at any time without notice.</p>
+        <p><b>@AppInfo.Title</b> is provided "as is" without warranties of availability, accuracy, or completeness. The service may be modified, suspended, or discontinued at any time without notice.</p>
         <p>We are not responsible for errors in generated files, misuse by developers, or third-party content referenced.</p>
     </div>
     <div class="support-section">
@@ -72,8 +72,3 @@
         <p>By using the platform, you agree to these Terms of Use and the <a href="/support/privacy">Privacy Policy</a>.</p>
     </div>
 </div>
-
-@code {
-    public string? ProjectTitle => SeoTranslations.AppTitle;
-    public string? ProjectDomain => "www.web-standards.com";
-}

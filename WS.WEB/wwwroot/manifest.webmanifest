@@ -1,5 +1,5 @@
 {
-  "id": "webstandards",
+  "id": "web-standards",
   "name": "WebStandards: Web Developer Tools",
   "short_name": "WebStandards",
   "description": "A toolkit that helps developers set up essential web standards like sitemaps, manifests, icons, SEO tags, and security files for modern websites and PWAs.",
@@ -21,7 +21,7 @@
     {
       "platform": "windows",
       "url": "https://apps.microsoft.com/detail/9pcf521f26lz",
-      "id": "9PB1PKRDD8L0"
+      "id": "9pcf521f26lz"
     },
     {
       "platform": "webapp",

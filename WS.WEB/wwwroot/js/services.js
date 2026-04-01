@@ -45,7 +45,6 @@ export const services = {
     },
     initUserBack(version) {
         if (isBot) return;
-        if (isLocalhost) return;
 
         const browserLang = navigator.language || navigator.userLanguage;
 

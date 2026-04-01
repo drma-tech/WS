@@ -1,0 +1,127 @@
+﻿@page "/support/help"
+@inherits PageCore<HelpCenter>
+
+@using WS.WEB.Layout
+
+<SeoMeta Title="Help Center" Description="@($"Get detailed guides, troubleshooting tips, FAQs, and contact support for {AppInfo.Title}. Solve issues and discover features easily.")" Url="/support/help" Index="true"></SeoMeta>
+<NewPageSection IsPageHeader="true" Icon="@IconsFA.Solid.Icon("headset").Font" Title="Help Center" Description="@($"Get detailed guides, troubleshooting tips, FAQs, and contact support for {AppInfo.Title}. Solve issues and discover features easily.")"></NewPageSection>
+
+<NewPageSection Title="Quick Actions">
+    <BodyFragment>
+        <MudGrid Spacing="@Css.SpaceSmall">
+            <MudItem xs="12" sm="6" md="4" lg="3">
+                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@(async () => { await JsRuntime.Window().InvokeVoidAsync("eval", "Userback && Userback.openForm('general', 'form');"); })">
+                    <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("comment").Font"></MudIcon>
+                    Feedback
+                </MudButton>
+            </MudItem>
+            <MudItem xs="12" sm="6" md="4" lg="3">
+                <MudButton Variant="Variant.Filled" FullWidth="true" Href="mailto:support@web-standards.com">
+                    <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("at").Font"></MudIcon>
+                    Contact Support
+                </MudButton>
+            </MudItem>
+            <MudItem xs="12" sm="6" md="4" lg="3">
+                <MudButton Variant="Variant.Filled" FullWidth="true" Href="/support/faq">
+                    <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("question-circle").Font"></MudIcon>
+                    Browse FAQ
+                </MudButton>
+            </MudItem>
+        </MudGrid>
+    </BodyFragment>
+</NewPageSection>
+
+<NewPageSection Title="Troubleshooting">
+    <BodyFragment>
+        <MudGrid Spacing="@Css.SpaceSmall">
+            <MudItem xs="12" sm="6" md="4" lg="3">
+                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@(async () => { await JsRuntime.Utils().ShowCache(); })">
+                    <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("database").Font"></MudIcon>
+                    Show Cache
+                </MudButton>
+            </MudItem>
+            <MudItem xs="12" sm="6" md="4" lg="3">
+                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@(async () => { await JsRuntime.Utils().ClearAllStorage(); })">
+                    <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("trash-alt").Font"></MudIcon>
+                    Clear App Data
+                </MudButton>
+            </MudItem>
+        </MudGrid>
+    </BodyFragment>
+</NewPageSection>
+
+<NewPageSection Title="Legal & Privacy">
+    <BodyFragment>
+        <MudGrid Spacing="@Css.SpaceSmall">
+            <MudItem xs="12" sm="6" md="4" lg="3">
+                <MudButton Variant="Variant.Filled" FullWidth="true" Href="/support/terms" Rel="nofollow">
+                    <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("file-contract").Font"></MudIcon>
+                    Terms of Use
+                </MudButton>
+            </MudItem>
+            <MudItem xs="12" sm="6" md="4" lg="3">
+                <MudButton Variant="Variant.Filled" FullWidth="true" Href="/support/privacy" Rel="nofollow">
+                    <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("user-shield").Font"></MudIcon>
+                    Privacy Policy
+                </MudButton>
+            </MudItem>
+            <MudItem xs="12" sm="6" md="4" lg="3">
+                <MudButton Variant="Variant.Filled" FullWidth="true" Href="/support/credits" Rel="nofollow">
+                    <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("users").Font"></MudIcon>
+                    Credits
+                </MudButton>
+            </MudItem>
+        </MudGrid>
+    </BodyFragment>
+</NewPageSection>
+
+<NewPageSection Title="Get the App">
+    <BodyFragment>
+        <MudGrid Spacing="@Css.SpaceSmall">
+            @foreach (var store in AppInfo.Stores)
+            {
+                <MudItem xs="12" sm="6" md="4" lg="3">
+                    <MudButton Variant="Variant.Filled" FullWidth="true" Href="@store.Url" Target="_blank">
+                        <MudImage Src="@store.Logo" Class="me-2" Style="width: 20px; vertical-align: top;" />
+                        @store.Store
+                    </MudButton>
+                </MudItem>
+            }
+        </MudGrid>
+    </BodyFragment>
+</NewPageSection>
+
+<NewPageSection Title="Company">
+    <BodyFragment>
+        <MudGrid Spacing="@Css.SpaceSmall">
+            <MudItem xs="12" sm="6" md="4" lg="3">
+                <MudButton Variant="Variant.Filled" FullWidth="true" Href="/support/about-us">
+                    <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("building").Font"></MudIcon>
+                    About us
+                </MudButton>
+            </MudItem>
+            <MudItem xs="12" sm="6" md="4" lg="3">
+                <MudButton Variant="Variant.Filled" FullWidth="true" Href="https://www.drma-tech.com" Target="_blank">
+                    <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("globe").Font"></MudIcon>
+                    Website
+                </MudButton>
+            </MudItem>
+        </MudGrid>
+    </BodyFragment>
+</NewPageSection>
+
+<NewPageSection Title="More from DRMA Tech">
+    <BodyFragment>
+        <MudGrid Spacing="@Css.SpaceSmall">
+            @foreach (var product in AppInfo.Products)
+            {
+                <MudItem xs="12" sm="6" md="4" lg="3">
+                    <MudButton Variant="Variant.Filled" FullWidth="true" Href="@product.Url" Target="_blank">
+                        <MudImage Src="@product.Logo" Class="me-2" Style="width: 20px; vertical-align: top;" />
+                        @product.Title
+                    </MudButton>
+                </MudItem>
+            }
+        </MudGrid>
+    </BodyFragment>
+</NewPageSection>

@@ -6,12 +6,12 @@
 <div class="support-container">
     <h1 class="support-title">Privacy Policy</h1>
     <div class="support-subtitle">
-        Your privacy is a priority at <b>@ProjectTitle</b> (<a href="https://@ProjectDomain" target="_blank">@ProjectDomain</a>).<br />
+        Your privacy is a priority at <b>@AppInfo.Title</b> (<a href="https://@AppInfo.WebSite" target="_blank">@AppInfo.WebSite</a>).<br />
         Please read this policy carefully to understand how we handle your data.
     </div>
     <div class="support-section">
         <h2>1. Data collected</h2>
-        <p><b>@ProjectTitle</b> does not require accounts or authentication. The platform is fully anonymous. We do not collect personal identifiers such as names, emails, or precise geolocation.</p>
+        <p><b>@AppInfo.Title</b> does not require accounts or authentication. The platform is fully anonymous. We do not collect personal identifiers such as names, emails, or precise geolocation.</p>
         <p>Technical data may be collected automatically, including IP address, browser type, device type, and usage patterns. This is used solely for security, diagnostics, and improving the platform.</p>
     </div>
     <div class="support-section">
@@ -47,8 +47,3 @@
         <p>By using the platform, you agree to this Privacy Policy and the <a href="/support/terms">Terms of Use</a>.</p>
     </div>
 </div>
-
-@code {
-    public string? ProjectTitle => SeoTranslations.AppTitle;
-    public string ProjectDomain => "www.web-standards.com";
-}
