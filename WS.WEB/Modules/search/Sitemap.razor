@@ -155,7 +155,7 @@
             ResultXml = null;
 
             var http = HttpClientFactory.CreateClient();
-            var helper = new SitemapHelper(http, Search, includeImages: false, includeVideos: false, includeNews: false, ignoreNoFollow: true, ignoreTarget: null, 2);
+            var helper = new SitemapHelper(http, Search, includeImages: false, includeVideos: false, includeNews: false, ignoreNoFollow: true, ignoreTarget: null, MaxDepth);
 
             AppStateStatic.ProcessingStarted?.Invoke();
             ResultXml = await helper.RunAsync();

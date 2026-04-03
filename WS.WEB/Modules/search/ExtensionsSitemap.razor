@@ -172,7 +172,7 @@
             ResultXml = null;
 
             var http = HttpClientFactory.CreateClient();
-            var helper = new SitemapHelper(http, Search, _image, _video, _news, true, null, 2);
+            var helper = new SitemapHelper(http, Search, _image, _video, _news, true, null, MaxDepth);
 
             AppStateStatic.ProcessingStarted?.Invoke();
             ResultXml = await helper.RunAsync();
