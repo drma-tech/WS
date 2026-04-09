@@ -1,4 +1,4 @@
-﻿@page "/robots"
+﻿@page "/{culture}/robots"
 
 @using System.Xml.Linq
 @using WS.WEB.Modules.Search.Core
@@ -7,7 +7,7 @@
 @inject IHttpClientFactory HttpClientFactory
 
 <SeoMeta Title="robots.txt generator" Description="Lists site pages in XML. Ensures search engines find and index content faster, critical for large or poorly linked websites."
-         Url="/robots" Index="true"></SeoMeta>
+         Url=@($"/{Culture}/robots") Index="true"></SeoMeta>
 @* <GoogleAdSense Section="@GoogleAdSense.AdUnit.Global"></GoogleAdSense> *@
 
 <MudGrid Justify="Justify.Center">

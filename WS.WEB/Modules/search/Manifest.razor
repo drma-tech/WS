@@ -1,4 +1,4 @@
-@page "/manifest"
+@page "/{culture}/manifest"
 
 @using System.Text.Json
 @using HtmlAgilityPack
@@ -7,7 +7,7 @@
 @inherits PageCore<Manifest>
 
 <SeoMeta Title="manifest.webmanifest generator" Description="Create a web app manifest to make your site installable as a PWA. Helps define name, icons, colors and launch behavior."
-         Url="/manifest" Index="true"></SeoMeta>
+         Url=@($"/{Culture}/manifest") Index="true"></SeoMeta>
 
 <MudGrid Justify="Justify.Center">
     <MudItem xs="12" md="10">

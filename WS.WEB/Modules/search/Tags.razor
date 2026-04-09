@@ -1,4 +1,4 @@
-@page "/tags"
+@page "/{culture}/tags"
 
 @using System.Text.Json
 @using System.Text.Encodings.Web
@@ -6,7 +6,7 @@
 @inherits PageCore<Tags>
 
 <SeoMeta Title="HTML tags & metadata" Description="Generate common meta tags and snippets (Open Graph, Twitter Cards, JSON-LD) that you can paste into your HTML pages."
-         Url="/tags" Index="true"></SeoMeta>
+         Url=@($"/{Culture}/tags") Index="true"></SeoMeta>
 
 <MudGrid Justify="Justify.Center">
     <MudItem xs="12" md="10">
