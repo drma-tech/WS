@@ -77,23 +77,5 @@ namespace WS.WEB.Resources {
                 return ResourceManager.GetString("AppDescriptionShort", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Web Developer Tools.
-        /// </summary>
-        public static string AppSubtitle {
-            get {
-                return ResourceManager.GetString("AppSubtitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to WebStandards.
-        /// </summary>
-        public static string AppTitle {
-            get {
-                return ResourceManager.GetString("AppTitle", resourceCulture);
-            }
-        }
     }
 }

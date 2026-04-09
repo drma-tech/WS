@@ -1,7 +1,7 @@
-﻿@page "/legal/terms"
+﻿@page "/{culture}/legal/terms"
 @inherits PageCore<Terms>
 
-<SeoMeta Title="Terms of Use" Url=@($"/legal/terms") Index="false"></SeoMeta>
+<SeoMeta Title="Terms of Use" Url=@($"/{Culture}/legal/terms") Index="false"></SeoMeta>
 
 <div class="support-container">
     <h1 class="support-title">Terms of Use</h1>

@@ -1,9 +1,9 @@
-﻿@page "/help"
+﻿@page "/{culture}/help"
 @inherits PageCore<HelpCenter>
 
 @using WS.WEB.Layout
 
-<SeoMeta Title="Help Center" Description="@($"Get detailed guides, troubleshooting tips, FAQs, and contact support for {AppInfo.Title}. Solve issues and discover features easily.")" Url="/help" Index="true"></SeoMeta>
+<SeoMeta Title="Help Center" Description="@($"Get detailed guides, troubleshooting tips, FAQs, and contact support for {AppInfo.Title}. Solve issues and discover features easily.")" Url=@($"/{Culture}/help") Index="true"></SeoMeta>
 <NewPageSection IsPageHeader="true" Icon="@IconsFA.Solid.Icon("headset").Font" Title="Help Center" Description="@($"Get detailed guides, troubleshooting tips, FAQs, and contact support for {AppInfo.Title}. Solve issues and discover features easily.")"></NewPageSection>
 
 <NewPageSection Title="Quick Actions">
@@ -22,7 +22,7 @@
                 </MudButton>
             </MudItem>
             <MudItem xs="12" sm="6" md="4" lg="3">
-                <MudButton Variant="Variant.Filled" FullWidth="true" Href="/help/faq">
+                <MudButton Variant="Variant.Filled" FullWidth="true" Href=@($"/{Culture}/help/faq")>
                     <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("question-circle").Font"></MudIcon>
                     Browse FAQ
                 </MudButton>
@@ -54,19 +54,19 @@
     <BodyFragment>
         <MudGrid Spacing="@Css.SpaceSmall">
             <MudItem xs="12" sm="6" md="4" lg="3">
-                <MudButton Variant="Variant.Filled" FullWidth="true" Href="/legal/terms" Rel="nofollow">
+                <MudButton Variant="Variant.Filled" FullWidth="true" Href=@($"/{Culture}/legal/terms") Rel="nofollow">
                     <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("file-contract").Font"></MudIcon>
                     Terms of Use
                 </MudButton>
             </MudItem>
             <MudItem xs="12" sm="6" md="4" lg="3">
-                <MudButton Variant="Variant.Filled" FullWidth="true" Href="/legal/privacy" Rel="nofollow">
+                <MudButton Variant="Variant.Filled" FullWidth="true" Href=@($"/{Culture}/legal/privacy") Rel="nofollow">
                     <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("user-shield").Font"></MudIcon>
                     Privacy Policy
                 </MudButton>
             </MudItem>
             <MudItem xs="12" sm="6" md="4" lg="3">
-                <MudButton Variant="Variant.Filled" FullWidth="true" Href="/legal/credits" Rel="nofollow">
+                <MudButton Variant="Variant.Filled" FullWidth="true" Href=@($"/{Culture}/legal/credits") Rel="nofollow">
                     <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("users").Font"></MudIcon>
                     Credits
                 </MudButton>
@@ -95,7 +95,7 @@
     <BodyFragment>
         <MudGrid Spacing="@Css.SpaceSmall">
             <MudItem xs="12" sm="6" md="4" lg="3">
-                <MudButton Variant="Variant.Filled" FullWidth="true" Href="/company/about-us">
+                <MudButton Variant="Variant.Filled" FullWidth="true" Href=@($"/{Culture}/company/about-us")>
                     <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("building").Font"></MudIcon>
                     About us
                 </MudButton>

@@ -1,8 +1,7 @@
-﻿@page "/legal/credits"
-@using WS.WEB.Resources
+﻿@page "/{culture}/legal/credits"
 @inherits PageCore<Credits>
 
-<SeoMeta Title="Credits" Url="/legal/credits" Index="false"></SeoMeta>
+<SeoMeta Title="Credits" Url=@($"/{Culture}/legal/credits") Index="false"></SeoMeta>
 
 <NewPageSection IsPageHeader="true" Title="Credits" Description="Standards and references used to define the tools available here"></NewPageSection>
 

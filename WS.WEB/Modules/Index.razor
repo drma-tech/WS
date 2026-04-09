@@ -1,13 +1,11 @@
-﻿@page "/"
-@page "/index"
-@using WS.WEB.Resources
+﻿@page "/{culture}/"
 
 @inherits PageCore<Index>
 
-<SeoMeta Title="@SeoTranslations.AppTitle" Description="@SeoTranslations.AppDescription" Url="/" Index="true" ForceTitle="true"></SeoMeta>
+<SeoMeta Title="@AppInfo.Title" Description="@SeoTranslations.AppDescription" Url=@($"/{Culture}/") Index="true" ForceTitle="true"></SeoMeta>
 @* <GoogleAdSense Section="@GoogleAdSense.AdUnit.Main"></GoogleAdSense> *@
 
-<NewPageSection IsPageHeader="true" Image="icon/icon-71.png" Title="@SeoTranslations.AppTitle" Subtitle="@SeoTranslations.AppSubtitle" Description="@SeoTranslations.AppDescription">
+<NewPageSection IsPageHeader="true" Image="icon/icon-71.png" Title="@AppInfo.Title" Subtitle="@AppInfo.Subtitle" Description="@SeoTranslations.AppDescription">
 </NewPageSection>
 
 <NewPageSection Title="Discovery & Search" Description="Tell search engines what to index, improve crawling speed, and ensure important pages and media appear in search results." Icon="@IconsFA.Solid.Icon("magnifying-glass").Font">

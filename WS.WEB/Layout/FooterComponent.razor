@@ -34,7 +34,7 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other devices
                         Company
                     </MudText>
                 </MudListSubheader>
-                <MudListItem Text="About us" Href="/company/about-us" Class="py-0" Disabled="_blockedActions" />
+                <MudListItem Text="About us" Href=@($"/{Culture}/company/about-us") Class="py-0" Disabled="_blockedActions" />
                 <MudListItem Text="Website" Href="https://www.drma-tech.com/" Target="_blank" Class="py-0" />
             </MudList>
         </MudItem>
@@ -84,7 +84,7 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other devices
                         </MudListItem>
                     }
                 }
-                <MudListItem Href="/help" Class="py-0">
+                <MudListItem Href=@($"/{Culture}/help") Class="py-0">
                     <ChildContent>
                         <MudIcon Icon="@IconsFA.Solid.Icon("plus").Font" Class="ma-0 me-1" Style="width: 20px; vertical-align: top;" />
                         More
@@ -99,9 +99,9 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other devices
                         Support
                     </MudText>
                 </MudListSubheader>
-                <MudListItem Text="Help Center" Href="/help" Class="py-0" Disabled="_blockedActions" />
+                <MudListItem Text="Help Center" Href=@($"/{Culture}/help") Class="py-0" Disabled="_blockedActions" />
                 <MudListItem Text="Contact" Href="mailto:support@web-standards.com" Class="py-0" />
-                <MudListItem Text="FAQ" Href="/help/faq" Class="py-0" />
+                <MudListItem Text="FAQ" Href=@($"/{Culture}/help/faq") Class="py-0" Disabled="_blockedActions" />
             </MudList>
         </MudItem>
         <MudItem xs="12" sm="3" md="2">
@@ -126,6 +126,8 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other devices
 </style>
 
 @code {
+    private string Culture => Navigation.GetCulture();
+
     private static readonly Random rnd = new Random();
     private bool _blockedActions => Navigation.Uri.Contains("register-user") || Navigation.Uri.Contains("ask-consent");
     private Platform? CurrentPlatform;
