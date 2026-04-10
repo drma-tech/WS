@@ -10,12 +10,14 @@ namespace WS.WEB.Modules.Search.Core
         bool includeImages = false,
         bool includeVideos = false,
         bool includeNews = false,
+        bool includeAlternates = false,
         bool ignoreNoFollow = true,
         string? ignoreTarget = "_blank",
         int maxDepth = 3)
     {
         private readonly Uri _baseUri = new(baseUrl);
 
+        private readonly bool _includeAlternates = includeAlternates;
         //private readonly bool _includeImages = includeImages;
         //private readonly bool _includeVideos = includeVideos;
         //private readonly bool _includeNews = includeNews;
@@ -99,6 +101,28 @@ namespace WS.WEB.Modules.Search.Core
                 //    }
                 //}
 
+                // extract alternate language links like: <link rel="alternate" hreflang="pt" href="https://..." />
+                if (_includeAlternates)
+                {
+                    var alternates = doc.DocumentNode.SelectNodes("//link[@href]")
+                        ?.Select(n => new
+                        {
+                            rel = n.GetAttributeValue("rel", ""),
+                            hreflang = n.GetAttributeValue("hreflang", ""),
+                            href = n.GetAttributeValue("href", "")
+                        })
+                        .Where(l => !string.IsNullOrWhiteSpace(l.href)
+                                    && !string.IsNullOrWhiteSpace(l.hreflang)
+                                    && (l.rel ?? "").Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                                        .Any(r => r.Equals("alternate", StringComparison.OrdinalIgnoreCase)))
+                        .Select(l => new AlternateData { Hreflang = l.hreflang, Href = new Uri(_baseUri, l.href).ToString() })
+                        .GroupBy(a => a.Hreflang + "|" + a.Href)
+                        .Select(g => g.First())
+                        .ToList() ?? new List<AlternateData>();
+
+                    page.Alternates = alternates;
+                }
+
                 _pages.Add(page);
 
                 if (depth == maxDepth)
@@ -139,9 +163,11 @@ namespace WS.WEB.Modules.Search.Core
             //XNamespace nsVid = "http://www.google.com/schemas/sitemap-video/1.1";
             //XNamespace nsNews = "http://www.google.com/schemas/sitemap-news/0.9";
             XNamespace xsi = "http://www.w3.org/2001/XMLSchema-instance";
+            XNamespace xhtml = "http://www.w3.org/1999/xhtml";
 
             var urlset = new XElement(ns + "urlset",
                 new XAttribute(XNamespace.Xmlns + "xsi", xsi),
+                new XAttribute(XNamespace.Xmlns + "xhtml", xhtml),
                 new XAttribute(xsi + "schemaLocation",
                     "http://www.sitemaps.org/schemas/sitemap/0.9 " +
                     "http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd")
@@ -191,6 +217,19 @@ namespace WS.WEB.Modules.Search.Core
                 //    ));
                 //}
 
+                // add xhtml:link alternates if present
+                if (_includeAlternates && page.Alternates != null && page.Alternates.Count > 0)
+                {
+                    foreach (var alt in page.Alternates)
+                    {
+                        urlEl.Add(new XElement(xhtml + "link",
+                            new XAttribute("rel", "alternate"),
+                            new XAttribute("hreflang", alt.Hreflang),
+                            new XAttribute("href", alt.Href)
+                        ));
+                    }
+                }
+
                 urlset.Add(urlEl);
             }
 
@@ -211,9 +250,16 @@ namespace WS.WEB.Modules.Search.Core
     public class PageData
     {
         public string? Url { get; set; }
-        public List<string> Images { get; set; } = [];
-        public List<string> Videos { get; set; } = [];
+        public List<string> Images { get; set; } = new();
+        public List<string> Videos { get; set; } = new();
+        public List<AlternateData>? Alternates { get; set; }
         public NewsData? News { get; set; }
+    }
+
+    public class AlternateData
+    {
+        public string Hreflang { get; set; } = "";
+        public string Href { get; set; } = "";
     }
 
     public class NewsData
