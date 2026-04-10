@@ -19,7 +19,7 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other devices
                 </MudListSubheader>
                 @foreach (var product in AppInfo.Products.OrderBy(x => rnd.Next()).Take(2))
                 {
-                    <MudListItem Href="@product.Url" Target="_blank" Class="py-0" Text="@product.Title" SecondaryText="@product.SubTitle">
+                    <MudListItem Href="@product.Url" Target="_blank" rel="noopener" Class="py-0" Text="@product.Title" SecondaryText="@product.SubTitle">
                         <AvatarContent>
                             <MudImage Src="@product.Logo" Style="width: 30px; vertical-align: top;" />
                         </AvatarContent>
@@ -35,7 +35,7 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other devices
                     </MudText>
                 </MudListSubheader>
                 <MudListItem Text="About us" Href=@($"/{Culture}/company/about-us") Class="py-0" Disabled="_blockedActions" />
-                <MudListItem Text="Website" Href="https://www.drma-tech.com/" Target="_blank" Class="py-0" />
+                <MudListItem Text="Website" Href="https://www.drma-tech.com/" Target="_blank" rel="noopener" Class="py-0" />
             </MudList>
         </MudItem>
         <MudItem xs="12" sm="3" md="2">
@@ -50,7 +50,7 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other devices
                     var filter = new Platform[] { Platform.windows, Platform.play, Platform.ios };
                     @foreach (var store in AppInfo.Stores.Where(p => filter.Contains(p.Platform)))
                     {
-                        <MudListItem Href="@store.Url" Target="_blank" Class="py-0">
+                        <MudListItem Href="@store.Url" Target="_blank" rel="noopener" Class="py-0">
                             <ChildContent>
                                 <MudImage Src="@store.Logo" Class="me-1" Style="width: 20px; vertical-align: top;" />
                                 @store.Store
@@ -63,7 +63,7 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other devices
                     var filter = new Platform[] { Platform.play, Platform.ios };
                     @foreach (var store in AppInfo.Stores.Where(p => filter.Contains(p.Platform)))
                     {
-                        <MudListItem Href="@store.Url" Target="_blank" Class="py-0">
+                        <MudListItem Href="@store.Url" Target="_blank" rel="noopener" Class="py-0">
                             <ChildContent>
                                 <MudImage Src="@store.Logo" Class="me-1" Style="width: 20px; vertical-align: top;" />
                                 @store.Store
@@ -76,7 +76,7 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other devices
                     var filter = new Platform[] { Platform.windows };
                     @foreach (var store in AppInfo.Stores.Where(p => filter.Contains(p.Platform)))
                     {
-                        <MudListItem Href="@store.Url" Target="_blank" Class="py-0">
+                        <MudListItem Href="@store.Url" Target="_blank" rel="noopener" Class="py-0">
                             <ChildContent>
                                 <MudImage Src="@store.Logo" Class="me-1" Style="width: 20px; vertical-align: top;" />
                                 @store.Store
@@ -111,9 +111,9 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other devices
                         Legal
                     </MudText>
                 </MudListSubheader>
-                <MudListItem Text="Terms of Use" Href="/en/legal/terms" Class="py-0" />
-                <MudListItem Text="Privacy Policy" Href="/en/legal/privacy" Class="py-0" />
-                <MudListItem Text="Credits" Href="/en/legal/credits" Class="py-0" />
+                <MudListItem Text="Terms of Use" Href="/en/legal/terms" Class="py-0" rel="nofollow" />
+                <MudListItem Text="Privacy Policy" Href="/en/legal/privacy" Class="py-0" rel="nofollow" />
+                <MudListItem Text="Credits" Href="/en/legal/credits" Class="py-0" rel="nofollow" />
             </MudList>
         </MudItem>
     </MudGrid>

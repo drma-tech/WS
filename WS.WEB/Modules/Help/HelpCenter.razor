@@ -81,7 +81,7 @@
             @foreach (var store in AppInfo.Stores)
             {
                 <MudItem xs="12" sm="6" md="4" lg="3">
-                    <MudButton Variant="Variant.Filled" FullWidth="true" Href="@store.Url" Target="_blank">
+                    <MudButton Variant="Variant.Filled" FullWidth="true" Href="@store.Url" Target="_blank" rel="noopener">
                         <MudImage Src="@store.Logo" Class="me-2" Style="width: 20px; vertical-align: top;" />
                         @store.Store
                     </MudButton>
@@ -107,7 +107,7 @@
                 </MudButton>
             </MudItem>
             <MudItem xs="12" sm="6" md="4" lg="3">
-                <MudButton Variant="Variant.Filled" FullWidth="true" Href="https://www.drma-tech.com" Target="_blank">
+                <MudButton Variant="Variant.Filled" FullWidth="true" Href="https://www.drma-tech.com" Target="_blank" rel="noopener">
                     <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("globe").Font"></MudIcon>
                     Website
                 </MudButton>
@@ -122,7 +122,7 @@
             @foreach (var product in AppInfo.Products)
             {
                 <MudItem xs="12" sm="6" md="4" lg="3">
-                    <MudButton Variant="Variant.Filled" FullWidth="true" Href="@product.Url" Target="_blank">
+                    <MudButton Variant="Variant.Filled" FullWidth="true" Href="@product.Url" Target="_blank" rel="noopener">
                         <MudImage Src="@product.Logo" Class="me-2" Style="width: 20px; vertical-align: top;" />
                         @product.Title
                     </MudButton>

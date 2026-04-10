@@ -21,7 +21,7 @@ else
             <MudButton Href="@_windowsReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/microsoft-store.png" Style="max-width: 35px;"></MudImage> Microsoft Store (Store)
             </MudButton>
-            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.windows).Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.windows).Url" Target="_blank" Rel="noopener" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/microsoft-store.png" Style="max-width: 35px;"></MudImage> Microsoft Store (Site)
             </MudButton>
         }
@@ -30,7 +30,7 @@ else
             <MudButton Href="@_googleReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/google-play.png" Style="max-width: 35px;"></MudImage> Google Play (Store)
             </MudButton>
-            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.play).Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.play).Url" Target="_blank" Rel="noopener" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/google-play.png" Style="max-width: 35px;"></MudImage> Google Play (Site)
             </MudButton>
         }
@@ -40,7 +40,7 @@ else
             <MudButton Href="@_appleReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/app-store.png" Style="max-width: 35px;"></MudImage> App Store (Store)
             </MudButton>
-            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.ios).Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.ios).Url" Target="_blank" Rel="noopener" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/app-store.png" Style="max-width: 35px;"></MudImage> App Store (Site)
             </MudButton>
         }
@@ -50,7 +50,7 @@ else
             <MudButton Href="@_huaweiReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/huawei.png" Style="max-width: 35px;"></MudImage> Huawei AppGallery (Store)
             </MudButton>
-            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.huawei).Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.huawei).Url" Target="_blank" Rel="noopener" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/huawei.png" Style="max-width: 35px;"></MudImage> Huawei AppGallery (Site)
             </MudButton>
         }
@@ -60,7 +60,7 @@ else
             <MudButton Href="@_xiaomiReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/xiaomi.png" Style="max-width: 35px;"></MudImage> Xiaomi GetApps (Store)
             </MudButton>
-            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.xiaomi).Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.xiaomi).Url" Target="_blank" Rel="noopener" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/xiaomi.png" Style="max-width: 35px;"></MudImage> Xiaomi GetApps (Site)
             </MudButton>
         }
@@ -69,7 +69,7 @@ else
             <MudButton Href="@_amazonReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/amazon.png" Style="max-width: 35px;"></MudImage> Amazon Appstore (Store)
             </MudButton>
-            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.amazon).Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.amazon).Url" Target="_blank" Rel="noopener" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/amazon.png" Style="max-width: 35px;"></MudImage> Amazon Appstore (Site)
             </MudButton>
         }
@@ -80,37 +80,37 @@ else //webapp
     <div class="@Css.Build().Raw("store-grid").Small("mb")">
         @if (AppInfo._windowsId.NotEmpty())
         {
-            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.windows).Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.windows).Url" Target="_blank" Rel="noopener" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/microsoft-store.png" Style="max-width: 35px;"></MudImage> Microsoft Store
             </MudButton>
         }
         @if (AppInfo._googleId.NotEmpty())
         {
-            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.play).Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.play).Url" Target="_blank" Rel="noopener" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/google-play.png" Style="max-width: 35px;"></MudImage> Google Play
             </MudButton>
         }
         @if (AppInfo._appleId.NotEmpty())
         {
-            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.ios).Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.ios).Url" Target="_blank" Rel="noopener" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/app-store.png" Style="max-width: 35px;"></MudImage> App Store
             </MudButton>
         }
         @if (AppInfo._huaweiId.NotEmpty())
         {
-            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.huawei).Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.huawei).Url" Target="_blank" Rel="noopener" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/huawei.png" Style="max-width: 35px;"></MudImage> Huawei AppGallery
             </MudButton>
         }
         @if (AppInfo._xiaomiId.NotEmpty())
         {
-            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.xiaomi).Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.xiaomi).Url" Target="_blank" Rel="noopener" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/xiaomi.png" Style="max-width: 35px;"></MudImage> Xiaomi GetApps
             </MudButton>
         }
         @if (AppInfo._amazonId.NotEmpty())
         {
-            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.amazon).Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.amazon).Url" Target="_blank" Rel="noopener" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/amazon.png" Style="max-width: 35px;"></MudImage> Amazon Appstore
             </MudButton>
         }
@@ -128,14 +128,14 @@ else //webapp
         {
             if (product.Live)
             {
-                <MudButton Href="@product.Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+                <MudButton Href="@product.Url" Target="_blank" Rel="noopener" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                     <MudImage Src="@product.Logo" Style="max-width: 35px;"></MudImage> @product.Title
                 </MudButton>
             }
             else
             {
                 <MudBadge Content="@("Beta")" Overlap="true" Color="Color.Warning">
-                    <MudButton Href="@product.Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+                    <MudButton Href="@product.Url" Target="_blank" Rel="noopener" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                         <MudImage Src="@product.Logo" Style="max-width: 35px;"></MudImage> @product.Title
                     </MudButton>
                 </MudBadge>
