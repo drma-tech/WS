@@ -319,28 +319,40 @@ namespace WS.WEB.Modules.Search.Core
 
         private void EmitComponent(XElement urlset, XNamespace ns, XNamespace xhtml, List<(string Href, string? Hreflang)> variants)
         {
-            foreach (var href in variants.Select(v => v.Href))
+            // To reduce sitemap size, emit a single <url> per hreflang group.
+            // Choose canonical href: prefer x-default, then 'en', then first variant.
+            if (variants == null || variants.Count == 0) return;
+
+            string canonical = variants.First().Href;
+            var xDefault = variants.FirstOrDefault(v => string.Equals(v.Hreflang, "x-default", StringComparison.OrdinalIgnoreCase));
+            if (xDefault.Href != null && !string.IsNullOrWhiteSpace(xDefault.Href))
+                canonical = xDefault.Href;
+            else
             {
-                var el = new XElement(ns + "url",
-                    new XElement(ns + "loc", href),
-                    new XElement(ns + "lastmod", DateTime.UtcNow.ToString("yyyy-MM-dd"))
-                );
-
-                if (_includeAlternates)
-                {
-                    foreach (var v in variants)
-                    {
-                        if (string.IsNullOrWhiteSpace(v.Hreflang)) continue;
-                        el.Add(new XElement(xhtml + "link",
-                            new XAttribute("rel", "alternate"),
-                            new XAttribute("hreflang", v.Hreflang),
-                            new XAttribute("href", v.Href)
-                        ));
-                    }
-                }
-
-                urlset.Add(el);
+                var en = variants.FirstOrDefault(v => string.Equals(v.Hreflang, "en", StringComparison.OrdinalIgnoreCase));
+                if (en.Href != null && !string.IsNullOrWhiteSpace(en.Href))
+                    canonical = en.Href;
             }
+
+            var el = new XElement(ns + "url",
+                new XElement(ns + "loc", canonical),
+                new XElement(ns + "lastmod", DateTime.UtcNow.ToString("yyyy-MM-dd"))
+            );
+
+            if (_includeAlternates)
+            {
+                foreach (var v in variants)
+                {
+                    if (string.IsNullOrWhiteSpace(v.Hreflang)) continue;
+                    el.Add(new XElement(xhtml + "link",
+                        new XAttribute("rel", "alternate"),
+                        new XAttribute("hreflang", v.Hreflang),
+                        new XAttribute("href", v.Href)
+                    ));
+                }
+            }
+
+            urlset.Add(el);
         }
     }
 
