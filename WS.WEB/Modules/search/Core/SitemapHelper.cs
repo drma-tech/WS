@@ -134,7 +134,7 @@ namespace WS.WEB.Modules.Search.Core
                 if (!Uri.TryCreate(_baseUri, href, out var abs)) continue;
                 if (abs.Host != _baseUri.Host) continue;
                 if (abs.Scheme != Uri.UriSchemeHttp && abs.Scheme != Uri.UriSchemeHttps) continue;
-                if (!ignoreNoFollow && rel.Contains("nofollow", StringComparison.OrdinalIgnoreCase)) continue;
+                if (ignoreNoFollow && rel.Contains("nofollow", StringComparison.OrdinalIgnoreCase)) continue;
                 result.Add(abs.ToString());
             }
             return result.Distinct(StringComparer.OrdinalIgnoreCase).ToList();
