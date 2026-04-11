@@ -29,7 +29,7 @@
     <MudItem xs="12" md="10">
         <MudToolBar Gutters="false" WrapContent="true">
             <MudNumericField @bind-Value="MaxDepth" Label="Page Depth" Min="1" Max="10" Variant="Variant.Outlined" Class="me-3" />
-            <MudCheckBox T="bool" @bind-Checked="IncludeAlternates" Label="Include translations (hreflang)" Class="me-3" />
+            <MudCheckBox T="bool" @bind-Value="IncludeAlternates" Label="Include translations (hreflang)" Class="me-3" />
             <MudSelect @bind-Value="IgnoreRel" Label="Ignore Rel" Clearable="true" MultiSelection="true" Variant="Variant.Outlined" Class="me-3" Disabled="true">
                 <MudSelectItem Value="@("alternate")">alternate</MudSelectItem>
                 <MudSelectItem Value="@("author")">author</MudSelectItem>
@@ -131,7 +131,7 @@
 
     private Uri? _baseUri { get; set; }
     private string? ResultXml { get; set; }
-    private bool IncludeAlternates { get; set; } = true;
+    private bool IncludeAlternates { get; set; } = false;
 
     private async Task KeyPress(KeyboardEventArgs args)
     {
