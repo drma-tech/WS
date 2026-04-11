@@ -242,24 +242,28 @@ namespace WS.WEB.Modules.Search.Core
                     list = new List<(string, string?)>();
                     groups[key] = list;
                 }
-                if (!list.Any(v => v.Href.Equals(href, StringComparison.OrdinalIgnoreCase) && ((v.Hreflang ?? string.Empty) == (hreflang ?? string.Empty))))
+                if (!list.Any(v => v.Href.Equals(href, StringComparison.OrdinalIgnoreCase) &&
+                                    string.Equals(v.Hreflang ?? string.Empty, hreflang ?? string.Empty, StringComparison.OrdinalIgnoreCase)))
                     list.Add((href, hreflang));
             }
 
             foreach (var p in pagesByUrl.Values)
             {
                 // include the page itself
+                var pageKey = NormalizePath(p.Url!);
                 AddVariant(p.Url!, null);
                 if (p.Alternates == null) continue;
                 foreach (var a in p.Alternates)
                 {
                     if (string.IsNullOrWhiteSpace(a.Href)) continue;
+                    // only include alternates that refer to the same normalized path
+                    if (NormalizePath(a.Href) != pageKey) continue;
                     AddVariant(a.Href, a.Hreflang);
                 }
             }
 
             // try to infer hreflang for items lacking it by checking alternates pointing to same href
-            foreach (var kv in groups)
+            foreach (var kv in groups.ToList())
             {
                 var list = kv.Value;
                 for (int i = 0; i < list.Count; i++)
@@ -273,8 +277,31 @@ namespace WS.WEB.Modules.Search.Core
                         var f = p.Alternates.FirstOrDefault(x => x.Href.Equals(list[i].Href, StringComparison.OrdinalIgnoreCase));
                         if (f != null && !string.IsNullOrWhiteSpace(f.Hreflang)) { found = f.Hreflang; break; }
                     }
-                    if (found != null) list[i] = (list[i].Href, found);
+                    if (found != null)
+                    {
+                        list[i] = (list[i].Href, found);
+                    }
                 }
+
+                // remove duplicate hreflang entries keeping first occurrence
+                var dedup = new List<(string Href, string? Hreflang)>();
+                var seenHreflang = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                foreach (var v in list)
+                {
+                    var key = v.Hreflang ?? string.Empty;
+                    if (string.IsNullOrWhiteSpace(key))
+                    {
+                        if (!dedup.Any(x => x.Href.Equals(v.Href, StringComparison.OrdinalIgnoreCase)))
+                            dedup.Add(v);
+                        continue;
+                    }
+                    if (!seenHreflang.Contains(key))
+                    {
+                        seenHreflang.Add(key);
+                        dedup.Add(v);
+                    }
+                }
+                groups[kv.Key] = dedup;
             }
 
             return groups;
@@ -301,13 +328,19 @@ namespace WS.WEB.Modules.Search.Core
 
             if (_includeAlternates)
             {
+                var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 foreach (var v in variants)
                 {
                     if (string.IsNullOrWhiteSpace(v.Hreflang)) continue;
+                    var hreflang = v.Hreflang!.Trim();
+                    var href = v.Href.Trim();
+                    var key = hreflang + "|" + href;
+                    if (seen.Contains(key)) continue;
+                    seen.Add(key);
                     el.Add(new XElement(xhtml + "link",
                         new XAttribute("rel", "alternate"),
-                        new XAttribute("hreflang", v.Hreflang),
-                        new XAttribute("href", v.Href)
+                        new XAttribute("hreflang", hreflang),
+                        new XAttribute("href", href)
                     ));
                 }
             }
