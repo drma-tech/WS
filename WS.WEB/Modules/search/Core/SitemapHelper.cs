@@ -338,32 +338,44 @@ namespace WS.WEB.Modules.Search.Core
                     }
                 }
 
-                // remove duplicate hreflang entries keeping first occurrence and dedupe exact pairs
-                var dedup = new List<(string Href, string? Hreflang)>();
+                // remove duplicates and prefer entries that include a hreflang when both
+                // hreflang-less and hreflangful variants point to the same normalized href.
+                // Also ensure each hreflang appears at most once per group.
+                var hrefMap = new Dictionary<string, (string Href, string? Hreflang)>(StringComparer.OrdinalIgnoreCase);
                 var seenHreflang = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-                var seenPair = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
                 foreach (var v in list)
                 {
                     var hre = (v.Hreflang ?? string.Empty).Trim();
                     var hrefNorm = NormalizeHref(v.Href);
-                    var pairKey = hre + "|" + hrefNorm;
-                    if (seenPair.Contains(pairKey)) continue;
-                    seenPair.Add(pairKey);
 
-                    if (string.IsNullOrWhiteSpace(hre))
+                    if (!string.IsNullOrWhiteSpace(hre))
                     {
-                        // allow one entry without hreflang per href
-                        if (!dedup.Any(x => NormalizeHref(x.Href).Equals(hrefNorm, StringComparison.OrdinalIgnoreCase)))
-                            dedup.Add(v);
-                        continue;
-                    }
-                    if (!seenHreflang.Contains(hre))
-                    {
+                        // skip duplicate hreflang values
+                        if (seenHreflang.Contains(hre)) continue;
                         seenHreflang.Add(hre);
-                        dedup.Add(v);
+
+                        if (hrefMap.TryGetValue(hrefNorm, out var existing))
+                        {
+                            // prefer entry that has hreflang over one without
+                            if (string.IsNullOrWhiteSpace(existing.Hreflang))
+                                hrefMap[hrefNorm] = v;
+                            // otherwise keep existing (first)
+                        }
+                        else
+                        {
+                            hrefMap[hrefNorm] = v;
+                        }
+                    }
+                    else
+                    {
+                        // add hreflang-less only if there's no entry yet for this href
+                        if (!hrefMap.ContainsKey(hrefNorm))
+                            hrefMap[hrefNorm] = v;
                     }
                 }
-                groups[kv.Key] = dedup;
+
+                groups[kv.Key] = hrefMap.Values.ToList();
             }
 
             return groups;
