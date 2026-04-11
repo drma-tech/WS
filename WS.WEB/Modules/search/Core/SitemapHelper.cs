@@ -16,6 +16,14 @@ namespace WS.WEB.Modules.Search.Core
         private readonly bool _includeAlternates = includeAlternates;
         private readonly List<PageData> _pages = new();
 
+        private static bool IsLanguageSegment(string s)
+        {
+            if (string.IsNullOrEmpty(s)) return false;
+            if (s.Length == 2 && s.All(char.IsLetter)) return true; // en, pt, es
+            if (s.Length == 5 && s[2] == '-' && char.IsLetter(s[0]) && char.IsLetter(s[1])) return true; // pt-BR
+            return false;
+        }
+
         public async Task<string?> RunAsync()
         {
             await CrawlAsync(_baseUri.ToString());
@@ -25,6 +33,7 @@ namespace WS.WEB.Modules.Search.Core
         private async Task CrawlAsync(string startUrl)
         {
             var queue = new Queue<(string url, int depth)>();
+            // visited stores normalized visit keys (path without language prefix) to avoid crawling every language variant
             var visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
             queue.Enqueue((startUrl, 0));
@@ -32,17 +41,18 @@ namespace WS.WEB.Modules.Search.Core
             while (queue.Count > 0)
             {
                 var (url, depth) = queue.Dequeue();
-                if (visited.Contains(url) || depth > maxDepth)
+                var visitKey = NormalizeUrlForVisit(url);
+                if (visited.Contains(visitKey) || depth > maxDepth)
                     continue;
 
                 var html = await FetchHtmlAsync(url);
                 if (html == null)
                 {
-                    visited.Add(url);
+                    visited.Add(visitKey);
                     continue;
                 }
 
-                visited.Add(url);
+                visited.Add(visitKey);
 
                 var doc = new HtmlDocument();
                 doc.LoadHtml(html);
@@ -61,9 +71,10 @@ namespace WS.WEB.Modules.Search.Core
                 var links = ExtractLinks(doc);
                 EnqueueLinks(queue, visited, links, depth + 1);
 
-                // enqueue alternates as pages to crawl
-                if (_includeAlternates && page.Alternates != null)
-                    EnqueueAlternateUrls(queue, visited, page.Alternates, depth + 1);
+                // do not enqueue alternates for crawling — we only need the alternates declared on pages
+                // enqueuing alternate-language pages causes redundant downloads for each language and is not necessary
+                // if (_includeAlternates && page.Alternates != null)
+                //     EnqueueAlternateUrls(queue, visited, page.Alternates, depth + 1);
             }
         }
 
@@ -88,7 +99,7 @@ namespace WS.WEB.Modules.Search.Core
             foreach (var n in nodes)
             {
                 var rel = n.GetAttributeValue("rel", "");
-                if (!(rel ?? string.Empty).Split([' '], StringSplitOptions.RemoveEmptyEntries)
+                if (!(rel ?? string.Empty).Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
                         .Any(r => r.Equals("alternate", StringComparison.OrdinalIgnoreCase)))
                     continue;
 
@@ -129,24 +140,36 @@ namespace WS.WEB.Modules.Search.Core
             return result.Distinct(StringComparer.OrdinalIgnoreCase).ToList();
         }
 
-        private static void EnqueueLinks(Queue<(string url, int depth)> queue, HashSet<string> visited, List<string> links, int depth)
+        // Normalize url for visit uniqueness: strip language prefix from path to avoid crawling every language variant
+        private string NormalizeUrlForVisit(string url)
         {
-            foreach (var link in links)
+            try
             {
-                if (visited.Contains(link) || queue.Any(q => q.url.Equals(link, StringComparison.OrdinalIgnoreCase))) continue;
-                queue.Enqueue((link, depth));
+                var u = new Uri(url);
+                var path = u.AbsolutePath.Trim('/');
+                if (string.IsNullOrEmpty(path)) return u.Scheme + "://" + u.Host;
+                var segs = path.Split('/');
+                // drop first language segment if present
+                if (IsLanguageSegment(segs[0]))
+                {
+                    var rest = string.Join('/', segs.Skip(1));
+                    return u.Scheme + "://" + u.Host + "/" + rest;
+                }
+                return u.Scheme + "://" + u.Host + "/" + string.Join('/', segs);
+            }
+            catch
+            {
+                return url;
             }
         }
 
-        private void EnqueueAlternateUrls(Queue<(string url, int depth)> queue, HashSet<string> visited, List<AlternateData> alternates, int depth)
+        private void EnqueueLinks(Queue<(string url, int depth)> queue, HashSet<string> visited, List<string> links, int depth)
         {
-            foreach (var alt in alternates)
+            foreach (var link in links)
             {
-                if (string.IsNullOrWhiteSpace(alt.Href)) continue;
-                if (!Uri.TryCreate(alt.Href, UriKind.Absolute, out var altUri)) continue;
-                if (altUri.Host != _baseUri.Host) continue;
-                if (visited.Contains(alt.Href) || queue.Any(q => q.url.Equals(alt.Href, StringComparison.OrdinalIgnoreCase))) continue;
-                queue.Enqueue((alt.Href, depth));
+                var key = NormalizeUrlForVisit(link);
+                if (visited.Contains(key) || queue.Any(q => NormalizeUrlForVisit(q.url).Equals(key, StringComparison.OrdinalIgnoreCase))) continue;
+                queue.Enqueue((link, depth));
             }
         }
 
@@ -199,7 +222,7 @@ namespace WS.WEB.Modules.Search.Core
 
         private Dictionary<string, List<(string Href, string? Hreflang)>> BuildGroups(Dictionary<string, PageData> pagesByUrl)
         {
-            // key: normalized path (without language prefix), value: list of variants (href, hreflang)
+            // key: normalized path (without language prefix), value: list of variants (normalized href, hreflang)
             var groups = new Dictionary<string, List<(string Href, string? Hreflang)>>(StringComparer.OrdinalIgnoreCase);
 
             string NormalizePath(string href)
@@ -233,7 +256,26 @@ namespace WS.WEB.Modules.Search.Core
                 return false;
             }
 
-            // add a variant to a group
+            string NormalizeHref(string href)
+            {
+                try
+                {
+                    var u = new Uri(href);
+                    var scheme = u.Scheme.ToLowerInvariant();
+                    var host = u.Host.ToLowerInvariant();
+                    var port = u.IsDefaultPort ? string.Empty : ":" + u.Port;
+                    var path = u.AbsolutePath.TrimEnd('/');
+                    if (string.IsNullOrEmpty(path)) path = "/";
+                    // intentionally drop query and fragment to avoid duplicates caused by tracking params
+                    return scheme + "://" + host + port + path;
+                }
+                catch
+                {
+                    return href?.TrimEnd('/') ?? string.Empty;
+                }
+            }
+
+            // add a variant to a group using normalized href for comparisons
             void AddVariant(string href, string? hreflang)
             {
                 if (string.IsNullOrWhiteSpace(href)) return;
@@ -249,16 +291,19 @@ namespace WS.WEB.Modules.Search.Core
                 if (!string.IsNullOrWhiteSpace(hreflang))
                     normH = hreflang!.Trim();
 
-                // avoid exact duplicates (href + hreflang)
-                if (!list.Any(v => v.Href.Equals(href, StringComparison.OrdinalIgnoreCase) &&
-                                    string.Equals((v.Hreflang ?? string.Empty).Trim(), (normH ?? string.Empty).Trim(), StringComparison.OrdinalIgnoreCase)))
+                var normHref = NormalizeHref(href);
+
+                // avoid duplicates by normalized href + hreflang
+                if (!list.Any(v => NormalizeHref(v.Href).Equals(normHref, StringComparison.OrdinalIgnoreCase)
+                                   && string.Equals((v.Hreflang ?? string.Empty).Trim(), (normH ?? string.Empty).Trim(), StringComparison.OrdinalIgnoreCase)))
                 {
-                    list.Add((href, normH));
+                    list.Add((normHref, normH));
                 }
             }
 
             foreach (var p in pagesByUrl.Values)
             {
+                if (string.IsNullOrWhiteSpace(p.Url)) continue;
                 // include the page itself
                 var pageKey = NormalizePath(p.Url!);
                 AddVariant(p.Url!, null);
@@ -266,13 +311,12 @@ namespace WS.WEB.Modules.Search.Core
                 foreach (var a in p.Alternates)
                 {
                     if (string.IsNullOrWhiteSpace(a.Href)) continue;
-                    // only include alternates that refer to the same normalized path
-                    if (NormalizePath(a.Href) != pageKey) continue;
+                    // include alternates declared on the page; grouping/dedupe happens later
                     AddVariant(a.Href, a.Hreflang);
                 }
             }
 
-            // try to infer hreflang for items lacking it by checking alternates pointing to same href
+            // try to infer hreflang for items lacking it by checking alternates pointing to same normalized href
             foreach (var kv in groups.ToList())
             {
                 var list = kv.Value;
@@ -281,10 +325,11 @@ namespace WS.WEB.Modules.Search.Core
                     if (!string.IsNullOrWhiteSpace(list[i].Hreflang)) continue;
                     // search across pages for declared hreflang
                     string? found = null;
+                    var targetNorm = NormalizeHref(list[i].Href);
                     foreach (var p in pagesByUrl.Values)
                     {
                         if (p.Alternates == null) continue;
-                        var f = p.Alternates.FirstOrDefault(x => x.Href.Equals(list[i].Href, StringComparison.OrdinalIgnoreCase));
+                        var f = p.Alternates.FirstOrDefault(x => NormalizeHref(x.Href).Equals(targetNorm, StringComparison.OrdinalIgnoreCase));
                         if (f != null && !string.IsNullOrWhiteSpace(f.Hreflang)) { found = f.Hreflang; break; }
                     }
                     if (found != null)
@@ -293,21 +338,28 @@ namespace WS.WEB.Modules.Search.Core
                     }
                 }
 
-                // remove duplicate hreflang entries keeping first occurrence
+                // remove duplicate hreflang entries keeping first occurrence and dedupe exact pairs
                 var dedup = new List<(string Href, string? Hreflang)>();
                 var seenHreflang = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                var seenPair = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 foreach (var v in list)
                 {
-                    var key = v.Hreflang ?? string.Empty;
-                    if (string.IsNullOrWhiteSpace(key))
+                    var hre = (v.Hreflang ?? string.Empty).Trim();
+                    var hrefNorm = NormalizeHref(v.Href);
+                    var pairKey = hre + "|" + hrefNorm;
+                    if (seenPair.Contains(pairKey)) continue;
+                    seenPair.Add(pairKey);
+
+                    if (string.IsNullOrWhiteSpace(hre))
                     {
-                        if (!dedup.Any(x => x.Href.Equals(v.Href, StringComparison.OrdinalIgnoreCase)))
+                        // allow one entry without hreflang per href
+                        if (!dedup.Any(x => NormalizeHref(x.Href).Equals(hrefNorm, StringComparison.OrdinalIgnoreCase)))
                             dedup.Add(v);
                         continue;
                     }
-                    if (!seenHreflang.Contains(key))
+                    if (!seenHreflang.Contains(hre))
                     {
-                        seenHreflang.Add(key);
+                        seenHreflang.Add(hre);
                         dedup.Add(v);
                     }
                 }
@@ -351,101 +403,6 @@ namespace WS.WEB.Modules.Search.Core
                         new XAttribute("rel", "alternate"),
                         new XAttribute("hreflang", hreflang),
                         new XAttribute("href", href)
-                    ));
-                }
-            }
-
-            urlset.Add(el);
-        }
-
-        private List<(string Href, string? Hreflang)> BuildVariantsForComponent(List<string> comp)
-        {
-            static string? InferHreflangFromUrl(string url)
-            {
-                try
-                {
-                    var u = new Uri(url);
-                    var path = u.AbsolutePath.Trim('/');
-                    if (string.IsNullOrEmpty(path)) return null;
-                    var seg = path.Split('/')[0];
-                    if (seg.Length == 2 || (seg.Length == 5 && seg.Contains('-')))
-                        return seg.ToLowerInvariant();
-                }
-                catch { }
-                return null;
-            }
-
-            var variants = new List<(string Href, string? Hreflang)>();
-            foreach (var href in comp)
-            {
-                string? hreflang = null;
-                foreach (var p in _pages)
-                {
-                    if (p.Alternates == null) continue;
-                    var found = p.Alternates.FirstOrDefault(a => a.Href.Equals(href, StringComparison.OrdinalIgnoreCase));
-                    if (found != null && !string.IsNullOrWhiteSpace(found.Hreflang))
-                    {
-                        hreflang = found.Hreflang;
-                        break;
-                    }
-                }
-
-                if (string.IsNullOrWhiteSpace(hreflang))
-                    hreflang = InferHreflangFromUrl(href);
-
-                variants.Add((href, hreflang));
-            }
-
-            var xDefaultHref = (from p in _pages
-                                where p.Alternates != null
-                                from a in p.Alternates
-                                where a.Hreflang != null && a.Hreflang.Equals("x-default", StringComparison.OrdinalIgnoreCase)
-                                && comp.Contains(a.Href, StringComparer.OrdinalIgnoreCase)
-                                select a.Href).FirstOrDefault();
-
-            if (xDefaultHref != null)
-            {
-                var idx = variants.FindIndex(v => v.Href.Equals(xDefaultHref, StringComparison.OrdinalIgnoreCase));
-                if (idx >= 0)
-                    variants[idx] = (variants[idx].Href, "x-default");
-                else
-                    variants.Add((xDefaultHref, "x-default"));
-            }
-
-            return variants;
-        }
-
-        private void EmitComponent(XElement urlset, XNamespace ns, XNamespace xhtml, List<(string Href, string? Hreflang)> variants)
-        {
-            // To reduce sitemap size, emit a single <url> per hreflang group.
-            // Choose canonical href: prefer x-default, then 'en', then first variant.
-            if (variants == null || variants.Count == 0) return;
-
-            string canonical = variants.First().Href;
-            var xDefault = variants.FirstOrDefault(v => string.Equals(v.Hreflang, "x-default", StringComparison.OrdinalIgnoreCase));
-            if (xDefault.Href != null && !string.IsNullOrWhiteSpace(xDefault.Href))
-                canonical = xDefault.Href;
-            else
-            {
-                var en = variants.FirstOrDefault(v => string.Equals(v.Hreflang, "en", StringComparison.OrdinalIgnoreCase));
-                if (en.Href != null && !string.IsNullOrWhiteSpace(en.Href))
-                    canonical = en.Href;
-            }
-
-            var el = new XElement(ns + "url",
-                new XElement(ns + "loc", canonical),
-                new XElement(ns + "lastmod", DateTime.UtcNow.ToString("yyyy-MM-dd"))
-            );
-
-            if (_includeAlternates)
-            {
-                foreach (var v in variants)
-                {
-                    if (string.IsNullOrWhiteSpace(v.Hreflang)) continue;
-                    el.Add(new XElement(xhtml + "link",
-                        new XAttribute("rel", "alternate"),
-                        new XAttribute("hreflang", v.Hreflang),
-                        new XAttribute("href", v.Href)
                     ));
                 }
             }
