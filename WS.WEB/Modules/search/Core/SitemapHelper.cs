@@ -7,16 +7,13 @@ namespace WS.WEB.Modules.Search.Core
 {
     public class SitemapHelper(HttpClient http,
         string baseUrl,
-        bool includeImages = false,
-        bool includeVideos = false,
-        bool includeNews = false,
         bool includeAlternates = false,
         bool ignoreNoFollow = true,
         string? ignoreTarget = "_blank",
         int maxDepth = 3)
     {
         private readonly Uri _baseUri = new(baseUrl);
-
+        private readonly bool _includeAlternates = includeAlternates;
         private readonly List<PageData> _pages = [];
 
         public async Task<string?> RunAsync()
@@ -28,145 +25,128 @@ namespace WS.WEB.Modules.Search.Core
         private async Task CrawlAsync(string startUrl)
         {
             var queue = new Queue<(string url, int depth)>();
-            var _visited = new HashSet<string>();
+            var visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
             queue.Enqueue((startUrl, 0));
 
             while (queue.Count > 0)
             {
                 var (url, depth) = queue.Dequeue();
-
-                if (_visited.Contains(url) || depth > maxDepth)
+                if (visited.Contains(url) || depth > maxDepth)
                     continue;
 
-                var response = await http.GetAsync(url);
-                if (!response.IsSuccessStatusCode)
+                var html = await FetchHtmlAsync(url);
+                if (html == null)
                 {
-                    _visited.Add(url);
+                    visited.Add(url);
                     continue;
                 }
 
-                var html = await response.Content.ReadAsStringAsync();
-                _visited.Add(url);
+                visited.Add(url);
 
                 var doc = new HtmlDocument();
                 doc.LoadHtml(html);
 
                 var page = new PageData { Url = url };
 
-                //if (_includeImages)
-                //{
-                //    var images = doc.DocumentNode
-                //        .SelectNodes("//img[@src]")
-                //        ?.Select(img => new Uri(_baseUri, img.GetAttributeValue("src", "")).ToString())
-                //        .Distinct()
-                //        .ToList() ?? [];
-                //    page.Images = images;
-                //}
-
-                //if (_includeVideos)
-                //{
-                //    var videos = doc.DocumentNode
-                //        .SelectNodes("//video/source[@src] | //video[@src]")
-                //        ?.Select(v =>
-                //            v.GetAttributeValue("src", "") is { } s && !string.IsNullOrWhiteSpace(s)
-                //                ? new Uri(_baseUri, s).ToString()
-                //                : null
-                //        )
-                //        .Where(s => s != null)
-                //        .Distinct()
-                //        .ToList() ?? [];
-                //    page.Videos = videos;
-                //}
-
-                //if (_includeNews)
-                //{
-                //    var title = doc.DocumentNode.SelectSingleNode("//title")?.InnerText?.Trim();
-                //    var pubDate = doc.DocumentNode.SelectSingleNode("//meta[@name='pubdate']")?.GetAttributeValue("content", null)
-                //                  ?? doc.DocumentNode.SelectSingleNode("//meta[@property='article:published_time']")?.GetAttributeValue("content", null);
-
-                //    if (pubDate != null)
-                //    {
-                //        page.News = new NewsData
-                //        {
-                //            Title = title ?? "",
-                //            PublicationDate = pubDate,
-                //            PublicationName = _baseUri.Host
-                //        };
-                //    }
-                //}
-
-                // extract alternate language links like: <link rel="alternate" hreflang="pt" href="https://..." />
-                if (includeAlternates)
-                {
-                    var alternates = doc.DocumentNode.SelectNodes("//link[@href]")
-                        ?.Select(n => new
-                        {
-                            rel = n.GetAttributeValue("rel", ""),
-                            hreflang = n.GetAttributeValue("hreflang", ""),
-                            href = n.GetAttributeValue("href", "")
-                        })
-                        .Where(l => !string.IsNullOrWhiteSpace(l.href)
-                                    && !string.IsNullOrWhiteSpace(l.hreflang)
-                                    && (l.rel ?? "").Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                                        .Any(r => r.Equals("alternate", StringComparison.OrdinalIgnoreCase)))
-                        .Select(l => new AlternateData { Hreflang = l.hreflang, Href = new Uri(_baseUri, l.href).ToString() })
-                        .GroupBy(a => a.Hreflang + "|" + a.Href)
-                        .Select(g => g.First())
-                        .ToList() ?? [];
-
-                    page.Alternates = alternates;
-
-                    // Ensure alternate URLs are also crawled and added as primary pages
-                    foreach (var href in alternates.Select(s => s.Href))
-                    {
-                        if (string.IsNullOrWhiteSpace(href))
-                            continue;
-
-                        if (Uri.TryCreate(href, UriKind.Absolute, out var altUri))
-                        {
-                            if (altUri.Host == _baseUri.Host && (altUri.Scheme == Uri.UriSchemeHttp || altUri.Scheme == Uri.UriSchemeHttps))
-                            {
-                                // don't enqueue if already visited or already in queue
-                                if (!_visited.Contains(href) && !queue.Any(q => q.url == href))
-                                {
-                                    queue.Enqueue((href, depth + 1));
-                                }
-                            }
-                        }
-                    }
-                }
+                if (_includeAlternates)
+                    page.Alternates = ExtractAlternates(doc);
 
                 _pages.Add(page);
 
-                if (depth == maxDepth)
+                if (depth >= maxDepth)
                     continue;
 
-                var links = doc.DocumentNode.SelectNodes("//a[@href]")
-                    ?.Select(a => new
-                    {
-                        href = a.GetAttributeValue("href", ""),
-                        rel = a.GetAttributeValue("rel", ""),
-                        target = a.GetAttributeValue("target", "")
-                    })
-                    .Where(link =>
-                        Uri.TryCreate(_baseUri, link.href, out var absUri)
-                        && absUri.Host == _baseUri.Host
-                        && (absUri.Scheme == Uri.UriSchemeHttp || absUri.Scheme == Uri.UriSchemeHttps)
-                        && (!ignoreNoFollow || !link.rel.Contains("nofollow", StringComparison.OrdinalIgnoreCase))
-                    //&& (ignoreTarget == null || !link.target.Equals(ignoreTarget, StringComparison.OrdinalIgnoreCase))
-                    )
-                    .Select(link => new Uri(_baseUri, link.href).ToString())
-                    .Distinct()
-                    .ToList();
+                // enqueue ordinary links
+                var links = ExtractLinks(doc);
+                EnqueueLinks(queue, visited, links, depth + 1);
 
-                if (links != null)
+                // enqueue alternates as pages to crawl
+                if (_includeAlternates && page.Alternates != null)
+                    EnqueueAlternateUrls(queue, visited, page.Alternates, depth + 1);
+            }
+        }
+
+        private async Task<string?> FetchHtmlAsync(string url)
+        {
+            try
+            {
+                var response = await http.GetAsync(url);
+                if (!response.IsSuccessStatusCode) return null;
+                return await response.Content.ReadAsStringAsync();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private List<AlternateData> ExtractAlternates(HtmlDocument doc)
+        {
+            var nodes = doc.DocumentNode.SelectNodes("//link[@href]") ?? new HtmlNodeCollection(null);
+            var list = new List<AlternateData>();
+            foreach (var n in nodes)
+            {
+                var rel = n.GetAttributeValue("rel", "");
+                if (!(rel ?? string.Empty).Split([' '], StringSplitOptions.RemoveEmptyEntries)
+                        .Any(r => r.Equals("alternate", StringComparison.OrdinalIgnoreCase)))
+                    continue;
+
+                var hreflang = n.GetAttributeValue("hreflang", "");
+                var href = n.GetAttributeValue("href", "");
+                if (string.IsNullOrWhiteSpace(hreflang) || string.IsNullOrWhiteSpace(href))
+                    continue;
+
+                try
                 {
-                    foreach (var link in links.Where(link => !_visited.Contains(link)))
-                    {
-                        queue.Enqueue((link, depth + 1));
-                    }
+                    var abs = new Uri(_baseUri, href).ToString();
+                    if (!list.Any(a => a.Href.Equals(abs, StringComparison.OrdinalIgnoreCase) && a.Hreflang.Equals(hreflang, StringComparison.OrdinalIgnoreCase)))
+                        list.Add(new AlternateData { Hreflang = hreflang, Href = abs });
                 }
+                catch
+                {
+                    // ignore invalid hrefs
+                }
+            }
+
+            return list;
+        }
+
+        private List<string> ExtractLinks(HtmlDocument doc)
+        {
+            var nodes = doc.DocumentNode.SelectNodes("//a[@href]") ?? new HtmlNodeCollection(null);
+            var result = new List<string>();
+            foreach (var a in nodes)
+            {
+                var href = a.GetAttributeValue("href", "");
+                var rel = a.GetAttributeValue("rel", "");
+                if (!Uri.TryCreate(_baseUri, href, out var abs)) continue;
+                if (abs.Host != _baseUri.Host) continue;
+                if (abs.Scheme != Uri.UriSchemeHttp && abs.Scheme != Uri.UriSchemeHttps) continue;
+                if (!ignoreNoFollow && rel.Contains("nofollow", StringComparison.OrdinalIgnoreCase)) continue;
+                result.Add(abs.ToString());
+            }
+            return result.Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+        }
+
+        private static void EnqueueLinks(Queue<(string url, int depth)> queue, HashSet<string> visited, List<string> links, int depth)
+        {
+            foreach (var link in links)
+            {
+                if (visited.Contains(link) || queue.Any(q => q.url.Equals(link, StringComparison.OrdinalIgnoreCase))) continue;
+                queue.Enqueue((link, depth));
+            }
+        }
+
+        private void EnqueueAlternateUrls(Queue<(string url, int depth)> queue, HashSet<string> visited, List<AlternateData> alternates, int depth)
+        {
+            foreach (var alt in alternates)
+            {
+                if (string.IsNullOrWhiteSpace(alt.Href)) continue;
+                if (!Uri.TryCreate(alt.Href, UriKind.Absolute, out var altUri)) continue;
+                if (altUri.Host != _baseUri.Host) continue;
+                if (visited.Contains(alt.Href) || queue.Any(q => q.url.Equals(alt.Href, StringComparison.OrdinalIgnoreCase))) continue;
+                queue.Enqueue((alt.Href, depth));
             }
         }
 
@@ -176,9 +156,7 @@ namespace WS.WEB.Modules.Search.Core
             //<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml = "http://www.w3.org/1999/xhtml" >
 
             XNamespace ns = "http://www.sitemaps.org/schemas/sitemap/0.9";
-            //XNamespace nsImg = "http://www.google.com/schemas/sitemap-image/1.1";
-            //XNamespace nsVid = "http://www.google.com/schemas/sitemap-video/1.1";
-            //XNamespace nsNews = "http://www.google.com/schemas/sitemap-news/0.9";
+
             XNamespace xsi = "http://www.w3.org/2001/XMLSchema-instance";
             XNamespace xhtml = "http://www.w3.org/1999/xhtml";
 
@@ -188,85 +166,14 @@ namespace WS.WEB.Modules.Search.Core
                 new XAttribute(xsi + "schemaLocation", "http://www.sitemaps.org/schemas/sitemap/0.9 " + "http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd")
             );
 
-            //if (_includeImages) urlset.Add(new XAttribute(XNamespace.Xmlns + "image", nsImg));
-            //if (_includeVideos) urlset.Add(new XAttribute(XNamespace.Xmlns + "video", nsVid));
-            //if (_includeNews) urlset.Add(new XAttribute(XNamespace.Xmlns + "news", nsNews));
+            var pagesByUrl = BuildPagesByUrl();
+            var (allUrls, adj) = BuildAdjacency(pagesByUrl);
 
-            // Build a lookup for quick access
-            var pagesByUrl = _pages
-                .Where(p => !string.IsNullOrWhiteSpace(p.Url))
-                .GroupBy(p => p.Url)
-                .Select(g => g.First())
-                .ToDictionary(p => p.Url!, StringComparer.OrdinalIgnoreCase);
-
-            var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
-            XElement BuildUrlElement(PageData p, bool includeAlternateLinks)
+            var components = GetConnectedComponents(allUrls, adj);
+            foreach (var comp in components)
             {
-                var el = new XElement(ns + "url",
-                    new XElement(ns + "loc", p.Url),
-                    new XElement(ns + "lastmod", DateTime.UtcNow.ToString("yyyy-MM-dd"))
-                );
-
-                if (includeAlternateLinks && includeAlternates && p.Alternates != null)
-                {
-                    foreach (var alt in p.Alternates)
-                    {
-                        if (string.IsNullOrWhiteSpace(alt.Href))
-                            continue;
-
-                        el.Add(new XElement(xhtml + "link",
-                            new XAttribute("rel", "alternate"),
-                            new XAttribute("hreflang", alt.Hreflang),
-                            new XAttribute("href", alt.Href)
-                        ));
-                    }
-                }
-
-                return el;
-            }
-
-            // First, emit pages that declare alternates, grouping them with their alternates immediately after the primary
-            foreach (var page in _pages.Where(p => p.Alternates != null && p.Alternates.Count > 0))
-            {
-                if (string.IsNullOrWhiteSpace(page.Url) || seen.Contains(page.Url))
-                    continue;
-
-                // primary
-                urlset.Add(BuildUrlElement(page, includeAlternateLinks: true));
-                seen.Add(page.Url!);
-
-                // alternates follow immediately
-                foreach (var href in page.Alternates?.Select(s => s.Href) ?? [])
-                {
-                    if (string.IsNullOrWhiteSpace(href) || seen.Contains(href))
-                        continue;
-
-                    if (pagesByUrl.TryGetValue(href, out var altPage))
-                    {
-                        urlset.Add(BuildUrlElement(altPage, includeAlternateLinks: false));
-                    }
-                    else
-                    {
-                        // Emit minimal entry if we don't have full PageData
-                        urlset.Add(new XElement(ns + "url",
-                            new XElement(ns + "loc", href),
-                            new XElement(ns + "lastmod", DateTime.UtcNow.ToString("yyyy-MM-dd"))
-                        ));
-                    }
-
-                    seen.Add(href);
-                }
-            }
-
-            // Then emit remaining pages that were not part of any alternate group
-            foreach (var page in _pages)
-            {
-                if (string.IsNullOrWhiteSpace(page.Url) || seen.Contains(page.Url))
-                    continue;
-
-                urlset.Add(BuildUrlElement(page, includeAlternateLinks: includeAlternates));
-                seen.Add(page.Url!);
+                var variants = BuildVariantsForComponent(comp);
+                EmitComponent(urlset, ns, xhtml, variants);
             }
 
             var sitemap = new XDocument(new XDeclaration("1.0", "UTF-8", null), urlset);
@@ -280,6 +187,160 @@ namespace WS.WEB.Modules.Search.Core
             }
 
             return stringWriter.ToString();
+        }
+
+        private Dictionary<string, PageData> BuildPagesByUrl()
+        {
+            return _pages
+                .Where(p => !string.IsNullOrWhiteSpace(p.Url))
+                .GroupBy(p => p.Url)
+                .Select(g => g.First())
+                .ToDictionary(p => p.Url!, StringComparer.OrdinalIgnoreCase);
+        }
+
+        private static (HashSet<string> allUrls, Dictionary<string, HashSet<string>> adj) BuildAdjacency(Dictionary<string, PageData> pagesByUrl)
+        {
+            var allUrls = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var adj = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
+
+            void AddNode(string u)
+            {
+                if (!allUrls.Contains(u))
+                {
+                    allUrls.Add(u);
+                    adj[u] = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                }
+            }
+
+            foreach (var p in pagesByUrl.Values)
+            {
+                AddNode(p.Url!);
+                if (p.Alternates == null) continue;
+                foreach (var alt in p.Alternates)
+                {
+                    if (string.IsNullOrWhiteSpace(alt.Href)) continue;
+                    AddNode(alt.Href);
+                    adj[p.Url!].Add(alt.Href);
+                    adj[alt.Href].Add(p.Url!);
+                }
+            }
+
+            return (allUrls, adj);
+        }
+
+        private static List<List<string>> GetConnectedComponents(HashSet<string> allUrls, Dictionary<string, HashSet<string>> adj)
+        {
+            var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var result = new List<List<string>>();
+
+            foreach (var start in allUrls)
+            {
+                if (seen.Contains(start)) continue;
+                var comp = new List<string>();
+                var q = new Queue<string>();
+                q.Enqueue(start);
+                seen.Add(start);
+                while (q.Count > 0)
+                {
+                    var u = q.Dequeue();
+                    comp.Add(u);
+                    if (!adj.TryGetValue(u, out var neighbors)) continue;
+                    foreach (var v in neighbors)
+                    {
+                        if (!seen.Contains(v))
+                        {
+                            seen.Add(v);
+                            q.Enqueue(v);
+                        }
+                    }
+                }
+                result.Add(comp);
+            }
+
+            return result;
+        }
+
+        private List<(string Href, string? Hreflang)> BuildVariantsForComponent(List<string> comp)
+        {
+            static string? InferHreflangFromUrl(string url)
+            {
+                try
+                {
+                    var u = new Uri(url);
+                    var path = u.AbsolutePath.Trim('/');
+                    if (string.IsNullOrEmpty(path)) return null;
+                    var seg = path.Split('/')[0];
+                    if (seg.Length == 2 || (seg.Length == 5 && seg.Contains('-')))
+                        return seg.ToLowerInvariant();
+                }
+                catch { }
+                return null;
+            }
+
+            var variants = new List<(string Href, string? Hreflang)>();
+            foreach (var href in comp)
+            {
+                string? hreflang = null;
+                foreach (var p in _pages)
+                {
+                    if (p.Alternates == null) continue;
+                    var found = p.Alternates.FirstOrDefault(a => a.Href.Equals(href, StringComparison.OrdinalIgnoreCase));
+                    if (found != null && !string.IsNullOrWhiteSpace(found.Hreflang))
+                    {
+                        hreflang = found.Hreflang;
+                        break;
+                    }
+                }
+
+                if (string.IsNullOrWhiteSpace(hreflang))
+                    hreflang = InferHreflangFromUrl(href);
+
+                variants.Add((href, hreflang));
+            }
+
+            var xDefaultHref = (from p in _pages
+                                where p.Alternates != null
+                                from a in p.Alternates
+                                where a.Hreflang != null && a.Hreflang.Equals("x-default", StringComparison.OrdinalIgnoreCase)
+                                && comp.Contains(a.Href, StringComparer.OrdinalIgnoreCase)
+                                select a.Href).FirstOrDefault();
+
+            if (xDefaultHref != null)
+            {
+                var idx = variants.FindIndex(v => v.Href.Equals(xDefaultHref, StringComparison.OrdinalIgnoreCase));
+                if (idx >= 0)
+                    variants[idx] = (variants[idx].Href, "x-default");
+                else
+                    variants.Add((xDefaultHref, "x-default"));
+            }
+
+            return variants;
+        }
+
+        private void EmitComponent(XElement urlset, XNamespace ns, XNamespace xhtml, List<(string Href, string? Hreflang)> variants)
+        {
+            foreach (var href in variants.Select(v => v.Href))
+            {
+                var el = new XElement(ns + "url",
+                    new XElement(ns + "loc", href),
+                    new XElement(ns + "lastmod", DateTime.UtcNow.ToString("yyyy-MM-dd"))
+                );
+
+                if (_includeAlternates)
+                {
+                    foreach (var v in variants)
+                    {
+                        if (string.IsNullOrWhiteSpace(v.Hreflang)) continue;
+                        el.Add(new XElement(xhtml + "link",
+                            new XAttribute("rel", "alternate"),
+                            new XAttribute("hreflang", v.Hreflang),
+                            new XAttribute("href", v.Href)
+                        ));
+                    }
+                }
+
+                urlset.Add(el);
+            }
         }
     }
 
