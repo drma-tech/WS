@@ -14,7 +14,7 @@ namespace WS.WEB.Modules.Search.Core
     {
         private readonly Uri _baseUri = new(baseUrl);
         private readonly bool _includeAlternates = includeAlternates;
-        private readonly List<PageData> _pages = [];
+        private readonly List<PageData> _pages = new();
 
         public async Task<string?> RunAsync()
         {
@@ -167,13 +167,12 @@ namespace WS.WEB.Modules.Search.Core
             );
 
             var pagesByUrl = BuildPagesByUrl();
-            var (allUrls, adj) = BuildAdjacency(pagesByUrl);
 
-            var components = GetConnectedComponents(allUrls, adj);
-            foreach (var comp in components)
+            // Build groups based on path (remove language prefix) to avoid mixing alternates from site-wide links
+            var groups = BuildGroups(pagesByUrl);
+            foreach (var group in groups.Values)
             {
-                var variants = BuildVariantsForComponent(comp);
-                EmitComponent(urlset, ns, xhtml, variants);
+                EmitGroup(urlset, ns, xhtml, group);
             }
 
             var sitemap = new XDocument(new XDeclaration("1.0", "UTF-8", null), urlset);
@@ -198,66 +197,122 @@ namespace WS.WEB.Modules.Search.Core
                 .ToDictionary(p => p.Url!, StringComparer.OrdinalIgnoreCase);
         }
 
-        private static (HashSet<string> allUrls, Dictionary<string, HashSet<string>> adj) BuildAdjacency(Dictionary<string, PageData> pagesByUrl)
+        private Dictionary<string, List<(string Href, string? Hreflang)>> BuildGroups(Dictionary<string, PageData> pagesByUrl)
         {
-            var allUrls = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            var adj = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
+            // key: normalized path (without language prefix), value: list of variants (href, hreflang)
+            var groups = new Dictionary<string, List<(string Href, string? Hreflang)>>(StringComparer.OrdinalIgnoreCase);
 
-            void AddNode(string u)
+            string NormalizePath(string href)
             {
-                if (!allUrls.Contains(u))
+                try
                 {
-                    allUrls.Add(u);
-                    adj[u] = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                    var u = new Uri(href);
+                    var path = u.AbsolutePath.TrimEnd('/');
+                    if (path == string.Empty) return "/";
+                    var segs = path.TrimStart('/').Split('/');
+                    // if first segment looks like a language code, remove it
+                    var first = segs[0];
+                    if (IsLanguageSegment(first))
+                    {
+                        var rest = string.Join('/', segs.Skip(1));
+                        return "/" + rest;
+                    }
+                    return "/" + string.Join('/', segs);
                 }
+                catch
+                {
+                    return href;
+                }
+            }
+
+            bool IsLanguageSegment(string s)
+            {
+                if (string.IsNullOrEmpty(s)) return false;
+                if (s.Length == 2 && s.All(char.IsLetter)) return true; // en, pt, es
+                if (s.Length == 5 && s[2] == '-' && char.IsLetter(s[0]) && char.IsLetter(s[1])) return true; // pt-BR
+                return false;
+            }
+
+            // add a variant to a group
+            void AddVariant(string href, string? hreflang)
+            {
+                var key = NormalizePath(href);
+                if (!groups.TryGetValue(key, out var list))
+                {
+                    list = new List<(string, string?)>();
+                    groups[key] = list;
+                }
+                if (!list.Any(v => v.Href.Equals(href, StringComparison.OrdinalIgnoreCase) && ((v.Hreflang ?? string.Empty) == (hreflang ?? string.Empty))))
+                    list.Add((href, hreflang));
             }
 
             foreach (var p in pagesByUrl.Values)
             {
-                AddNode(p.Url!);
+                // include the page itself
+                AddVariant(p.Url!, null);
                 if (p.Alternates == null) continue;
-                foreach (var alt in p.Alternates)
+                foreach (var a in p.Alternates)
                 {
-                    if (string.IsNullOrWhiteSpace(alt.Href)) continue;
-                    AddNode(alt.Href);
-                    adj[p.Url!].Add(alt.Href);
-                    adj[alt.Href].Add(p.Url!);
+                    if (string.IsNullOrWhiteSpace(a.Href)) continue;
+                    AddVariant(a.Href, a.Hreflang);
                 }
             }
 
-            return (allUrls, adj);
+            // try to infer hreflang for items lacking it by checking alternates pointing to same href
+            foreach (var kv in groups)
+            {
+                var list = kv.Value;
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (!string.IsNullOrWhiteSpace(list[i].Hreflang)) continue;
+                    // search across pages for declared hreflang
+                    string? found = null;
+                    foreach (var p in pagesByUrl.Values)
+                    {
+                        if (p.Alternates == null) continue;
+                        var f = p.Alternates.FirstOrDefault(x => x.Href.Equals(list[i].Href, StringComparison.OrdinalIgnoreCase));
+                        if (f != null && !string.IsNullOrWhiteSpace(f.Hreflang)) { found = f.Hreflang; break; }
+                    }
+                    if (found != null) list[i] = (list[i].Href, found);
+                }
+            }
+
+            return groups;
         }
 
-        private static List<List<string>> GetConnectedComponents(HashSet<string> allUrls, Dictionary<string, HashSet<string>> adj)
+        private void EmitGroup(XElement urlset, XNamespace ns, XNamespace xhtml, List<(string Href, string? Hreflang)> variants)
         {
-            var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            var result = new List<List<string>>();
+            if (variants == null || variants.Count == 0) return;
 
-            foreach (var start in allUrls)
+            // choose canonical: prefer x-default, then en, then first
+            var canonical = variants.First().Href;
+            var xdef = variants.FirstOrDefault(v => string.Equals(v.Hreflang, "x-default", StringComparison.OrdinalIgnoreCase));
+            if (xdef.Href != null && !string.IsNullOrWhiteSpace(xdef.Href)) canonical = xdef.Href;
+            else
             {
-                if (seen.Contains(start)) continue;
-                var comp = new List<string>();
-                var q = new Queue<string>();
-                q.Enqueue(start);
-                seen.Add(start);
-                while (q.Count > 0)
-                {
-                    var u = q.Dequeue();
-                    comp.Add(u);
-                    if (!adj.TryGetValue(u, out var neighbors)) continue;
-                    foreach (var v in neighbors)
-                    {
-                        if (!seen.Contains(v))
-                        {
-                            seen.Add(v);
-                            q.Enqueue(v);
-                        }
-                    }
-                }
-                result.Add(comp);
+                var en = variants.FirstOrDefault(v => string.Equals(v.Hreflang, "en", StringComparison.OrdinalIgnoreCase));
+                if (en.Href != null && !string.IsNullOrWhiteSpace(en.Href)) canonical = en.Href;
             }
 
-            return result;
+            var el = new XElement(ns + "url",
+                new XElement(ns + "loc", canonical),
+                new XElement(ns + "lastmod", DateTime.UtcNow.ToString("yyyy-MM-dd"))
+            );
+
+            if (_includeAlternates)
+            {
+                foreach (var v in variants)
+                {
+                    if (string.IsNullOrWhiteSpace(v.Hreflang)) continue;
+                    el.Add(new XElement(xhtml + "link",
+                        new XAttribute("rel", "alternate"),
+                        new XAttribute("hreflang", v.Hreflang),
+                        new XAttribute("href", v.Href)
+                    ));
+                }
+            }
+
+            urlset.Add(el);
         }
 
         private List<(string Href, string? Hreflang)> BuildVariantsForComponent(List<string> comp)
