@@ -17,11 +17,6 @@ namespace WS.WEB.Modules.Search.Core
     {
         private readonly Uri _baseUri = new(baseUrl);
 
-        private readonly bool _includeAlternates = includeAlternates;
-        //private readonly bool _includeImages = includeImages;
-        //private readonly bool _includeVideos = includeVideos;
-        //private readonly bool _includeNews = includeNews;
-
         private readonly List<PageData> _pages = [];
 
         public async Task<string?> RunAsync()
@@ -102,7 +97,7 @@ namespace WS.WEB.Modules.Search.Core
                 //}
 
                 // extract alternate language links like: <link rel="alternate" hreflang="pt" href="https://..." />
-                if (_includeAlternates)
+                if (includeAlternates)
                 {
                     var alternates = doc.DocumentNode.SelectNodes("//link[@href]")
                         ?.Select(n => new
@@ -121,6 +116,33 @@ namespace WS.WEB.Modules.Search.Core
                         .ToList() ?? new List<AlternateData>();
 
                     page.Alternates = alternates;
+
+                    // Ensure alternate URLs are also crawled and added as primary pages
+                    foreach (var alt in alternates)
+                    {
+                        try
+                        {
+                            if (string.IsNullOrWhiteSpace(alt.Href))
+                                continue;
+
+                            if (Uri.TryCreate(alt.Href, UriKind.Absolute, out var altUri))
+                            {
+                                if (altUri.Host == _baseUri.Host
+                                    && (altUri.Scheme == Uri.UriSchemeHttp || altUri.Scheme == Uri.UriSchemeHttps))
+                                {
+                                    // don't enqueue if already visited or already in queue
+                                    if (!_visited.Contains(alt.Href) && !queue.Any(q => q.url == alt.Href))
+                                    {
+                                        queue.Enqueue((alt.Href, depth + 1));
+                                    }
+                                }
+                            }
+                        }
+                        catch
+                        {
+                            // ignore malformed alternates
+                        }
+                    }
                 }
 
                 _pages.Add(page);
@@ -140,7 +162,7 @@ namespace WS.WEB.Modules.Search.Core
                         && absUri.Host == _baseUri.Host
                         && (absUri.Scheme == Uri.UriSchemeHttp || absUri.Scheme == Uri.UriSchemeHttps)
                         && (!ignoreNoFollow || !link.rel.Contains("nofollow", StringComparison.OrdinalIgnoreCase))
-                        //&& (ignoreTarget == null || !link.target.Equals(ignoreTarget, StringComparison.OrdinalIgnoreCase))
+                    //&& (ignoreTarget == null || !link.target.Equals(ignoreTarget, StringComparison.OrdinalIgnoreCase))
                     )
                     .Select(link => new Uri(_baseUri, link.href).ToString())
                     .Distinct()
@@ -221,7 +243,7 @@ namespace WS.WEB.Modules.Search.Core
                 //}
 
                 // add xhtml:link alternates if present
-                if (_includeAlternates && page.Alternates != null && page.Alternates.Count > 0)
+                if (includeAlternates && page.Alternates != null && page.Alternates.Count > 0)
                 {
                     foreach (var alt in page.Alternates)
                     {
