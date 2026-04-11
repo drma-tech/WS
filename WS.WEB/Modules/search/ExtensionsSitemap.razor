@@ -57,6 +57,7 @@
         <MudToolBar Gutters="false" WrapContent="true">
             <MudSwitch @bind-Value="_image" ThumbIcon="@Icons.Material.Filled.Image" Color="Color.Success" UncheckedColor="Color.Error" Size="Size.Large">Image</MudSwitch>
             <MudSwitch @bind-Value="_video" ThumbIcon="@Icons.Material.Filled.VideoFile" Color="Color.Success" UncheckedColor="Color.Error" Size="Size.Large">Videos</MudSwitch>
+            <MudSwitch @bind-Value="_includeAlternates" ThumbIcon="@Icons.Material.Filled.Language" Color="Color.Info" UncheckedColor="Color.Default" Size="Size.Large">Include alternates</MudSwitch>
             <MudSwitch @bind-Value="_news" ThumbIcon="@Icons.Material.Filled.Newspaper" Size="Size.Large" Disabled="true">News</MudSwitch>
         </MudToolBar>
     </MudItem>
@@ -143,6 +144,7 @@
 
     private bool _image = false;
     private bool _video = false;
+    private bool _includeAlternates = false;
     private bool _news = false;
 
     private Uri? _baseUri { get; set; }
@@ -173,7 +175,7 @@
 
             var http = HttpClientFactory.CreateClient();
             // var helper = new SitemapHelper(http, Search, _image, _video, _news, includeAlternates: true, ignoreNoFollow: true, ignoreTarget: null, maxDepth: MaxDepth);
-            var helper = new SitemapHelper(http, Search, includeAlternates: true, ignoreNoFollow: true, ignoreTarget: null, maxDepth: MaxDepth);
+            var helper = new SitemapHelper(http, Search, includeAlternates: _includeAlternates, ignoreNoFollow: true, ignoreTarget: null, maxDepth: MaxDepth);
 
             AppStateStatic.ProcessingStarted?.Invoke();
             ResultXml = await helper.RunAsync();

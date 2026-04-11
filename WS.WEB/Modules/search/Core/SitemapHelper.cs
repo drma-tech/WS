@@ -307,13 +307,25 @@ namespace WS.WEB.Modules.Search.Core
                 // include the page itself
                 var pageKey = NormalizePath(p.Url!);
                 AddVariant(p.Url!, null);
-                if (p.Alternates == null) continue;
+                if (!_includeAlternates || p.Alternates == null) continue;
                 foreach (var a in p.Alternates)
                 {
                     if (string.IsNullOrWhiteSpace(a.Href)) continue;
                     // include alternates declared on the page; grouping/dedupe happens later
                     AddVariant(a.Href, a.Hreflang);
                 }
+            }
+            // if alternates are disabled, reduce each group to a single canonical URL and return
+            if (!_includeAlternates)
+            {
+                var reduced = new Dictionary<string, List<(string Href, string? Hreflang)>>(StringComparer.OrdinalIgnoreCase);
+                foreach (var kv in groups)
+                {
+                    var first = kv.Value.FirstOrDefault();
+                    if (first.Href != null)
+                        reduced[kv.Key] = new List<(string, string?)> { (first.Href, null) };
+                }
+                return reduced;
             }
 
             // try to infer hreflang for items lacking it by checking alternates pointing to same normalized href
