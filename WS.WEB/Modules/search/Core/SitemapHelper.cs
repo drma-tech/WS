@@ -236,15 +236,25 @@ namespace WS.WEB.Modules.Search.Core
             // add a variant to a group
             void AddVariant(string href, string? hreflang)
             {
+                if (string.IsNullOrWhiteSpace(href)) return;
+                href = href.Trim();
                 var key = NormalizePath(href);
                 if (!groups.TryGetValue(key, out var list))
                 {
                     list = new List<(string, string?)>();
                     groups[key] = list;
                 }
+
+                string? normH = null;
+                if (!string.IsNullOrWhiteSpace(hreflang))
+                    normH = hreflang!.Trim();
+
+                // avoid exact duplicates (href + hreflang)
                 if (!list.Any(v => v.Href.Equals(href, StringComparison.OrdinalIgnoreCase) &&
-                                    string.Equals(v.Hreflang ?? string.Empty, hreflang ?? string.Empty, StringComparison.OrdinalIgnoreCase)))
-                    list.Add((href, hreflang));
+                                    string.Equals((v.Hreflang ?? string.Empty).Trim(), (normH ?? string.Empty).Trim(), StringComparison.OrdinalIgnoreCase)))
+                {
+                    list.Add((href, normH));
+                }
             }
 
             foreach (var p in pagesByUrl.Values)
