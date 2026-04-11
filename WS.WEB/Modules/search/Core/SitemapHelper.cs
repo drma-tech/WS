@@ -373,41 +373,38 @@ namespace WS.WEB.Modules.Search.Core
         {
             if (variants == null || variants.Count == 0) return;
 
-            // choose canonical: prefer x-default, then en, then first
-            var canonical = variants.First().Href;
-            var xdef = variants.FirstOrDefault(v => string.Equals(v.Hreflang, "x-default", StringComparison.OrdinalIgnoreCase));
-            if (xdef.Href != null && !string.IsNullOrWhiteSpace(xdef.Href)) canonical = xdef.Href;
-            else
+            // Emit one <url> entry per variant. Each entry's <loc> is the variant href and,
+            // if alternates are enabled, includes xhtml:link entries for all variants
+            // (deduplicated). This ensures every language variant appears as a main URL
+            // with its full set of alternates (including itself when it has a hreflang).
+            foreach (var current in variants)
             {
-                var en = variants.FirstOrDefault(v => string.Equals(v.Hreflang, "en", StringComparison.OrdinalIgnoreCase));
-                if (en.Href != null && !string.IsNullOrWhiteSpace(en.Href)) canonical = en.Href;
-            }
+                var el = new XElement(ns + "url",
+                    new XElement(ns + "loc", current.Href),
+                    new XElement(ns + "lastmod", DateTime.UtcNow.ToString("yyyy-MM-dd"))
+                );
 
-            var el = new XElement(ns + "url",
-                new XElement(ns + "loc", canonical),
-                new XElement(ns + "lastmod", DateTime.UtcNow.ToString("yyyy-MM-dd"))
-            );
-
-            if (_includeAlternates)
-            {
-                var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-                foreach (var v in variants)
+                if (_includeAlternates)
                 {
-                    if (string.IsNullOrWhiteSpace(v.Hreflang)) continue;
-                    var hreflang = v.Hreflang!.Trim();
-                    var href = v.Href.Trim();
-                    var key = hreflang + "|" + href;
-                    if (seen.Contains(key)) continue;
-                    seen.Add(key);
-                    el.Add(new XElement(xhtml + "link",
-                        new XAttribute("rel", "alternate"),
-                        new XAttribute("hreflang", hreflang),
-                        new XAttribute("href", href)
-                    ));
+                    var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                    foreach (var v in variants)
+                    {
+                        if (string.IsNullOrWhiteSpace(v.Hreflang)) continue;
+                        var hreflang = v.Hreflang!.Trim();
+                        var href = v.Href.Trim();
+                        var key = hreflang + "|" + href;
+                        if (seen.Contains(key)) continue;
+                        seen.Add(key);
+                        el.Add(new XElement(xhtml + "link",
+                            new XAttribute("rel", "alternate"),
+                            new XAttribute("hreflang", hreflang),
+                            new XAttribute("href", href)
+                        ));
+                    }
                 }
-            }
 
-            urlset.Add(el);
+                urlset.Add(el);
+            }
         }
     }
 
