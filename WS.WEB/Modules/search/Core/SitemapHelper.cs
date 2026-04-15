@@ -228,7 +228,7 @@ namespace WS.WEB.Modules.Search.Core
                     var segs = path.TrimStart('/').Split('/');
                     // if first segment looks like a language code, remove it
                     var first = segs[0];
-                    if (IsLanguageSegment(first))
+                    if (IsLanguageSegment(first) && segs.Length > 1)
                     {
                         var rest = string.Join('/', segs.Skip(1));
                         return "/" + rest;
@@ -276,7 +276,7 @@ namespace WS.WEB.Modules.Search.Core
                 var key = NormalizePath(href);
                 if (!groups.TryGetValue(key, out var list))
                 {
-                    list = new List<(string, string?)>();
+                    list = [];
                     groups[key] = list;
                 }
 
@@ -298,8 +298,8 @@ namespace WS.WEB.Modules.Search.Core
             {
                 if (string.IsNullOrWhiteSpace(p.Url)) continue;
                 // include the page itself
-                var pageKey = NormalizePath(p.Url!);
-                //AddVariant(p.Url!, null);
+                //var pageKey = NormalizePath(p.Url);
+                AddVariant(p.Url, null);
                 if (p.Alternates == null) continue;
                 foreach (var a in p.Alternates)
                 {
