@@ -228,7 +228,7 @@ namespace WS.WEB.Modules.Search.Core
                     var segs = path.TrimStart('/').Split('/');
                     // if first segment looks like a language code, remove it
                     var first = segs[0];
-                    if (IsLanguageSegment(first) && segs.Length > 1)
+                    if (IsLanguageSegment(first))
                     {
                         var rest = string.Join('/', segs.Skip(1));
                         return "/" + rest;
