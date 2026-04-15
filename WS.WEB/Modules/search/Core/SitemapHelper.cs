@@ -80,16 +80,9 @@ namespace WS.WEB.Modules.Search.Core
 
         private async Task<string?> FetchHtmlAsync(string url)
         {
-            try
-            {
-                var response = await http.GetAsync(url);
-                if (!response.IsSuccessStatusCode) return null;
-                return await response.Content.ReadAsStringAsync();
-            }
-            catch
-            {
-                return null;
-            }
+            var response = await http.GetAsync(url);
+            if (!response.IsSuccessStatusCode) return null;
+            return await response.Content.ReadAsStringAsync();
         }
 
         private List<AlternateData> ExtractAlternates(HtmlDocument doc)
