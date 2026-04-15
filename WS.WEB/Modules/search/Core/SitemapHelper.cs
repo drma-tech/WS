@@ -14,7 +14,7 @@ namespace WS.WEB.Modules.Search.Core
     {
         private readonly Uri _baseUri = new(baseUrl);
         private readonly bool _includeAlternates = includeAlternates;
-        private readonly List<PageData> _pages = new();
+        private readonly List<PageData> _pages = [];
 
         private static bool IsLanguageSegment(string s)
         {
@@ -124,10 +124,17 @@ namespace WS.WEB.Modules.Search.Core
             {
                 var href = a.GetAttributeValue("href", "");
                 var rel = a.GetAttributeValue("rel", "");
+
+                if (string.IsNullOrWhiteSpace(href)) continue;
+
+                href = href.Trim();
+
+                if (href == "." || href == "./" || href == ".." || href.StartsWith("#")) continue;
                 if (!Uri.TryCreate(_baseUri, href, out var abs)) continue;
                 if (abs.Host != _baseUri.Host) continue;
                 if (abs.Scheme != Uri.UriSchemeHttp && abs.Scheme != Uri.UriSchemeHttps) continue;
                 if (ignoreNoFollow && rel.Contains("nofollow", StringComparison.OrdinalIgnoreCase)) continue;
+
                 result.Add(abs.ToString());
             }
             return result.Distinct(StringComparer.OrdinalIgnoreCase).ToList();
