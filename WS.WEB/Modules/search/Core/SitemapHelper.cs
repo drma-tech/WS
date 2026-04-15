@@ -258,7 +258,7 @@ namespace WS.WEB.Modules.Search.Core
                     var host = u.Host.ToLowerInvariant();
                     var port = u.IsDefaultPort ? string.Empty : ":" + u.Port;
                     var path = u.AbsolutePath.TrimEnd('/');
-                    if (string.IsNullOrEmpty(path)) return u.Scheme + "://" + u.Host;
+                    if (string.IsNullOrEmpty(path)) path = "/";
                     // intentionally drop query and fragment to avoid duplicates caused by tracking params
                     return scheme + "://" + host + port + path;
                 }
@@ -299,7 +299,7 @@ namespace WS.WEB.Modules.Search.Core
                 if (string.IsNullOrWhiteSpace(p.Url)) continue;
                 // include the page itself
                 var pageKey = NormalizePath(p.Url!);
-                AddVariant(p.Url!, null);
+                //AddVariant(p.Url!, null);
                 if (p.Alternates == null) continue;
                 foreach (var a in p.Alternates)
                 {
