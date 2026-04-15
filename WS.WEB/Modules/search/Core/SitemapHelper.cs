@@ -230,6 +230,8 @@ namespace WS.WEB.Modules.Search.Core
                     var first = segs[0];
                     if (IsLanguageSegment(first))
                     {
+                        if (segs.Length == 1)
+                            return "/";
                         var rest = string.Join('/', segs.Skip(1));
                         return "/" + rest;
                     }
