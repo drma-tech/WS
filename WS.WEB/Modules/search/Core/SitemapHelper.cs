@@ -258,7 +258,7 @@ namespace WS.WEB.Modules.Search.Core
                     var host = u.Host.ToLowerInvariant();
                     var port = u.IsDefaultPort ? string.Empty : ":" + u.Port;
                     var path = u.AbsolutePath.TrimEnd('/');
-                    if (string.IsNullOrEmpty(path)) path = "/";
+                    if (string.IsNullOrEmpty(path)) return u.Scheme + "://" + u.Host;
                     // intentionally drop query and fragment to avoid duplicates caused by tracking params
                     return scheme + "://" + host + port + path;
                 }
