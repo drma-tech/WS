@@ -6,9 +6,9 @@ namespace WS.Shared.Core.Helper;
 
 public static partial class StringHelper
 {
-    public static string Format(this string format, object? arg0)
+    public static string Format(this string format, object? arg0, object? arg1 = null)
     {
-        return string.Format(format, arg0);
+        return string.Format(format, arg0, arg1);
     }
 
     public static string RemoveSpecialCharacters(this string str, char[]? customExceptions = null, char? replace = null)

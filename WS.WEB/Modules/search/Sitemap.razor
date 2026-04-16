@@ -6,8 +6,8 @@
 
 @inject IHttpClientFactory HttpClientFactory
 
-<SeoMeta Title="sitemap generator" Description="Lists site pages in XML. Ensures search engines find and index content faster, critical for large or poorly linked websites."
-         Url=@($"/{Culture}/sitemap") Index="true"></SeoMeta>
+<HeadComponent Title="sitemap generator" Description="Lists site pages in XML. Ensures search engines find and index content faster, critical for large or poorly linked websites."
+         Url=@($"/{Culture}/sitemap") Index="true"></HeadComponent>
 @* <GoogleAdSense Section="@GoogleAdSense.AdUnit.Global"></GoogleAdSense> *@
 
 <MudGrid Justify="Justify.Center">

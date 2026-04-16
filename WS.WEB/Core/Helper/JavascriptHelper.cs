@@ -144,8 +144,11 @@ namespace WS.WEB.Core.Helper
         #region ENVIRONMENT
 
         public Task<string?> GetAppVersion() => Invoke<string?>("environment.getAppVersion");
+
         public Task<string?> GetBrowserName() => Invoke<string?>("environment.getBrowserName");
+
         public Task<string?> GetBrowserVersion() => Invoke<string?>("environment.getBrowserVersion");
+
         public Task<string?> GetOperatingSystem() => Invoke<string?>("environment.getOperatingSystem");
 
         #endregion ENVIRONMENT
@@ -153,6 +156,8 @@ namespace WS.WEB.Core.Helper
         #region INTEROP
 
         public Task DownloadFile(string filename, string contentType, object? content) => InvokeVoid("interop.downloadFile", filename, contentType, content);
+
+        public Task Share(string? title, string? text, string? url) => InvokeVoid("interop.share", title, text, url);
 
         #endregion INTEROP
     }

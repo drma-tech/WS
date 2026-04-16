@@ -1,8 +1,8 @@
-﻿@page "/{culture}/"
+﻿@page "/{culture}"
 
 @inherits PageCore<Index>
 
-<SeoMeta Title="@AppInfo.Title" Description="@SeoTranslations.AppDescription" Url=@($"/{Culture}/") Index="true" ForceTitle="true"></SeoMeta>
+<HeadComponent Title="@AppInfo.Title" Description="@SeoTranslations.AppDescription" Url=@($"/{Culture}/") Index="true" ForceTitle="true"></HeadComponent>
 @* <GoogleAdSense Section="@GoogleAdSense.AdUnit.Main"></GoogleAdSense> *@
 
 <NewPageSection IsPageHeader="true" Image="icon/icon-71.png" Title="@AppInfo.Title" Subtitle="@AppInfo.Subtitle" Description="@SeoTranslations.AppDescription">
