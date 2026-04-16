@@ -2,7 +2,7 @@
 
 @inherits PageCore<Index>
 
-<HeadComponent Title="@AppInfo.Title" Description="@SeoTranslations.AppDescription" Url=@($"/{Culture}/") Index="true" ForceTitle="true"></HeadComponent>
+<HeadComponent Title="@AppInfo.Title" Description="@SeoTranslations.AppDescription" Url=@($"/{Culture}/") Index="true" ForceTitle="true" Shared="true"></HeadComponent>
 @* <GoogleAdSense Section="@GoogleAdSense.AdUnit.Main"></GoogleAdSense> *@
 
 <NewPageSection IsPageHeader="true" Image="icon/icon-71.png" Title="@AppInfo.Title" Subtitle="@AppInfo.Subtitle" Description="@SeoTranslations.AppDescription">
