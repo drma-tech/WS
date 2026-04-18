@@ -73,7 +73,7 @@
     private string? CanonicalUrl => $"{AppInfo.WebSite.TrimEnd('/')}/{Url.TrimStart('/')}";
     private string? ImageUrl => Image ?? $"{AppInfo.WebSite}/icon/icon-192.png";
 
-    private string[] SupportedLanguages = new[] { "en", "pt", "es" };
+    private string[] SupportedLanguages = new[] { "en" };
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
