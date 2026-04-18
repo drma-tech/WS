@@ -19,7 +19,7 @@ namespace WS.WEB.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class GlobalTranslations {
@@ -79,42 +79,6 @@ namespace WS.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid operation. Please try again..
-        /// </summary>
-        public static string CustomVisibilityInvalid {
-            get {
-                return ResourceManager.GetString("CustomVisibilityInvalid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loading....
-        /// </summary>
-        public static string CustomVisibilityLoading {
-            get {
-                return ResourceManager.GetString("CustomVisibilityLoading", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Data not available.
-        /// </summary>
-        public static string CustomVisibilityNoData {
-            get {
-                return ResourceManager.GetString("CustomVisibilityNoData", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Discover our other products.
-        /// </summary>
-        public static string DiscoverProducts {
-            get {
-                return ResourceManager.GetString("DiscoverProducts", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Wait for news....
         /// </summary>
         public static string FeatureUnavailableDescription {
@@ -129,24 +93,6 @@ namespace WS.WEB.Resources {
         public static string FeatureUnavailableMessage {
             get {
                 return ResourceManager.GetString("FeatureUnavailableMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Operation cancelled!.
-        /// </summary>
-        public static string OperationCanceled {
-            get {
-                return ResourceManager.GetString("OperationCanceled", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Operation completed successfully!.
-        /// </summary>
-        public static string OperationCompleted {
-            get {
-                return ResourceManager.GetString("OperationCompleted", resourceCulture);
             }
         }
         
@@ -169,24 +115,6 @@ namespace WS.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your search terms returned no results. Please change them and try again..
-        /// </summary>
-        public static string SearchReturnedNothing {
-            get {
-                return ResourceManager.GetString("SearchReturnedNothing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to See all items.
-        /// </summary>
-        public static string SeeAllItems {
-            get {
-                return ResourceManager.GetString("SeeAllItems", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string Settings {
@@ -201,15 +129,6 @@ namespace WS.WEB.Resources {
         public static string WriteReviewSubtitle {
             get {
                 return ResourceManager.GetString("WriteReviewSubtitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to If the store link doesn&apos;t work, try going directly to the website..
-        /// </summary>
-        public static string WriteReviewSubtitleStore {
-            get {
-                return ResourceManager.GetString("WriteReviewSubtitleStore", resourceCulture);
             }
         }
         

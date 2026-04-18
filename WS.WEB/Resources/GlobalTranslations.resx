@@ -123,29 +123,11 @@
   <data name="CheckOurApps" xml:space="preserve">
     <value>Explore our other amazing apps:</value>
   </data>
-  <data name="CustomVisibilityInvalid" xml:space="preserve">
-    <value>Invalid operation. Please try again.</value>
-  </data>
-  <data name="CustomVisibilityLoading" xml:space="preserve">
-    <value>Loading...</value>
-  </data>
-  <data name="CustomVisibilityNoData" xml:space="preserve">
-    <value>Data not available</value>
-  </data>
-  <data name="DiscoverProducts" xml:space="preserve">
-    <value>Discover our other products</value>
-  </data>
   <data name="FeatureUnavailableDescription" xml:space="preserve">
     <value>Wait for news...</value>
   </data>
   <data name="FeatureUnavailableMessage" xml:space="preserve">
     <value>Under development</value>
-  </data>
-  <data name="OperationCanceled" xml:space="preserve">
-    <value>Operation cancelled!</value>
-  </data>
-  <data name="OperationCompleted" xml:space="preserve">
-    <value>Operation completed successfully!</value>
   </data>
   <data name="PWAUpdaterButton" xml:space="preserve">
     <value>UPDATE NOW</value>
@@ -153,20 +135,11 @@
   <data name="PWAUpdaterText" xml:space="preserve">
     <value>A new version is available</value>
   </data>
-  <data name="SearchReturnedNothing" xml:space="preserve">
-    <value>Your search terms returned no results. Please change them and try again.</value>
-  </data>
-  <data name="SeeAllItems" xml:space="preserve">
-    <value>See all items</value>
-  </data>
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
   </data>
   <data name="WriteReviewSubtitle" xml:space="preserve">
     <value>Rate the app and share it with your friends!</value>
-  </data>
-  <data name="WriteReviewSubtitleStore" xml:space="preserve">
-    <value>If the store link doesn't work, try going directly to the website.</value>
   </data>
   <data name="WriteReviewTitle" xml:space="preserve">
     <value>Help {0} grow!</value>
