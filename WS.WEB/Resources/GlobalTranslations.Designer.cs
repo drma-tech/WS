@@ -115,15 +115,6 @@ namespace WS.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Settings.
-        /// </summary>
-        public static string Settings {
-            get {
-                return ResourceManager.GetString("Settings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Rate the app and share it with your friends!.
         /// </summary>
         public static string WriteReviewSubtitle {

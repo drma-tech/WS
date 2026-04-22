@@ -4,9 +4,9 @@
 @using WS.WEB.Layout
 
 <HeadComponent Title="Help Center" Description="@($"Get detailed guides, troubleshooting tips, FAQs, and contact support for {AppInfo.Title}. Solve issues and discover features easily.")" Url=@($"/{Culture}/help") Index="true"></HeadComponent>
-<NewPageSection IsPageHeader="true" Icon="@IconsFA.Solid.Icon("headset").Font" Title="Help Center" Description="@($"Get detailed guides, troubleshooting tips, FAQs, and contact support for {AppInfo.Title}. Solve issues and discover features easily.")"></NewPageSection>
+<PageSectionComponent IsPageHeader="true" Icon="@IconsFA.Solid.Icon("headset").Font" Title="Help Center" Description="@($"Get detailed guides, troubleshooting tips, FAQs, and contact support for {AppInfo.Title}. Solve issues and discover features easily.")"></PageSectionComponent>
 
-<NewPageSection Title="Quick Actions">
+<PageSectionComponent Title="Quick Actions">
     <BodyFragment>
         <MudGrid Spacing="@Css.SpaceSmall">
             <MudItem xs="12" sm="6" md="4" lg="3">
@@ -29,9 +29,9 @@
             </MudItem>
         </MudGrid>
     </BodyFragment>
-</NewPageSection>
+</PageSectionComponent>
 
-<NewPageSection Title="Troubleshooting">
+<PageSectionComponent Title="Troubleshooting">
     <BodyFragment>
         <MudGrid Spacing="@Css.SpaceSmall">
             <MudItem xs="12" sm="6" md="4" lg="3">
@@ -48,9 +48,9 @@
             </MudItem>
         </MudGrid>
     </BodyFragment>
-</NewPageSection>
+</PageSectionComponent>
 
-<NewPageSection Title="Legal & Privacy">
+<PageSectionComponent Title="Legal & Privacy">
     <BodyFragment>
         <MudGrid Spacing="@Css.SpaceSmall">
             <MudItem xs="12" sm="6" md="4" lg="3">
@@ -73,9 +73,9 @@
             </MudItem>
         </MudGrid>
     </BodyFragment>
-</NewPageSection>
+</PageSectionComponent>
 
-<NewPageSection Title="Get the App">
+<PageSectionComponent Title="Get the App">
     <BodyFragment>
         <MudGrid Spacing="@Css.SpaceSmall">
             @foreach (var store in AppInfo.Stores)
@@ -89,9 +89,9 @@
             }
         </MudGrid>
     </BodyFragment>
-</NewPageSection>
+</PageSectionComponent>
 
-<NewPageSection Title="Company">
+<PageSectionComponent Title="Company">
     <BodyFragment>
         <MudGrid Spacing="@Css.SpaceSmall">
             <MudItem xs="12" sm="6" md="4" lg="3">
@@ -114,9 +114,9 @@
             </MudItem>
         </MudGrid>
     </BodyFragment>
-</NewPageSection>
+</PageSectionComponent>
 
-<NewPageSection Title="More from DRMA Tech">
+<PageSectionComponent Title="More from DRMA Tech">
     <BodyFragment>
         <MudGrid Spacing="@Css.SpaceSmall">
             @foreach (var product in AppInfo.Products)
@@ -130,4 +130,4 @@
             }
         </MudGrid>
     </BodyFragment>
-</NewPageSection>
+</PageSectionComponent>
