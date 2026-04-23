@@ -82,7 +82,7 @@
             {
                 <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudButton Variant="Variant.Filled" FullWidth="true" Href="@store.Url" Target="_blank" rel="noopener">
-                        <MudImage Src="@store.Logo" Class="me-2" Style="width: 20px; vertical-align: top;" />
+                        <MudImage Src="@store.Logo" Class="me-2" Style="width: 20px; vertical-align: top;" Alt="@store.Store" />
                         @store.Store
                     </MudButton>
                 </MudItem>
@@ -123,7 +123,7 @@
             {
                 <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudButton Variant="Variant.Filled" FullWidth="true" Href="@product.Url" Target="_blank" rel="noopener">
-                        <MudImage Src="@product.Logo" Class="me-2" Style="width: 20px; vertical-align: top;" />
+                        <MudImage Src="@product.Logo" Class="me-2" Style="width: 20px; vertical-align: top;" Alt="@product.Title" />
                         @product.Title
                     </MudButton>
                 </MudItem>
