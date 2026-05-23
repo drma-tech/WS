@@ -2,62 +2,42 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xhtml="http://www.w3.org/1999/xhtml" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
 		<loc>https://www.web-standards.com/en</loc>
-		<lastmod>2026-04-18</lastmod>
-		<xhtml:link rel="alternate" hreflang="en" href="https://www.web-standards.com/en" />
-		<xhtml:link rel="alternate" hreflang="x-default" href="https://www.web-standards.com/en" />
+		<lastmod>2026-05-23</lastmod>
 	</url>
 	<url>
 		<loc>https://www.web-standards.com/en/help</loc>
-		<lastmod>2026-04-18</lastmod>
-		<xhtml:link rel="alternate" hreflang="en" href="https://www.web-standards.com/en/help" />
-		<xhtml:link rel="alternate" hreflang="x-default" href="https://www.web-standards.com/en/help" />
+		<lastmod>2026-05-23</lastmod>
 	</url>
 	<url>
 		<loc>https://www.web-standards.com/en/robots</loc>
-		<lastmod>2026-04-18</lastmod>
-		<xhtml:link rel="alternate" hreflang="en" href="https://www.web-standards.com/en/robots" />
-		<xhtml:link rel="alternate" hreflang="x-default" href="https://www.web-standards.com/en/robots" />
+		<lastmod>2026-05-23</lastmod>
 	</url>
 	<url>
 		<loc>https://www.web-standards.com/en/sitemap</loc>
-		<lastmod>2026-04-18</lastmod>
-		<xhtml:link rel="alternate" hreflang="en" href="https://www.web-standards.com/en/sitemap" />
-		<xhtml:link rel="alternate" hreflang="x-default" href="https://www.web-standards.com/en/sitemap" />
+		<lastmod>2026-05-23</lastmod>
 	</url>
 	<url>
 		<loc>https://www.web-standards.com/en/extensions-sitemap</loc>
-		<lastmod>2026-04-18</lastmod>
-		<xhtml:link rel="alternate" hreflang="en" href="https://www.web-standards.com/en/extensions-sitemap" />
-		<xhtml:link rel="alternate" hreflang="x-default" href="https://www.web-standards.com/en/extensions-sitemap" />
+		<lastmod>2026-05-23</lastmod>
 	</url>
 	<url>
 		<loc>https://www.web-standards.com/en/manifest</loc>
-		<lastmod>2026-04-18</lastmod>
-		<xhtml:link rel="alternate" hreflang="en" href="https://www.web-standards.com/en/manifest" />
-		<xhtml:link rel="alternate" hreflang="x-default" href="https://www.web-standards.com/en/manifest" />
+		<lastmod>2026-05-23</lastmod>
 	</url>
 	<url>
 		<loc>https://www.web-standards.com/en/service-worker</loc>
-		<lastmod>2026-04-18</lastmod>
-		<xhtml:link rel="alternate" hreflang="en" href="https://www.web-standards.com/en/service-worker" />
-		<xhtml:link rel="alternate" hreflang="x-default" href="https://www.web-standards.com/en/service-worker" />
+		<lastmod>2026-05-23</lastmod>
 	</url>
 	<url>
 		<loc>https://www.web-standards.com/en/tags</loc>
-		<lastmod>2026-04-18</lastmod>
-		<xhtml:link rel="alternate" hreflang="en" href="https://www.web-standards.com/en/tags" />
-		<xhtml:link rel="alternate" hreflang="x-default" href="https://www.web-standards.com/en/tags" />
+		<lastmod>2026-05-23</lastmod>
 	</url>
 	<url>
 		<loc>https://www.web-standards.com/en/help/faq</loc>
-		<lastmod>2026-04-18</lastmod>
-		<xhtml:link rel="alternate" hreflang="en" href="https://www.web-standards.com/en/help/faq" />
-		<xhtml:link rel="alternate" hreflang="x-default" href="https://www.web-standards.com/en/help/faq" />
+		<lastmod>2026-05-23</lastmod>
 	</url>
 	<url>
 		<loc>https://www.web-standards.com/en/company/about-us</loc>
-		<lastmod>2026-04-18</lastmod>
-		<xhtml:link rel="alternate" hreflang="en" href="https://www.web-standards.com/en/company/about-us" />
-		<xhtml:link rel="alternate" hreflang="x-default" href="https://www.web-standards.com/en/company/about-us" />
+		<lastmod>2026-05-23</lastmod>
 	</url>
 </urlset>
