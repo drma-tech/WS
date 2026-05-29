@@ -129,14 +129,30 @@ else //webapp
             if (product.Live)
             {
                 <MudButton Href="@product.Url" Target="_blank" Rel="noopener" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
-                    <MudImage Src="@product.Logo" Style="max-width: 35px;" Alt="@product.Title"></MudImage> @product.Title
+                    <div>
+                        <MudImage Src="@product.Logo" Style="max-width: 35px; vertical-align: middle;" Alt="@product.Title"></MudImage>
+                        <MudText Typo="Typo.subtitle1">
+                            @product.Title
+                        </MudText>
+                    </div>
+                    <MudText Typo="Typo.caption">
+                        @product.SubTitle
+                    </MudText>
                 </MudButton>
             }
             else
             {
                 <MudBadge Content="@("Beta")" Overlap="true" Color="Color.Warning">
                     <MudButton Href="@product.Url" Target="_blank" Rel="noopener" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
-                        <MudImage Src="@product.Logo" Style="max-width: 35px;" Alt="@product.Title"></MudImage> @product.Title
+                        <div>
+                            <MudImage Src="@product.Logo" Style="max-width: 35px; vertical-align: middle;" Alt="@product.Title"></MudImage>
+                            <MudText Typo="Typo.subtitle1">
+                                @product.Title
+                            </MudText>
+                        </div>
+                        <MudText Typo="Typo.caption">
+                            @product.SubTitle
+                        </MudText>
                     </MudButton>
                 </MudBadge>
             }
@@ -191,7 +207,7 @@ else //webapp
     {
         await base.OnInitializedAsync();
 
-        CurrentPlatform = await AppStateStatic.GetPlatform(JsRuntime);
+        CurrentPlatform = await AppStateStatic.GetPlatform(JsRuntime, cts.Token);
     }
 
     protected override async Task ProcessComponentData()
@@ -215,6 +231,6 @@ else //webapp
 
     private async Task Reviewed()
     {
-        await JsRuntime.Utils().SetStorage("store-reviewed", true);
+        await JsRuntime.Utils().SetStorage("store-reviewed", true, JavascriptContext.Default.Boolean, cts.Token);
     }
 }

@@ -177,11 +177,11 @@
             // var helper = new SitemapHelper(http, Search, _image, _video, _news, includeAlternates: true, ignoreNoFollow: true, ignoreTarget: null, maxDepth: MaxDepth);
             var helper = new SitemapHelper(http, Search, includeAlternates: _includeAlternates, ignoreNoFollow: true, ignoreTarget: null, maxDepth: MaxDepth);
 
-            AppStateStatic.ProcessingStarted?.Invoke();
+            await AppStateStatic.ProcessingStarted.PublishAsync();
             ResultXml = await helper.RunAsync();
-            AppStateStatic.ProcessingFinished?.Invoke();
+            await AppStateStatic.ProcessingFinished.PublishAsync();
 
-            await JsRuntime.Utils().DownloadFile("sitemap.xml", "application/xml", ResultXml);
+            await JsRuntime.Utils().DownloadFile("sitemap.xml", "application/xml", ResultXml, cts.Token);
         }
         catch (Exception ex)
         {

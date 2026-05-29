@@ -8,43 +8,40 @@ namespace WS.WEB.Core;
 
 public static class AppStateStatic
 {
-    public static Breakpoint Breakpoint { get; set; } = Breakpoint.Xs;
-    public static Action<Breakpoint>? BreakpointChanged { get; set; }
     public static Size Size { get; set; } = Size.Small;
-
-    public static BrowserWindowSize? BrowserWindowSize { get; set; }
-    public static Action<BrowserWindowSize>? BrowserWindowSizeChanged { get; set; }
+    public static Breakpoint Breakpoint { get; set; } = Breakpoint.Xs;
+    public static ActionDispatcher<Breakpoint> BreakpointChanged { get; } = new();
 
     public static string? Version { get; set; }
     public static string? BrowserName { get; set; }
     public static string? BrowserVersion { get; set; }
     public static string? OperatingSystem { get; set; }
 
-    public static string? _lastSnackbarMessage;
-    public static DateTime _lastSnackbarAt = DateTime.MinValue;
-    public static readonly TimeSpan _snackbarDelay = TimeSpan.FromSeconds(5);
+    private static string? LastSnackbarMessage { get; set; }
+    private static DateTime LastSnackbarAt { get; set; } = DateTime.MinValue;
+    private static readonly TimeSpan SnackbarDelay = TimeSpan.FromSeconds(5);
 
     public static bool CanShowSnackbar(this string message)
     {
         var now = DateTime.UtcNow;
 
-        if (_lastSnackbarMessage == message &&
-            now - _lastSnackbarAt < _snackbarDelay)
+        if (LastSnackbarMessage == message &&
+            now - LastSnackbarAt < SnackbarDelay)
         {
             return false;
         }
 
-        _lastSnackbarMessage = message;
-        _lastSnackbarAt = now;
+        LastSnackbarMessage = message;
+        LastSnackbarAt = now;
 
         return true;
     }
 
-    public static async Task<string> GetAppVersion(IJSRuntime js)
+    public static async Task<string> GetAppVersion(IJSRuntime js, CancellationToken cancellationToken)
     {
         try
         {
-            var vs = await js.Utils().GetAppVersion();
+            var vs = await js.Utils().GetAppVersion(cancellationToken);
 
             return vs?.ReplaceLineEndings("").Trim() ?? "version-error";
         }
@@ -64,9 +61,9 @@ public static class AppStateStatic
         return _platform;
     }
 
-    public static async Task<Platform> GetPlatform(IJSRuntime js)
+    public static async Task<Platform> GetPlatform(IJSRuntime js, CancellationToken cancellationToken)
     {
-        await _platformSemaphore.WaitAsync();
+        await _platformSemaphore.WaitAsync(cancellationToken);
         try
         {
             if (_platform.HasValue)
@@ -74,7 +71,7 @@ public static class AppStateStatic
                 return _platform.Value;
             }
 
-            var cache = await js.Utils().GetStorage<Platform?>("platform");
+            var cache = await js.Utils().GetStorage("platform", JavascriptContext.Default.NullablePlatform, cancellationToken);
 
             if (cache.HasValue)
             {
@@ -83,7 +80,7 @@ public static class AppStateStatic
             else
             {
                 _platform = Platform.webapp;
-                await js.Utils().SetStorage("platform", _platform);
+                await js.Utils().SetStorage("platform", _platform, JavascriptContext.Default.NullablePlatform, cancellationToken);
             }
 
             return _platform.Value;
@@ -101,9 +98,9 @@ public static class AppStateStatic
     private static AppLanguage? _appLanguage;
     private static readonly SemaphoreSlim _appLanguageSemaphore = new(1, 1);
 
-    public static async Task<AppLanguage> GetAppLanguage(IJSRuntime js)
+    public static async Task<AppLanguage> GetAppLanguage(IJSRuntime js, CancellationToken cancellationToken)
     {
-        await _appLanguageSemaphore.WaitAsync();
+        await _appLanguageSemaphore.WaitAsync(cancellationToken);
         try
         {
             if (_appLanguage.HasValue)
@@ -111,7 +108,7 @@ public static class AppStateStatic
                 return _appLanguage.Value;
             }
 
-            var cache = await js.Utils().GetStorage<AppLanguage?>("app-language");
+            var cache = await js.Utils().GetStorage("app-language", JavascriptContext.Default.NullableAppLanguage, cancellationToken);
 
             if (cache.HasValue)
             {
@@ -123,7 +120,7 @@ public static class AppStateStatic
                 code = code[..2].ToLowerInvariant();
 
                 _appLanguage = ConvertAppLanguage(code, AppLanguage.en);
-                await js.Utils().SetStorage("app-language", _appLanguage);
+                await js.Utils().SetStorage("app-language", _appLanguage, JavascriptContext.Default.NullableAppLanguage, cancellationToken);
             }
 
             return _appLanguage.Value;
@@ -171,9 +168,9 @@ public static class AppStateStatic
     private static bool? _darkMode;
     private static readonly SemaphoreSlim _darkModeSemaphore = new(1, 1);
 
-    public static async Task<bool?> GetDarkMode(IJSRuntime js)
+    public static async Task<bool?> GetDarkMode(IJSRuntime js, CancellationToken cancellationToken)
     {
-        await _darkModeSemaphore.WaitAsync();
+        await _darkModeSemaphore.WaitAsync(cancellationToken);
         try
         {
             if (_darkMode.HasValue)
@@ -181,7 +178,7 @@ public static class AppStateStatic
                 return _darkMode.Value;
             }
 
-            _darkMode = await js.Utils().GetStorage<bool?>("dark-mode");
+            _darkMode = await js.Utils().GetStorage("dark-mode", JavascriptContext.Default.NullableBoolean, cancellationToken);
 
             return _darkMode;
         }
@@ -213,9 +210,9 @@ public static class AppStateStatic
         return _country;
     }
 
-    public static async Task<string?> GetCountry(IpInfoApi api, IJSRuntime js)
+    public static async Task<string?> GetCountry(IpInfoApi api, IJSRuntime js, CancellationToken cancellationToken)
     {
-        await _countrySemaphore.WaitAsync();
+        await _countrySemaphore.WaitAsync(cancellationToken);
         try
         {
             if (_country.NotEmpty())
@@ -223,7 +220,7 @@ public static class AppStateStatic
                 return _country;
             }
 
-            var cache = await js.Utils().GetStorage<string>("country");
+            var cache = await js.Utils().GetStorage("country", JavascriptContext.Default.String, cancellationToken);
 
             if (cache.NotEmpty())
             {
@@ -231,10 +228,10 @@ public static class AppStateStatic
             }
             else
             {
-                _country = (await api.GetCountry())?.Trim();
+                _country = (await api.GetCountry(cancellationToken))?.Trim();
 
                 if (_country.NotEmpty())
-                    await js.Utils().SetStorage("country", _country);
+                    await js.Utils().SetStorage("country", _country, JavascriptContext.Default.String, cancellationToken);
             }
 
             return _country;
@@ -251,6 +248,6 @@ public static class AppStateStatic
 
     #endregion Region Country
 
-    public static Action? ProcessingStarted { get; set; }
-    public static Action? ProcessingFinished { get; set; }
+    public static TaskDispatcher ProcessingStarted { get; } = new();
+    public static TaskDispatcher ProcessingFinished { get; } = new();
 }

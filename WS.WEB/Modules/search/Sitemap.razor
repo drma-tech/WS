@@ -159,11 +159,11 @@
             var http = HttpClientFactory.CreateClient();
             var helper = new SitemapHelper(http, Search, includeAlternates: IncludeAlternates, ignoreNoFollow: true, ignoreTarget: null, maxDepth: MaxDepth);
 
-            AppStateStatic.ProcessingStarted?.Invoke();
+            await AppStateStatic.ProcessingStarted.PublishAsync();
             ResultXml = await helper.RunAsync();
-            AppStateStatic.ProcessingFinished?.Invoke();
+            await AppStateStatic.ProcessingFinished.PublishAsync();
 
-            await JsRuntime.Utils().DownloadFile("sitemap.xml", "application/xml", ResultXml);
+            await JsRuntime.Utils().DownloadFile("sitemap.xml", "application/xml", ResultXml, cts.Token);
         }
         catch (Exception ex)
         {

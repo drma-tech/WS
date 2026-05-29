@@ -193,7 +193,7 @@
 
         try
         {
-            await JsRuntime.Utils().DownloadFile("tags.html", "text/html", Preview);
+            await JsRuntime.Utils().DownloadFile("tags.html", "text/html", Preview, cts.Token);
         }
         catch (Exception ex)
         {

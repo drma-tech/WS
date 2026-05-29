@@ -328,7 +328,7 @@
         {
             GenerateManifest();
             var content = PreviewJson ?? string.Empty;
-            await JsRuntime.Utils().DownloadFile("manifest.webmanifest", "application/manifest+json", content);
+            await JsRuntime.Utils().DownloadFile("manifest.webmanifest", "application/manifest+json", content, cts.Token);
         }
         catch (Exception ex)
         {

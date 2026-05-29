@@ -184,7 +184,7 @@
         {
             GenerateScript();
             var content = PreviewScript ?? string.Empty;
-            await JsRuntime.Utils().DownloadFile("service-worker.js", "application/javascript", content);
+            await JsRuntime.Utils().DownloadFile("service-worker.js", "application/javascript", content, cts.Token);
         }
         catch (Exception ex)
         {
