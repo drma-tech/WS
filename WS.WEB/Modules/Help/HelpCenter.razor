@@ -1,29 +1,27 @@
 ﻿@page "/{culture}/help"
 @inherits PageCore<HelpCenter>
 
-@using WS.WEB.Layout
-
 <HeadComponent Title="Help Center" Description="@($"Get detailed guides, troubleshooting tips, FAQs, and contact support for {AppInfo.Title}. Solve issues and discover features easily.")" Url=@($"/{Culture}/help") Index="false" />
-<PageSectionComponent IsPageHeader="true" Icon="@IconsFA.Solid.Icon("headset").Font" Title="Help Center" Description="@($"Get detailed guides, troubleshooting tips, FAQs, and contact support for {AppInfo.Title}. Solve issues and discover features easily.")"></PageSectionComponent>
+<PageSectionComponent IsPageHeader="true" Icon="@Icons.Material.Filled.HelpCenter" Title="Help Center" Description="@($"Get detailed guides, troubleshooting tips, FAQs, and contact support for {AppInfo.Title}. Solve issues and discover features easily.")"></PageSectionComponent>
 
 <PageSectionComponent Title="Quick Actions">
     <BodyFragment>
         <MudGrid Spacing="@Css.SpaceSmall">
             <MudItem xs="12" sm="6" md="4" lg="3">
                 <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@(async () => { await JsRuntime.Window().InvokeVoidAsync("eval", "Userback && Userback.openForm('general', 'form');"); })">
-                    <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("comment").Font"></MudIcon>
+                    <MudIcon Class="me-2" Icon="@Icons.Material.Filled.Comment"></MudIcon>
                     Feedback
                 </MudButton>
             </MudItem>
             <MudItem xs="12" sm="6" md="4" lg="3">
                 <MudButton Variant="Variant.Filled" FullWidth="true" Href="mailto:support@web-standards.com">
-                    <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("at").Font"></MudIcon>
+                    <MudIcon Class="me-2" Icon="@Icons.Material.Filled.Mail"></MudIcon>
                     Contact Support
                 </MudButton>
             </MudItem>
             <MudItem xs="12" sm="6" md="4" lg="3">
                 <MudButton Variant="Variant.Filled" FullWidth="true" Href=@($"/{Culture}/help/faq")>
-                    <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("question-circle").Font"></MudIcon>
+                    <MudIcon Class="me-2" Icon="@Icons.Material.Filled.Chat"></MudIcon>
                     Browse FAQ
                 </MudButton>
             </MudItem>
@@ -36,13 +34,13 @@
         <MudGrid Spacing="@Css.SpaceSmall">
             <MudItem xs="12" sm="6" md="4" lg="3">
                 <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@(async () => { await JsRuntime.Utils().ShowCache(cts.Token); })">
-                    <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("database").Font"></MudIcon>
+                    <MudIcon Class="me-2" Icon="@Icons.Material.Filled.Memory"></MudIcon>
                     Show Cache
                 </MudButton>
             </MudItem>
             <MudItem xs="12" sm="6" md="4" lg="3">
                 <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@(async () => { await JsRuntime.Utils().ClearAllStorage(); })">
-                    <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("trash-alt").Font"></MudIcon>
+                    <MudIcon Class="me-2" Icon="@Icons.Material.Filled.Clear"></MudIcon>
                     Clear App Data
                 </MudButton>
             </MudItem>
@@ -55,19 +53,19 @@
         <MudGrid Spacing="@Css.SpaceSmall">
             <MudItem xs="12" sm="6" md="4" lg="3">
                 <MudButton Variant="Variant.Filled" FullWidth="true" Href=@($"/{Culture}/legal/terms") Rel="nofollow">
-                    <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("file-contract").Font"></MudIcon>
+                    <MudIcon Class="me-2" Icon="@Icons.Material.Filled.DocumentScanner"></MudIcon>
                     Terms of Use
                 </MudButton>
             </MudItem>
             <MudItem xs="12" sm="6" md="4" lg="3">
                 <MudButton Variant="Variant.Filled" FullWidth="true" Href=@($"/{Culture}/legal/privacy") Rel="nofollow">
-                    <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("user-shield").Font"></MudIcon>
+                    <MudIcon Class="me-2" Icon="@Icons.Material.Filled.VerifiedUser"></MudIcon>
                     Privacy Policy
                 </MudButton>
             </MudItem>
             <MudItem xs="12" sm="6" md="4" lg="3">
                 <MudButton Variant="Variant.Filled" FullWidth="true" Href=@($"/{Culture}/legal/credits") Rel="nofollow">
-                    <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("users").Font"></MudIcon>
+                    <MudIcon Class="me-2" Icon="@Icons.Material.Filled.People"></MudIcon>
                     Credits
                 </MudButton>
             </MudItem>
@@ -96,19 +94,19 @@
         <MudGrid Spacing="@Css.SpaceSmall">
             <MudItem xs="12" sm="6" md="4" lg="3">
                 <MudButton Variant="Variant.Filled" FullWidth="true" Href=@($"/{Culture}/company/about-us")>
-                    <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("building").Font"></MudIcon>
+                    <MudIcon Class="me-2" Icon="@Icons.Material.Filled.Business"></MudIcon>
                     About us
                 </MudButton>
             </MudItem>
             <MudItem xs="12" sm="6" md="4" lg="3">
                 <MudButton Variant="Variant.Filled" FullWidth="true" Href="mailto:contact@drma-tech.com">
-                    <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("at").Font"></MudIcon>
+                    <MudIcon Class="me-2" Icon="@Icons.Material.Filled.Email"></MudIcon>
                     Contact us
                 </MudButton>
             </MudItem>
             <MudItem xs="12" sm="6" md="4" lg="3">
                 <MudButton Variant="Variant.Filled" FullWidth="true" Href="https://www.drma-tech.com" Target="_blank" rel="noopener">
-                    <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("globe").Font"></MudIcon>
+                    <MudIcon Class="me-2" Icon="@Icons.Material.Filled.WebAsset"></MudIcon>
                     Website
                 </MudButton>
             </MudItem>

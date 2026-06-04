@@ -41,7 +41,7 @@ export const services = {
                 window.clarity("consent");
                 clearInterval(clarityCheckInterval);
             }
-        }, 5000);
+        }, 3000);
     },
     initUserBack(version) {
         if (isBot) return;
@@ -54,7 +54,7 @@ export const services = {
 
         window.Userback.widget_settings = {
             language: storage.getLocalStorage("language") ?? browserLang.slice(0, 2),
-            logo: location.origin + "/icon/icon-71.png",
+            logo: location.origin + "/icon/icon-71.webp",
         };
         window.Userback.custom_data = {
             platform: storage.getLocalStorage("platform"),

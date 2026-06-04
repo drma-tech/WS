@@ -1,6 +1,5 @@
 ﻿@page "/{culture}/robots"
 
-@using System.Xml.Linq
 @using WS.WEB.Modules.Search.Core
 @inherits PageCore<Robots>
 
@@ -8,11 +7,10 @@
 
 <HeadComponent Title="robots.txt generator" Description="Lists site pages in XML. Ensures search engines find and index content faster, critical for large or poorly linked websites."
          Url=@($"/{Culture}/robots") Index="true"></HeadComponent>
-@* <GoogleAdSense Section="@GoogleAdSense.AdUnit.Global"></GoogleAdSense> *@
 
 <MudGrid Justify="Justify.Center">
     <MudItem xs="12" md="10">
-        <PageSectionComponent IsPageHeader="true" Title="robots.txt generator" Icon="@IconsFA.Solid.Icon("robot").Font" Description="Tells crawlers which areas to scan or block. Prevents private paths from being indexed and focuses search engines on the right content."></PageSectionComponent>
+        <PageSectionComponent IsPageHeader="true" Title="robots.txt generator" Description="Tells crawlers which areas to scan or block. Prevents private paths from being indexed and focuses search engines on the right content."></PageSectionComponent>
     </MudItem>
     @*  <MudItem xs="12" md="10">
         <MudAlert Severity="Severity.Info" Variant="Variant.Filled" NoIcon="true" Class="mb-4" ContentAlignment="HorizontalAlignment.Center" Style="text-align: center;">

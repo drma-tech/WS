@@ -1,6 +1,5 @@
 ﻿@page "/{culture}/sitemap"
 
-@using System.Xml.Linq
 @using WS.WEB.Modules.Search.Core
 @inherits PageCore<Sitemap>
 
@@ -8,11 +7,10 @@
 
 <HeadComponent Title="sitemap generator" Description="Lists site pages in XML. Ensures search engines find and index content faster, critical for large or poorly linked websites."
          Url=@($"/{Culture}/sitemap") Index="true"></HeadComponent>
-@* <GoogleAdSense Section="@GoogleAdSense.AdUnit.Global"></GoogleAdSense> *@
 
 <MudGrid Justify="Justify.Center">
     <MudItem xs="12" md="10">
-        <PageSectionComponent IsPageHeader="true" Title="sitemap generator" Icon="@IconsFA.Solid.Icon("sitemap").Font" Description="Lists site pages in XML. Ensures search engines find and index content faster, critical for large or poorly linked websites."></PageSectionComponent>
+        <PageSectionComponent IsPageHeader="true" Title="sitemap generator" Description="Lists site pages in XML. Ensures search engines find and index content faster, critical for large or poorly linked websites."></PageSectionComponent>
     </MudItem>
     <MudItem xs="12" md="10">
         <MudAlert Severity="Severity.Info" Variant="Variant.Filled" NoIcon="true" Class="mb-4" ContentAlignment="HorizontalAlignment.Center" Style="text-align: center;">

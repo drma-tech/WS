@@ -2,7 +2,6 @@
 
 @using System.Text.Json
 @using HtmlAgilityPack
-@using WS.WEB.Modules.Search.Core
 @using WS.WEB.Modules.Search.Models
 @inherits PageCore<Manifest>
 
@@ -11,12 +10,12 @@
 
 <MudGrid Justify="Justify.Center">
     <MudItem xs="12" md="10">
-        <PageSectionComponent IsPageHeader="true" Title="manifest.webmanifest generator" Icon="@IconsFA.Solid.Icon("file-lines").Font" Description="Create a web app manifest to make your site installable as a PWA. Helps define name, icons, colors and launch behavior."></PageSectionComponent>
+        <PageSectionComponent IsPageHeader="true" Title="manifest.webmanifest generator" Description="Create a web app manifest to make your site installable as a PWA. Helps define name, icons, colors and launch behavior."></PageSectionComponent>
     </MudItem>
     <MudItem xs="12" md="10">
         <MudToolBar Gutters="false" WrapContent="true">
             <MudTextField T="string" Label="Enter your domain to load your current manifest." @bind-Text="@Search" Immediate="true" OnKeyDown="@KeyPress" Class="mb-2"
-                          AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="@(Search.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
+                          AdornmentIcon="@MudBlazor.Icons.Material.Filled.Search" Adornment="@(Search.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
                           OnAdornmentClick="@(()=>PopulateData(Search))" Clearable="true">
             </MudTextField>
         </MudToolBar>
