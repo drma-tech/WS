@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor;
-using MudBlazor.Services;
-using WS.WEB.Modules.Subscription.Core;
 
 namespace WS.WEB.Core;
 
@@ -211,54 +209,6 @@ public static class AppStateStatic
     }
 
     #endregion DarkMode
-
-    #region Region Country
-
-    private static string? _country;
-    private static readonly SemaphoreSlim _countrySemaphore = new(1, 1);
-
-    public static string? GetSavedCountry()
-    {
-        return _country;
-    }
-
-    public static async Task<string?> GetCountry(IpInfoApi api, IJSRuntime js, CancellationToken cancellationToken)
-    {
-        await _countrySemaphore.WaitAsync(cancellationToken);
-        try
-        {
-            if (_country.NotEmpty())
-            {
-                return _country;
-            }
-
-            var cache = await js.Utils().GetStorage("country", JavascriptContext.Default.String, cancellationToken);
-
-            if (cache.NotEmpty())
-            {
-                _country = cache.Trim();
-            }
-            else
-            {
-                _country = (await api.GetCountry(cancellationToken))?.Trim();
-
-                if (_country.NotEmpty())
-                    await js.Utils().SetStorage("country", _country, JavascriptContext.Default.String, cancellationToken);
-            }
-
-            return _country;
-        }
-        catch
-        {
-            return null;
-        }
-        finally
-        {
-            _countrySemaphore.Release();
-        }
-    }
-
-    #endregion Region Country
 
     public static TaskDispatcher ProcessingStarted { get; } = new();
     public static TaskDispatcher ProcessingFinished { get; } = new();

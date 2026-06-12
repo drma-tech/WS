@@ -2,7 +2,7 @@
 
 @inherits PageCore<Index>
 
-<HeadComponent Title="Web Standards Generator for Websites and PWAs" Description="@SeoTranslations.AppDescription" Url=@($"/{Culture}") Index="true" Shared="true"></HeadComponent>
+<HeadComponent Title="Web Standards Generator for Websites and PWAs" Description="@SeoTranslations.AppDescription" Url=@($"/{Culture}") Index="@Culture.NotEmpty()" Shared="true"></HeadComponent>
 
 <PageSectionComponent IsPageHeader="true" Image="icon/icon-71.webp" Title="@AppInfo.Title" Subtitle="Web Standards Generator for Websites and PWAs" Description="@SeoTranslations.AppDescription">
 </PageSectionComponent>

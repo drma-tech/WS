@@ -2,7 +2,7 @@
 @inherits PageCore<Faq>
 
 <HeadComponent Title="FAQ" Url=@($"/{Culture}/help/faq") Description="@($"Find answers about {AppInfo.Title}, including data privacy, file generation, features, accounts, and developer support.")" Index="false"></HeadComponent>
-<PageSectionComponent IsPageHeader="true" Icon="@Icons.Material.Filled.Chat" Title="FAQ" Description="@($"Find answers about {AppInfo.Title}, including data privacy, file generation, features, accounts, and developer support.")"></PageSectionComponent>
+<PageSectionComponent IsPageHeader="true" Title="FAQ" Description="@($"Find answers about {AppInfo.Title}, including data privacy, file generation, features, accounts, and developer support.")"></PageSectionComponent>
 
 <MudExpansionPanels Outlined="true" Elevation="0" Class="@Css.Build().Medium("mb")">
     <MudExpansionPanel Disabled="true" HideIcon="true">
