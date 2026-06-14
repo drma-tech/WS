@@ -12,10 +12,18 @@ export const storage = {
         }
     },
     getLocalStorage(key) {
-        return localStorage.getItem(key);
+        try {
+            return localStorage.getItem(key);
+        } catch (e) {
+            notification.showError(e.message);
+        }
     },
     getSessionStorage(key) {
-        return sessionStorage.getItem(key);
+        try {
+            return sessionStorage.getItem(key);
+        } catch (e) {
+            notification.showError(e.message);
+        }
     },
     setLocalStorage(key, value) {
         if (typeof key !== "string" || typeof value !== "string") {
