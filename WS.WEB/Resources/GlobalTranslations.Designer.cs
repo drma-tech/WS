@@ -79,6 +79,33 @@ namespace WS.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid operation. Please try again..
+        /// </summary>
+        public static string CustomVisibilityInvalid {
+            get {
+                return ResourceManager.GetString("CustomVisibilityInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading....
+        /// </summary>
+        public static string CustomVisibilityLoading {
+            get {
+                return ResourceManager.GetString("CustomVisibilityLoading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data not available.
+        /// </summary>
+        public static string CustomVisibilityNoData {
+            get {
+                return ResourceManager.GetString("CustomVisibilityNoData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Wait for news....
         /// </summary>
         public static string FeatureUnavailableDescription {

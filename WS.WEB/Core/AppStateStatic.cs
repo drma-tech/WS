@@ -6,6 +6,8 @@ namespace WS.WEB.Core;
 
 public static class AppStateStatic
 {
+     public static bool IsAuthenticated { get; set; }
+
     public static Size Size { get; set; } = Size.Small;
     public static Breakpoint Breakpoint { get; set; } = Breakpoint.Xs;
     public static ActionDispatcher<Breakpoint> BreakpointChanged { get; } = new();

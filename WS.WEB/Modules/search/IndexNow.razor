@@ -3,9 +3,11 @@
 @using System.Xml.Linq
 @using System.Text.Json
 @using System.Linq
+@using WS.WEB.Modules.Search.Core
 @inherits PageCore<IndexNow>
 
 @inject IHttpClientFactory HttpClientFactory
+@inject IndexNowApi IndexNowApi
 
 <HeadComponent Title="IndexNow" Description="IndexNow is an easy way for websites owners to instantly inform search engines and web crawlers used for information retrieval."
                Url=@($"/{Culture}/index-now") Index="true"></HeadComponent>
@@ -171,22 +173,25 @@
     {
         try
         {
-            var client = HttpClientFactory.CreateClient();
-            var apiBase = Api?.TrimEnd('/') ?? "https://www.bing.com/indexnow";
-            var endpoint = $"{apiBase}?key={Uri.EscapeDataString(Key)}&host={Uri.EscapeDataString(Host)}";
+            // var client = HttpClientFactory.CreateClient();
+            // var apiBase = Api?.TrimEnd('/') ?? "https://www.bing.com/indexnow";
+            // var endpoint = $"{apiBase}?key={Uri.EscapeDataString(Key)}&host={Uri.EscapeDataString(Host)}";
 
-            var payload = JsonSerializer.Serialize(urls);
-            using var content = new StringContent(payload, System.Text.Encoding.UTF8, "application/json");
-            var res = await client.PostAsync(endpoint, content);
-            var body = await res.Content.ReadAsStringAsync();
+            // var payload = JsonSerializer.Serialize(urls);
+            // using var content = new StringContent(payload, System.Text.Encoding.UTF8, "application/json");
+            // var res = await client.PostAsync(endpoint, content);
+            // var body = await res.Content.ReadAsStringAsync();
 
-            if (res.IsSuccessStatusCode)
+            try
             {
-                await ShowSuccess(body);
+                var payload = new IndexNowModel { host = Host, key = Key, urlList = urls };
+
+                await IndexNowApi.SendUrls(Api, payload, cts.Token);
+                await ShowSuccess("success");
             }
-            else
+            catch (Exception ex)
             {
-                await ShowError(body);
+                await ShowError(ex.Message);
             }
         }
         catch (Exception ex)

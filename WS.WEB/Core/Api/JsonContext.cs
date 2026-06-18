@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using WS.Shared.Models;
 
 namespace WS.WEB.Core.Api
 {
@@ -8,6 +9,7 @@ namespace WS.WEB.Core.Api
     [JsonSerializable(typeof(Platform?))]
     [JsonSerializable(typeof(AppLanguage?))]
     [JsonSerializable(typeof(HashSet<DateTime>))]
+    [JsonSerializable(typeof(IndexNowModel))]
     internal partial class JavascriptContext : JsonSerializerContext
     {
     }

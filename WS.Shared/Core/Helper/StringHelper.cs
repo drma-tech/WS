@@ -160,4 +160,34 @@ public static partial class StringHelper
 
         return dp[s.Length, t.Length];
     }
+
+    public static DateTime? ParseRelativeDate(this string? text)
+    {
+        if (text.Empty()) return null;
+
+        text = text.ToLowerInvariant().Trim();
+
+        if (text == "yesterday")
+            return DateTime.UtcNow.AddDays(-1);
+
+        var match = Regex.Match(text, @"(\d+)\s+(second|minute|hour|day|week|month|year)s?\s+ago");
+
+        if (!match.Success)
+            return null;
+
+        int value = int.Parse(match.Groups[1].Value);
+        string unit = match.Groups[2].Value;
+
+        return unit switch
+        {
+            "second" => DateTime.UtcNow.AddSeconds(-value),
+            "minute" => DateTime.UtcNow.AddMinutes(-value),
+            "hour" => DateTime.UtcNow.AddHours(-value),
+            "day" => DateTime.UtcNow.AddDays(-value),
+            "week" => DateTime.UtcNow.AddDays(-(value * 7)),
+            "month" => DateTime.UtcNow.AddMonths(-value),
+            "year" => DateTime.UtcNow.AddYears(-value),
+            _ => throw new InvalidOperationException("Invalid unit")
+        };
+    }
 }
