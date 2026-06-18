@@ -147,7 +147,7 @@
 
     private async Task SendToIndexNowGrid()
     {
-        urls = dataGridRef?.SelectedItems;
+        urls = dataGridRef!.Selection;
         await SendToIndexNow();
     }
 
@@ -178,7 +178,7 @@
                 var payload = new IndexNowModel { host = Host, key = Key, urlList = urls };
 
                 await IndexNowApi.SendUrls(Api, payload, cts.Token);
-                await ShowSuccess("success");
+                await ShowSuccess("Request sent");
             }
             catch (Exception ex)
             {
