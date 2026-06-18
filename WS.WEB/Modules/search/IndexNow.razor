@@ -52,7 +52,7 @@
                 </MudDataGrid>
 
                 <div class="mt-2">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SendToIndexNow" Disabled="@(string.IsNullOrWhiteSpace(Key) || string.IsNullOrWhiteSpace(Host))">Send urls to IndexNow</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SendToIndexNowGrid" Disabled="@(string.IsNullOrWhiteSpace(Key) || string.IsNullOrWhiteSpace(Host))">Send urls to IndexNow</MudButton>
                 </div>
             </MudTabPanel>
             <MudTabPanel Text="urls">
@@ -173,15 +173,6 @@
     {
         try
         {
-            // var client = HttpClientFactory.CreateClient();
-            // var apiBase = Api?.TrimEnd('/') ?? "https://www.bing.com/indexnow";
-            // var endpoint = $"{apiBase}?key={Uri.EscapeDataString(Key)}&host={Uri.EscapeDataString(Host)}";
-
-            // var payload = JsonSerializer.Serialize(urls);
-            // using var content = new StringContent(payload, System.Text.Encoding.UTF8, "application/json");
-            // var res = await client.PostAsync(endpoint, content);
-            // var body = await res.Content.ReadAsStringAsync();
-
             try
             {
                 var payload = new IndexNowModel { host = Host, key = Key, urlList = urls };
