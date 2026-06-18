@@ -270,24 +270,27 @@ export const environment = {
 
             document.head.appendChild(script);
 
-            setTimeout(() => finish(false), 3000);
+            setTimeout(() => finish(false), 10000);
         });
     },
     async isAdBlocked() {
         if (window.location.hostname === 'localhost') { return false; }
-        if (isBot) return false;
-        if (hideBlazorIndex) return false;
+        if (isBot) { return false; }
+        if (hideBlazorIndex) { return false; }
+        if (window.isAdBlocked === false) { return false; }
 
         //detect if adsense exists
         const els = document.querySelectorAll('.adsbygoogle');
         if (!els.length) {
             Sentry.captureMessage("ad blocked - no .adsbygoogle elements found", "error");
+            window.isAdBlocked = false;
             return false;
         }
 
         const state = await environment.waitForAds(els);
 
         if (state === 'filled') {
+            window.isAdBlocked = false;
             return false;
         }
 
@@ -314,7 +317,26 @@ export const environment = {
             }
         }
 
+        //other blockers block other urls
+        const sentry = await environment.testUrl(
+            'https://js.sentry-cdn.com/94ae67eb3fb0bc82327607ddd9d6aebb.min.js'
+        );
+
+        if (!sentry) {
+            return true;
+        }
+
+        const clarity = await environment.testUrl(
+            'https://www.clarity.ms/tag/r2iwqdpwtv'
+        );
+
+        if (!clarity) {
+            return true;
+        }
+
         Sentry.captureMessage("ad blocked - Ads failed but no blocker detected", "error");
+
+        window.isAdBlocked = false;
         return false;
     }
 };

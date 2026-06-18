@@ -1,0 +1,29 @@
+﻿@using Microsoft.JSInterop
+@inject IJSRuntime JsRuntime
+
+<div style="@($"position: fixed; bottom: 16px; {Side.ToString()}: {(Position * 16) + (Position * 40) - 40}px; z-index: 100;")">
+    <MudFab Color="Color" StartIcon="@StartIcon" Size="Size.Medium" OnClick="@OnClick" Class="@($"m{(Side == Side.Left ? "e" : "s")}-2")"  />
+</div>
+
+@code {
+    [Parameter] public Side Side { get; set; }
+    [Parameter] public Color Color { get; set; }
+    [Parameter] public string? StartIcon { get; set; }
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+    [Parameter] public Template? Template { get; set; }
+    [Parameter] public int Position { get; set; } = 1;
+
+    protected override void OnInitialized()
+    {
+        if (Template.HasValue)
+        {
+            if (Template == WS.WEB.Core.Enum.Template.Back)
+            {
+                Side = Side.Right;
+                Color = Color.Secondary;
+                StartIcon = Icons.Material.Filled.KeyboardBackspace;
+                OnClick = EventCallback.Factory.Create<MouseEventArgs>(this, async () => await JsRuntime.InvokeVoidAsync("history.back"));
+            }
+        }
+    }
+}

@@ -1,0 +1,202 @@
+﻿@page "/{culture}/index-now"
+
+@using System.Xml.Linq
+@using System.Text.Json
+@using System.Linq
+@inherits PageCore<IndexNow>
+
+@inject IHttpClientFactory HttpClientFactory
+
+<HeadComponent Title="IndexNow" Description="IndexNow is an easy way for websites owners to instantly inform search engines and web crawlers used for information retrieval."
+               Url=@($"/{Culture}/index-now") Index="true"></HeadComponent>
+
+<MudGrid Justify="Justify.Center">
+    <MudItem xs="12" md="10">
+        <PageSectionComponent IsPageHeader="true" Title="IndexNow" Description="IndexNow is an easy way for websites owners to instantly inform search engines and web crawlers used for information retrieval (“search engines”) about latest content changes on their website."></PageSectionComponent>
+    </MudItem>
+    <MudItem xs="12" md="10">
+        <MudTextField T="string" Label="Type the index now api" @bind-Text="@Api" Immediate="true" Class="mb-2" Variant="Variant.Outlined">
+        </MudTextField>
+    </MudItem>
+    <MudItem xs="12" md="10">
+        <MudTextField T="string" Label="Type your host" @bind-Text="@Host" Immediate="true" Class="mb-2" Variant="Variant.Outlined">
+        </MudTextField>
+    </MudItem>
+    <MudItem xs="12" md="10">
+        <MudTextField T="string" Label="Type your key" @bind-Text="@Key" Immediate="true" Class="mb-2" Variant="Variant.Outlined"
+                      HelperText="This is a key required for authentication. You can generate one here: https://www.bing.com/indexnow/getstarted">
+        </MudTextField>
+    </MudItem>
+    @*  <MudItem xs="12" md="10">
+        <MudTextField T="string" Label="Type your key location" @bind-Text="@KeyLocation" Immediate="true" Class="mb-2" Variant="Variant.Outlined">
+        </MudTextField>
+    </MudItem> *@
+
+    <MudItem xs="12" md="10">
+        <MudTabs Border="true" Outlined="true" TabPanelsClass="pt-2" MinimumTabWidth="100px">
+            <MudTabPanel Text="sitemap">
+                <MudTextField T="string" Label="Type your sitemap location" @bind-Text="@SitemapRoute" Immediate="true" Class="mb-2" Variant="Variant.Outlined"
+                              AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary" OnAdornmentClick="GenerateList" Adornment="Adornment.End">
+                </MudTextField>
+
+                <MudDataGrid T="string" @ref="dataGridRef" MultiSelection="true" Items="@SitemapUrls" SortMode="SortMode.Multiple" Filterable="true" Hideable="true">
+                    <Columns>
+                        <SelectColumn T="string" />
+                        <PropertyColumn Property="x => x" Title="url" Sortable="true" Filterable="true" />
+                    </Columns>
+                    <PagerContent>
+                        <MudDataGridPager T="string" />
+                    </PagerContent>
+                </MudDataGrid>
+
+                <div class="mt-2">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SendToIndexNow" Disabled="@(string.IsNullOrWhiteSpace(Key) || string.IsNullOrWhiteSpace(Host))">Send urls to IndexNow</MudButton>
+                </div>
+            </MudTabPanel>
+            <MudTabPanel Text="urls">
+                <MudTextField T="string" Label="Paste URLs (one per line)" @bind-Text="@ManualUrlsText" Immediate="true" Lines="10" Class="mb-2" Variant="Variant.Outlined"></MudTextField>
+
+                <div class="mt-2">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SendToIndexNowUrls" Disabled="@(string.IsNullOrWhiteSpace(ManualUrlsText))">Send urls to IndexNow</MudButton>
+                </div>
+            </MudTabPanel>
+        </MudTabs>
+    </MudItem>
+
+</MudGrid>
+
+<FloatingButton Template="Template.Back"></FloatingButton>
+
+<style>
+    ul {
+        text-align: justify;
+        margin-bottom: 0.5rem;
+        line-height: 1.7;
+        padding-left: 1.4rem;
+        list-style-type: disc;
+    }
+
+        ul li {
+            padding-left: 0.1rem;
+        }
+</style>
+
+@code {
+
+    [Parameter][SupplyParameterFromQuery(Name = "language")] public string? Language { get; set; }
+    [Parameter][SupplyParameterFromQuery(Name = "platform")] public string? Platform { get; set; }
+
+    public string? Api { get; set; } = "https://www.bing.com/indexnow";
+    public string? Host { get; set; } = "www.mywebsite.com";
+    public string? Key { get; set; } = "123abc";
+    // public string? KeyLocation { get; set; } = "https://www.mywebsite.com/123abc.txt";
+
+    public string? SitemapRoute { get; set; }
+
+    HashSet<string> urls { get; set; } = [];
+    List<string> SitemapUrls { get; set; } = new();
+    MudDataGrid<string>? dataGridRef;
+    string? ManualUrlsText { get; set; }
+
+    private async Task GenerateList()
+    {
+        SitemapUrls.Clear();
+
+        try
+        {
+            var client = HttpClientFactory.CreateClient();
+            var seen = new HashSet<string>();
+            await LoadSitemap(client, SitemapRoute!, seen);
+            SitemapUrls = seen.OrderBy(u => u).ToList();
+        }
+        catch (Exception ex)
+        {
+            await ShowError(ex.Message);
+        }
+    }
+
+    private async Task LoadSitemap(HttpClient client, string url, HashSet<string> accumulator)
+    {
+        var content = await client.GetStringAsync(url);
+        var doc = XDocument.Parse(content);
+        if (doc.Root == null) return;
+        var rootName = doc.Root.Name.LocalName.ToLowerInvariant();
+        if (rootName == "sitemapindex")
+        {
+            var sitemapNodes = doc.Root.Elements().Where(e => e.Name.LocalName.ToLowerInvariant() == "sitemap");
+            foreach (var s in sitemapNodes)
+            {
+                var loc = s.Elements().FirstOrDefault(e => e.Name.LocalName.ToLowerInvariant() == "loc")?.Value?.Trim();
+                if (!string.IsNullOrWhiteSpace(loc) && !accumulator.Contains(loc))
+                {
+                    try { await LoadSitemap(client, loc, accumulator); } catch { }
+                }
+            }
+            return;
+        }
+
+        var urls = doc.Root.Elements().Where(e => e.Name.LocalName.ToLowerInvariant() == "url");
+        foreach (var u in urls)
+        {
+            var loc = u.Elements().FirstOrDefault(e => e.Name.LocalName.ToLowerInvariant() == "loc")?.Value?.Trim();
+            if (!string.IsNullOrWhiteSpace(loc)) accumulator.Add(loc);
+        }
+    }
+
+    private async Task SendToIndexNowGrid()
+    {
+        urls = dataGridRef?.SelectedItems;
+        await SendToIndexNow();
+    }
+
+    private async Task SendToIndexNowUrls()
+    {
+        urls.Clear();
+
+        if (string.IsNullOrWhiteSpace(ManualUrlsText)) return;
+        var parts = ManualUrlsText.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+        foreach (var p in parts)
+        {
+            var t = p.Trim();
+            if (string.IsNullOrWhiteSpace(t)) continue;
+            if (Uri.TryCreate(t, UriKind.Absolute, out var u) && (u.Scheme == "http" || u.Scheme == "https"))
+            {
+                urls.Add(t);
+            }
+        }
+        await SendToIndexNow();
+    }
+
+    private async Task SendToIndexNow()
+    {
+        try
+        {
+            var client = HttpClientFactory.CreateClient();
+            var apiBase = Api?.TrimEnd('/') ?? "https://www.bing.com/indexnow";
+            var endpoint = $"{apiBase}?key={Uri.EscapeDataString(Key)}&host={Uri.EscapeDataString(Host)}";
+
+            var payload = JsonSerializer.Serialize(urls);
+            using var content = new StringContent(payload, System.Text.Encoding.UTF8, "application/json");
+            var res = await client.PostAsync(endpoint, content);
+            var body = await res.Content.ReadAsStringAsync();
+
+            if (res.IsSuccessStatusCode)
+            {
+                await ShowSuccess(body);
+            }
+            else
+            {
+                await ShowError(body);
+            }
+        }
+        catch (Exception ex)
+        {
+            await ShowError(ex.Message);
+        }
+    }
+
+    private void ClearManualUrls()
+    {
+        ManualUrlsText = null;
+    }
+}

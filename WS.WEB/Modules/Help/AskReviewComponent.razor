@@ -1,6 +1,6 @@
 ﻿@using WS.Shared.Enums
 
-@inherits ComponentCore<AskReviewComponent>
+@inherits BaseComponentCore<AskReviewComponent>
 
 @if (CustomHeader != null)
 {
@@ -210,9 +210,12 @@ else //webapp
         CurrentPlatform = await AppStateStatic.GetPlatform(JsRuntime, cts.Token);
     }
 
-    protected override async Task ProcessComponentData()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await StartCloseCountdown();
+        if (firstRender)
+        {
+            await StartCloseCountdown();
+        }
     }
 
     private async Task StartCloseCountdown()

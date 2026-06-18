@@ -1,4 +1,5 @@
-﻿@page "/{culture}"
+﻿@page "/"
+@page "/{culture}"
 
 @inherits PageCore<Index>
 
@@ -21,8 +22,8 @@
                 </WrappedCard>
             </MudItem>
             <MudItem xs="12" sm="6" md="4">
-                <WrappedCard Title="extensions sitemap generator" ActionName="Check it out" Href=@($"/{Culture}/extensions-sitemap")
-                             Description="Extends sitemaps to media. Helps search engines properly index images and videos, improving visibility in media searches..">
+                <WrappedCard Title="IndexNow" ActionName="Check it out" Href=@($"/{Culture}/index-now")
+                             Description="IndexNow is an easy way for websites owners to instantly inform search engines and web crawlers used for information retrieval.">
                 </WrappedCard>
             </MudItem>
         </MudGrid>
