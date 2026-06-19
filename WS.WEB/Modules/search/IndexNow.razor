@@ -1,7 +1,6 @@
 ﻿@page "/{culture}/index-now"
 
 @using System.Xml.Linq
-@using System.Text.Json
 @using System.Linq
 @using WS.WEB.Modules.Search.Core
 @inherits PageCore<IndexNow>
@@ -17,11 +16,12 @@
         <PageSectionComponent IsPageHeader="true" Title="IndexNow" Description="IndexNow is an easy way for websites owners to instantly inform search engines and web crawlers used for information retrieval (“search engines”) about latest content changes on their website."></PageSectionComponent>
     </MudItem>
     <MudItem xs="12" md="10">
-        <MudTextField T="string" Label="Type the index now api" @bind-Text="@Api" Immediate="true" Class="mb-2" Variant="Variant.Outlined">
+        <MudTextField T="string" Label="Type the IndexNow API" @bind-Text="@Api" Immediate="true" Class="mb-2" Variant="Variant.Outlined">
         </MudTextField>
     </MudItem>
     <MudItem xs="12" md="10">
-        <MudTextField T="string" Label="Type your host" @bind-Text="@Host" Immediate="true" Class="mb-2" Variant="Variant.Outlined">
+        <MudTextField T="string" Label="Type your host" @bind-Text="@Host" Immediate="true" Class="mb-2" Variant="Variant.Outlined"
+                      HelperText="If this is the first execution from this host, send only one URL to activate the service.">
         </MudTextField>
     </MudItem>
     <MudItem xs="12" md="10">
@@ -29,10 +29,6 @@
                       HelperText="This is a key required for authentication. You can generate one here: https://www.bing.com/indexnow/getstarted">
         </MudTextField>
     </MudItem>
-    @*  <MudItem xs="12" md="10">
-        <MudTextField T="string" Label="Type your key location" @bind-Text="@KeyLocation" Immediate="true" Class="mb-2" Variant="Variant.Outlined">
-        </MudTextField>
-    </MudItem> *@
 
     <MudItem xs="12" md="10">
         <MudTabs Border="true" Outlined="true" TabPanelsClass="pt-2" MinimumTabWidth="100px">
@@ -91,7 +87,6 @@
     public string? Api { get; set; } = "https://www.bing.com/indexnow";
     public string? Host { get; set; } = "www.mywebsite.com";
     public string? Key { get; set; } = "123abc";
-    // public string? KeyLocation { get; set; } = "https://www.mywebsite.com/123abc.txt";
 
     public string? SitemapRoute { get; set; }
 
