@@ -21,7 +21,7 @@ public class ExternalFunction(IHttpClientFactory factory)
     }
 
     [Function("ExternalIndexNow")]
-    public async Task ExternalIndexNow(
+    public async Task<HttpResponseMessage> ExternalIndexNow(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "public/external/indexnow")] HttpRequestData req, CancellationToken cancellationToken)
     {
         var url = req.GetQueryParameters()["url"]?.ConvertFromBase64ToString() ?? throw new UnhandledException("url null");
@@ -32,6 +32,6 @@ public class ExternalFunction(IHttpClientFactory factory)
 
         using var content = new StringContent(payload, System.Text.Encoding.UTF8, "application/json");
 
-        await client.PostAsync(url, content, cancellationToken);
+        return await client.PostAsync(url, content, cancellationToken);
     }
 }

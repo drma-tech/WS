@@ -177,8 +177,12 @@
             {
                 var payload = new IndexNowModel { host = Host, key = Key, urlList = urls };
 
-                await IndexNowApi.SendUrls(Api, payload, cts.Token);
-                await ShowSuccess("Request sent");
+                var response = await IndexNowApi.SendUrls(Api, payload, cts.Token);
+
+                if (response?.StatusCode == System.Net.HttpStatusCode.OK)
+                    await ShowSuccess(response?.ReasonPhrase ?? "Request sent");
+                else
+                    await ShowError(response?.ReasonPhrase ?? "Something get wrong");
             }
             catch (Exception ex)
             {

@@ -183,7 +183,7 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
         }
     }
 
-    protected async Task<O?> PostAsync<I, O>(string uri, I? obj, JsonTypeInfo<I?> requestTypeInfo, JsonTypeInfo<O?> responseTypeInfo, CancellationToken cancellationToken)
+    protected async Task<O?> PostAsync<I, O>(string uri, I? obj, JsonTypeInfo<I?> requestTypeInfo, JsonTypeInfo<O?>? responseTypeInfo, CancellationToken cancellationToken)
     {
         try
         {
@@ -192,6 +192,11 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
             SetNewVersion(key);
 
             var response = await GetHttp(type).PostAsJsonAsync(uri, obj, requestTypeInfo, cancellationToken);
+
+            if (typeof(O) == typeof(HttpResponseMessage))
+            {
+                return (O)(object)response;
+            }
 
             if (response.StatusCode == HttpStatusCode.NoContent) return default;
 
