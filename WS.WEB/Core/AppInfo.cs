@@ -10,7 +10,7 @@ namespace WS.WEB.Core
 
         public static string Title { get; set; } = "Web Standards";
         public static string Domain { get; set; } = "web-standards";
-        public static string WebSite { get; set; } = $"https://www.{Domain}.com";
+        public static string WebSite { get; set; } = $"https://{Domain}.com";
         public static int Year { get; set; } = 2021;
 
         public static readonly string? _windowsId = "9pcf521f26lz";
@@ -22,20 +22,20 @@ namespace WS.WEB.Core
 
         public static readonly StoreLink[] Stores =
         [
-            new(Platform.windows, "Microsoft Store", $"https://apps.microsoft.com/detail/{_windowsId}", "/logo/microsoft-store.webp" ),
-            //new(Platform.play, "Google Play", $"https://play.google.com/store/apps/details?id={_googleId}", "/logo/google-play.webp" ),
-            //new(Platform.ios, "App Store", $"https://apps.apple.com/us/app/{_appleId}", "/logo/app-store.webp" ),
-            //new(Platform.huawei, "Huawei AppGallery", $"https://appgallery.huawei.com/app/{_huaweiId}", "/logo/huawei.webp" ),
-            //new(Platform.xiaomi, "Xiaomi GetApps", $"https://global.app.mi.com/details?id={_xiaomiId}", "/logo/xiaomi.webp" ),
-            //new(Platform.amazon, "Amazon Appstore", $"https://www.amazon.com/gp/product/{_amazonId}", "/logo/amazon.webp" )
+            new(Platform.windows, "Microsoft Store", $"https://apps.microsoft.com/detail/{_windowsId}", "/logo/microsoft-store.png" ),
+            //new(Platform.play, "Google Play", $"https://play.google.com/store/apps/details?id={_googleId}", "/logo/google-play.png" ),
+            //new(Platform.ios, "App Store", $"https://apps.apple.com/us/app/{_appleId}", "/logo/app-store.png" ),
+            //new(Platform.huawei, "Huawei AppGallery", $"https://appgallery.huawei.com/app/{_huaweiId}", "/logo/huawei.png" ),
+            //new(Platform.xiaomi, "Xiaomi GetApps", $"https://global.app.mi.com/details?id={_xiaomiId}", "/logo/xiaomi.png" ),
+            //new(Platform.amazon, "Amazon Appstore", $"https://www.amazon.com/gp/product/{_amazonId}", "/logo/amazon.png" )
         ];
 
         public static readonly ProductLink[] Products =
         [
-            new("Streaming Discovery", "Discover Movies and Series on Streaming Platforms", "https://www.streamingdiscovery.com", "/logo/streamingdiscovery.webp", true ),
-            new("Modern Matchmaker", "Find a compatible partner through Smart Matchmaking", "https://www.modern-matchmaker.com", "/logo/modern-matchmaker.webp", true ),
-            new("My Next Spot", "Find the Best Cities and Countries to Live or Travel", "https://www.my-next-spot.com", "/logo/next-spot.webp", true ),
-            //new("Web Standards", "Web Standards Generator for Websites and PWAs", "https://www.web-standards.com", "/logo/webstandards.webp", false ),
+            new("Streaming Discovery", "Discover Movies and Series on Streaming Platforms", "https://streamingdiscovery.com", "/logo/streamingdiscovery.png", true ),
+            new("Modern Matchmaker", "Find a compatible partner through Smart Matchmaking", "https://modern-matchmaker.com", "/logo/modern-matchmaker.png", true ),
+            new("My Next Spot", "Find the Best Cities and Countries to Live or Travel", "https://my-next-spot.com", "/logo/next-spot.png", true ),
+            //new("Web Standards", "Web Standards Generator for Websites and PWAs", "https://web-standards.com", "/logo/webstandards.png", false ),
        ];
     }
 }

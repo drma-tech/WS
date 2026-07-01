@@ -1,4 +1,4 @@
 ﻿User-agent: *
 Disallow: /_framework/
 
-﻿Sitemap: https://www.web-standards.com/sitemap.xml
+﻿Sitemap: https://web-standards.com/sitemap.xml

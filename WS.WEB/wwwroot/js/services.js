@@ -54,7 +54,7 @@ export const services = {
 
         window.Userback.widget_settings = {
             language: storage.getLocalStorage("language") ?? browserLang.slice(0, 2),
-            logo: location.origin + "/icon/icon-71.webp",
+            logo: location.origin + "/icon/icon-71.png",
         };
         window.Userback.custom_data = {
             platform: storage.getLocalStorage("platform"),

@@ -64,7 +64,23 @@ internal sealed class ApiMiddleware() : IFunctionsWorkerMiddleware
         catch (Exception ex)
         {
             req?.LogError(ex);
-            await context.SetHttpResponseStatusCode(HttpStatusCode.InternalServerError, "Invocation failed!");
+
+            if (ex.Message == "Not Found")
+            {
+                return;
+            }
+
+            if (ex.Message == "Bad Gateway")
+            {
+                return;
+            }
+
+            if (ex.Message == "Too Many Requests")
+            {
+                return;
+            }
+
+            await context.SetHttpResponseStatusCode(HttpStatusCode.InternalServerError, "This request could not be processed.");
         }
         finally
         {
