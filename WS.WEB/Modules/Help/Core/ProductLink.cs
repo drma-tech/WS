@@ -1,4 +1,4 @@
-﻿namespace WS.WEB.Modules.Support.Core
+﻿namespace WS.WEB.Modules.Help.Core
 {
     public class ProductLink(string title, string subTitle, string url, string logo, bool live)
     {

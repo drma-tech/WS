@@ -1,5 +1,4 @@
 ﻿using WS.WEB.Modules.Help.Core;
-using WS.WEB.Modules.Support.Core;
 
 namespace WS.WEB.Core
 {
