@@ -77,8 +77,17 @@ namespace WS.WEB.Modules.Search.Core
 
                     if (hasNoIndex && noIndex)
                     {
-                        // do not add this page and do not follow its links
+                        // do not add this page to the sitemap, but still follow its links so linked pages
+                        // that are not marked noindex can still be discovered.
+                        // mark as visited to avoid reprocessing the same normalized page
                         visited.Add(visitKey);
+
+                        if (depth < maxDepth)
+                        {
+                            var linksToEnqueue = ExtractLinks(doc);
+                            EnqueueLinks(queue, visited, linksToEnqueue, depth + 1);
+                        }
+
                         continue;
                     }
                 }
