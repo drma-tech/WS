@@ -8,6 +8,7 @@ namespace WS.WEB.Modules.Search.Core
     public class SitemapHelper(HttpClient http,
         string baseUrl,
         bool includeAlternates = false,
+        bool noIndex = true,
         List<string>? ignoreRel = null,
         List<string>? ignoreTarget = null,
         int maxDepth = 3)
@@ -56,6 +57,35 @@ namespace WS.WEB.Modules.Search.Core
 
                 var doc = new HtmlDocument();
                 doc.LoadHtml(html);
+
+                // honor meta robots noindex when requested: skip pages marked with <meta name="robots" content="noindex" />
+                try
+                {
+                    var metas = doc.DocumentNode.SelectNodes("//meta[@name]") ?? new HtmlNodeCollection(null);
+                    var hasNoIndex = false;
+                    foreach (var m in metas)
+                    {
+                        var nm = m.GetAttributeValue("name", "");
+                        if (!nm.Equals("robots", StringComparison.OrdinalIgnoreCase)) continue;
+                        var content = m.GetAttributeValue("content", "");
+                        if (!string.IsNullOrWhiteSpace(content) && content.Contains("noindex", StringComparison.OrdinalIgnoreCase))
+                        {
+                            hasNoIndex = true;
+                            break;
+                        }
+                    }
+
+                    if (hasNoIndex && noIndex)
+                    {
+                        // do not add this page and do not follow its links
+                        visited.Add(visitKey);
+                        continue;
+                    }
+                }
+                catch
+                {
+                    // if meta parsing fails for any reason, continue normally
+                }
 
                 var page = new PageData { Url = url };
 
@@ -374,10 +404,10 @@ namespace WS.WEB.Modules.Search.Core
                 .Select(g => g.First())
                 .ToList();
 
-            foreach (var current in uniqueUrls)
+            foreach (var (Href, Hreflang) in uniqueUrls)
             {
                 var el = new XElement(ns + "url",
-                    new XElement(ns + "loc", current.Href),
+                    new XElement(ns + "loc", Href),
                     new XElement(ns + "lastmod", DateTime.UtcNow.ToString("yyyy-MM-dd"))
                 );
 
