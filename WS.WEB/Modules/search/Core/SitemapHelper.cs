@@ -8,8 +8,8 @@ namespace WS.WEB.Modules.Search.Core
     public class SitemapHelper(HttpClient http,
         string baseUrl,
         bool includeAlternates = false,
-        bool ignoreNoFollow = true,
-        string? ignoreTarget = "_blank",
+        List<string>? ignoreRel = null,
+        List<string>? ignoreTarget = null,
         int maxDepth = 3)
     {
         private readonly Uri _baseUri = new(baseUrl);
@@ -124,16 +124,18 @@ namespace WS.WEB.Modules.Search.Core
             {
                 var href = a.GetAttributeValue("href", "");
                 var rel = a.GetAttributeValue("rel", "");
+                var target = a.GetAttributeValue("target", "");
 
                 if (string.IsNullOrWhiteSpace(href)) continue;
 
                 href = href.Trim();
 
-                if (href == "." || href == "./" || href == ".." || href.StartsWith("#")) continue;
+                if (href == "." || href == "./" || href == ".." || href.StartsWith('#')) continue;
                 if (!Uri.TryCreate(_baseUri, href, out var abs)) continue;
                 if (abs.Host != _baseUri.Host) continue;
                 if (abs.Scheme != Uri.UriSchemeHttp && abs.Scheme != Uri.UriSchemeHttps) continue;
-                if (ignoreNoFollow && rel.Contains("nofollow", StringComparison.OrdinalIgnoreCase)) continue;
+                if (ignoreRel != null && ignoreRel.Any(r => rel.Contains(r, StringComparison.OrdinalIgnoreCase))) continue;
+                if (ignoreTarget != null && ignoreTarget.Any(t => target.Contains(t, StringComparison.OrdinalIgnoreCase))) continue;
 
                 result.Add(abs.ToString());
             }
@@ -163,7 +165,7 @@ namespace WS.WEB.Modules.Search.Core
             }
         }
 
-        private void EnqueueLinks(Queue<(string url, int depth)> queue, HashSet<string> visited, List<string> links, int depth)
+        private static void EnqueueLinks(Queue<(string url, int depth)> queue, HashSet<string> visited, List<string> links, int depth)
         {
             foreach (var link in links)
             {

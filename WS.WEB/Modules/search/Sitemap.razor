@@ -6,7 +6,7 @@
 @inject IHttpClientFactory HttpClientFactory
 
 <HeadComponent Title="sitemap generator" Description="Lists site pages in XML. Ensures search engines find and index content faster, critical for large or poorly linked websites."
-         Url=@($"/{Culture}/sitemap") Index="true"></HeadComponent>
+               Url=@($"/{Culture}/sitemap") Index="true"></HeadComponent>
 
 <MudGrid Justify="Justify.Center">
     <MudItem xs="12" md="10">
@@ -28,7 +28,7 @@
         <MudToolBar Gutters="false" WrapContent="true">
             <MudNumericField @bind-Value="MaxDepth" Label="Page Depth" Min="1" Max="10" Variant="Variant.Outlined" Class="me-3" />
             <MudCheckBox T="bool" @bind-Value="IncludeAlternates" Label="Include translations (hreflang)" Class="me-3" />
-            <MudSelect @bind-Value="IgnoreRel" Label="Ignore Rel" Clearable="true" MultiSelection="true" Variant="Variant.Outlined" Class="me-3" Disabled="true">
+            <MudSelect Label="Ignore Rel" @bind-SelectedValues="IgnoreRel" Clearable="true" MultiSelection="true" Variant="Variant.Outlined" Class="me-3">
                 <MudSelectItem Value="@("alternate")">alternate</MudSelectItem>
                 <MudSelectItem Value="@("author")">author</MudSelectItem>
                 <MudSelectItem Value="@("bookmark")">bookmark</MudSelectItem>
@@ -43,7 +43,7 @@
                 <MudSelectItem Value="@("search")">search</MudSelectItem>
                 <MudSelectItem Value="@("tag")">tag</MudSelectItem>
             </MudSelect>
-            <MudSelect @bind-Value="IgnoreTarget" Label="Ignore Target" Clearable="true" MultiSelection="true" Variant="Variant.Outlined" Class="me-3" Disabled="true">
+            <MudSelect Label="Ignore Target" @bind-SelectedValues="IgnoreTarget" Clearable="true" MultiSelection="true" Variant="Variant.Outlined" Class="me-3">
                 <MudSelectItem Value="@("_blank")">_blank</MudSelectItem>
                 <MudSelectItem Value="@("_parent")">_parent</MudSelectItem>
                 <MudSelectItem Value="@("_self")">_self</MudSelectItem>
@@ -122,8 +122,8 @@
     public string? Search { get; set; }
 
     private int MaxDepth { get; set; } = 2;
-    private string? IgnoreRel { get; set; } = "nofollow";
-    private string? IgnoreTarget { get; set; } = null;
+    private IReadOnlyCollection<string> IgnoreRel { get; set; } = ["nofollow"];
+    private IReadOnlyCollection<string> IgnoreTarget { get; set; } = [];
 
     private Uri? _baseUri { get; set; }
     private string? ResultXml { get; set; }
@@ -153,7 +153,7 @@
             ResultXml = null;
 
             var http = HttpClientFactory.CreateClient();
-            var helper = new SitemapHelper(http, Search, includeAlternates: IncludeAlternates, ignoreNoFollow: true, ignoreTarget: null, maxDepth: MaxDepth);
+            var helper = new SitemapHelper(http, Search, includeAlternates: IncludeAlternates, ignoreRel: IgnoreRel?.ToList(), ignoreTarget: IgnoreTarget?.ToList(), maxDepth: MaxDepth);
 
             await AppStateStatic.ProcessingStarted.PublishAsync();
             ResultXml = await helper.RunAsync();
