@@ -1,8 +1,8 @@
 ﻿@page "/{culture}/help"
 @inherits PageCore<HelpCenter>
 
-<HeadComponent Title="Help Center" Description="@($"Get detailed guides, troubleshooting tips, FAQs, and contact support for {AppInfo.Title}. Solve issues and discover features easily.")" Url=@($"/{Culture}/help") Index="false" />
-<PageSectionComponent IsPageHeader="true" Title="Help Center" Description="@($"Get detailed guides, troubleshooting tips, FAQs, and contact support for {AppInfo.Title}. Solve issues and discover features easily.")"></PageSectionComponent>
+<HeadComponent Title="@Translations.Title.HelpCenter" Description="@Translations.Description.HelpCenter.Format(AppInfo.Title)" Url=@($"/{Culture}/help") Index="false"></HeadComponent>
+<PageSectionComponent IsPageHeader="true" Title="@Translations.Title.HelpCenter" Description="@Translations.Description.HelpCenter.Format(AppInfo.Title)"></PageSectionComponent>
 
 <PageSectionComponent Title="Quick Actions">
     <BodyFragment>
@@ -20,7 +20,7 @@
                 </MudButton>
             </MudItem>
             <MudItem xs="12" sm="6" md="4" lg="3">
-                <MudButton Variant="Variant.Filled" FullWidth="true" Href=@($"/{Culture}/help/faq")>
+                <MudButton Variant="Variant.Filled" FullWidth="true" Href=@($"/{Culture}/help/faq") rel="nofollow">
                     <MudIcon Class="me-2" Icon="@Icons.Material.Filled.Chat"></MudIcon>
                     Browse FAQ
                 </MudButton>
@@ -35,13 +35,13 @@
             <MudItem xs="12" sm="6" md="4" lg="3">
                 <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@(async () => { await JsRuntime.Utils().ShowCache(cts.Token); })">
                     <MudIcon Class="me-2" Icon="@Icons.Material.Filled.Memory"></MudIcon>
-                    Show Cache
+                    @Translations.Button.ShowCache
                 </MudButton>
             </MudItem>
             <MudItem xs="12" sm="6" md="4" lg="3">
                 <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@(async () => { await JsRuntime.Utils().ClearAllStorage(); })">
                     <MudIcon Class="me-2" Icon="@Icons.Material.Filled.Clear"></MudIcon>
-                    Clear App Data
+                    @Translations.Button.ClearCache
                 </MudButton>
             </MudItem>
         </MudGrid>
@@ -54,19 +54,19 @@
             <MudItem xs="12" sm="6" md="4" lg="3">
                 <MudButton Variant="Variant.Filled" FullWidth="true" Href=@($"/{Culture}/legal/terms") Rel="nofollow">
                     <MudIcon Class="me-2" Icon="@Icons.Material.Filled.DocumentScanner"></MudIcon>
-                    Terms of Use
+                    @Translations.Module.Legal.TermsUse
                 </MudButton>
             </MudItem>
             <MudItem xs="12" sm="6" md="4" lg="3">
                 <MudButton Variant="Variant.Filled" FullWidth="true" Href=@($"/{Culture}/legal/privacy") Rel="nofollow">
                     <MudIcon Class="me-2" Icon="@Icons.Material.Filled.VerifiedUser"></MudIcon>
-                    Privacy Policy
+                    @Translations.Module.Legal.PrivacyPolicy
                 </MudButton>
             </MudItem>
             <MudItem xs="12" sm="6" md="4" lg="3">
                 <MudButton Variant="Variant.Filled" FullWidth="true" Href=@($"/{Culture}/legal/credits") Rel="nofollow">
                     <MudIcon Class="me-2" Icon="@Icons.Material.Filled.People"></MudIcon>
-                    Credits
+                    @Translations.Module.Legal.Credits
                 </MudButton>
             </MudItem>
         </MudGrid>
@@ -78,6 +78,14 @@
         <MudGrid Spacing="@Css.SpaceSmall">
             @foreach (var store in AppInfo.Stores)
             {
+                if (CurrentPlatform == WS.Shared.Enums.Platform.ios)
+                {
+                    if (store.Platform == WS.Shared.Enums.Platform.play)
+                    {
+                        continue;
+                    }
+                }
+
                 <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudButton Variant="Variant.Filled" FullWidth="true" Href="@store.Url" Target="_blank" rel="noopener">
                         <MudImage Src="@store.Logo" Class="me-2" Style="width: 20px; vertical-align: top;" Alt="@store.Store" />
@@ -93,13 +101,13 @@
     <BodyFragment>
         <MudGrid Spacing="@Css.SpaceSmall">
             <MudItem xs="12" sm="6" md="4" lg="3">
-                <MudButton Variant="Variant.Filled" FullWidth="true" Href=@($"/{Culture}/company/about-us")>
+                <MudButton Variant="Variant.Filled" FullWidth="true" Href=@($"/{Culture}/company/about-us") rel="nofollow">
                     <MudIcon Class="me-2" Icon="@Icons.Material.Filled.Business"></MudIcon>
                     About us
                 </MudButton>
             </MudItem>
             <MudItem xs="12" sm="6" md="4" lg="3">
-                <MudButton Variant="Variant.Filled" FullWidth="true" Href="mailto:contact@drma-tech.com">
+                <MudButton Variant="Variant.Filled" FullWidth="true" Href="mailto:contact@drma-tech.com" rel="nofollow">
                     <MudIcon Class="me-2" Icon="@Icons.Material.Filled.Email"></MudIcon>
                     Contact us
                 </MudButton>
@@ -129,3 +137,15 @@
         </MudGrid>
     </BodyFragment>
 </PageSectionComponent>
+
+@code {
+    private WS.Shared.Enums.Platform? CurrentPlatform;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            CurrentPlatform = await AppStateStatic.GetPlatform(JsRuntime, cts.Token);
+        }
+    }
+}

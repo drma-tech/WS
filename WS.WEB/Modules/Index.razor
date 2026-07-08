@@ -3,10 +3,9 @@
 
 @inherits PageCore<Index>
 
-<HeadComponent Title="Web Standards Generator for Websites and PWAs" Description="@SeoTranslations.AppDescription" Url=@($"/{Culture}") Index="@Culture.NotEmpty()" Shared="true"></HeadComponent>
+<HeadComponent Title="@Translations.Title.AppSubtitle" Description="@Translations.Description.AppDescription" Url=@($"/{Culture}") Index="@Culture.NotEmpty()" Shared="true"></HeadComponent>
 
-<PageSectionComponent IsPageHeader="true" Image="icon/icon-71.png" Title="@AppInfo.Title" Subtitle="Web Standards Generator for Websites and PWAs" Description="@SeoTranslations.AppDescription">
-</PageSectionComponent>
+<PageSectionComponent IsPageHeader="true" Image="icon/icon-71.png" Title="@AppInfo.Title" Subtitle="@Translations.Title.AppSubtitle"></PageSectionComponent>
 
 <PageSectionComponent Title="Discovery & Search" Description="Tell search engines what to index, improve crawling speed, and ensure important pages and media appear in search results." Icon="@Icons.Material.Filled.Search">
     <BodyFragment>

@@ -13,7 +13,7 @@
 <MudAppBar Fixed="true" Elevation="1" Color="Color.Dark">
 
     <MudButton StartIcon="@Icons.Material.Filled.House" Color="@GetColor($"/{Culture}")" Href=@($"/{Culture}") Variant="@GetVariant($"/{Culture}")" Class="@menuClass">
-        Home
+        @Translations.Title.Main
     </MudButton>
 
     <MudSpacer />
@@ -32,7 +32,7 @@
         <MudNavLink Icon="@Icons.Material.Filled.Settings" OnClick="@OpenConfigurations">
             Settings
         </MudNavLink>
-        <MudNavLink Icon="@Icons.Material.Filled.HelpCenter" Href=@($"/{Culture}/help")>
+        <MudNavLink Icon="@Icons.Material.Filled.HelpCenter" Href=@($"/{Culture}/help") rel="nofollow">
             Help Center
         </MudNavLink>
     </MudNavMenu>
@@ -44,7 +44,7 @@
 
 <MudDrawer @bind-Open="@_openApps" Anchor="Anchor.Right" Elevation="1" Variant="@DrawerVariant.Temporary" OverlayAutoClose="true" Width="275px">
     <MudDrawerHeader>
-        <MudText Typo="Typo.h6" Color="Color.Primary"> More from DRMA Tech</MudText>
+        <MudText Typo="Typo.h6" Color="Color.Primary"> @Translations.Module.Help.MorefromDRMATech</MudText>
     </MudDrawerHeader>
     @foreach (var product in AppInfo.Products)
     {

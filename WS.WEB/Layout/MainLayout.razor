@@ -1,7 +1,5 @@
 ﻿@using Microsoft.JSInterop
 @using Toolbelt.Blazor.PWA.Updater
-@using WS.Shared.Enums
-@using WS.WEB.Resources
 @inherits LayoutComponentBase
 
 @implements IDisposable
@@ -20,7 +18,7 @@
 <MudMessageBox />
 <MudSnackbarProvider Style="top: 60px;" />
 
-<PWAUpdater Text="@GlobalTranslations.PWAUpdaterText" ButtonCaption="@GlobalTranslations.PWAUpdaterButton" />
+<PWAUpdater Text="@Translations.Notification.PWAUpdaterText" ButtonCaption="@Translations.Notification.PWAUpdaterButton" />
 
 <MudLayout>
     <HeadLayout></HeadLayout>

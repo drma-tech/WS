@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WS.WEB.Resources {
+namespace WS.WEB.Translations {
     using System;
     
     
@@ -22,24 +22,24 @@ namespace WS.WEB.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class GlobalTranslations {
+    internal class Notification {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal GlobalTranslations() {
+        internal Notification() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WS.WEB.Resources.GlobalTranslations", typeof(GlobalTranslations).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WS.WEB.Translations.Notification", typeof(Notification).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace WS.WEB.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,9 +61,18 @@ namespace WS.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AdBlocker detected. Please consider whitelisting our app to support us. Thank you!.
+        /// </summary>
+        internal static string AdBlockerDetected {
+            get {
+                return ResourceManager.GetString("AdBlockerDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This platform is still under development. Some modules may be partially functional or not yet implemented..
         /// </summary>
-        public static string Beta {
+        internal static string Beta {
             get {
                 return ResourceManager.GetString("Beta", resourceCulture);
             }
@@ -72,7 +81,7 @@ namespace WS.WEB.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Explore our other amazing apps:.
         /// </summary>
-        public static string CheckOurApps {
+        internal static string CheckOurApps {
             get {
                 return ResourceManager.GetString("CheckOurApps", resourceCulture);
             }
@@ -81,7 +90,7 @@ namespace WS.WEB.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Invalid operation. Please try again..
         /// </summary>
-        public static string CustomVisibilityInvalid {
+        internal static string CustomVisibilityInvalid {
             get {
                 return ResourceManager.GetString("CustomVisibilityInvalid", resourceCulture);
             }
@@ -90,7 +99,7 @@ namespace WS.WEB.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Loading....
         /// </summary>
-        public static string CustomVisibilityLoading {
+        internal static string CustomVisibilityLoading {
             get {
                 return ResourceManager.GetString("CustomVisibilityLoading", resourceCulture);
             }
@@ -99,16 +108,25 @@ namespace WS.WEB.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Data not available.
         /// </summary>
-        public static string CustomVisibilityNoData {
+        internal static string CustomVisibilityNoData {
             get {
                 return ResourceManager.GetString("CustomVisibilityNoData", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to External Website Notice.
+        /// </summary>
+        internal static string ExternalWebsiteNotice {
+            get {
+                return ResourceManager.GetString("ExternalWebsiteNotice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Wait for news....
         /// </summary>
-        public static string FeatureUnavailableDescription {
+        internal static string FeatureUnavailableDescription {
             get {
                 return ResourceManager.GetString("FeatureUnavailableDescription", resourceCulture);
             }
@@ -117,16 +135,43 @@ namespace WS.WEB.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Under development.
         /// </summary>
-        public static string FeatureUnavailableMessage {
+        internal static string FeatureUnavailableMessage {
             get {
                 return ResourceManager.GetString("FeatureUnavailableMessage", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operation cancelled!.
+        /// </summary>
+        internal static string OperationCanceled {
+            get {
+                return ResourceManager.GetString("OperationCanceled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operation completed successfully!.
+        /// </summary>
+        internal static string OperationCompleted {
+            get {
+                return ResourceManager.GetString("OperationCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operation in progress. Please wait....
+        /// </summary>
+        internal static string OperationProgress {
+            get {
+                return ResourceManager.GetString("OperationProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to UPDATE NOW.
         /// </summary>
-        public static string PWAUpdaterButton {
+        internal static string PWAUpdaterButton {
             get {
                 return ResourceManager.GetString("PWAUpdaterButton", resourceCulture);
             }
@@ -135,27 +180,9 @@ namespace WS.WEB.Resources {
         /// <summary>
         ///   Looks up a localized string similar to A new version is available.
         /// </summary>
-        public static string PWAUpdaterText {
+        internal static string PWAUpdaterText {
             get {
                 return ResourceManager.GetString("PWAUpdaterText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Rate the app and share it with your friends!.
-        /// </summary>
-        public static string WriteReviewSubtitle {
-            get {
-                return ResourceManager.GetString("WriteReviewSubtitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Help {0} grow!.
-        /// </summary>
-        public static string WriteReviewTitle {
-            get {
-                return ResourceManager.GetString("WriteReviewTitle", resourceCulture);
             }
         }
     }

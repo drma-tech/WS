@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WS.WEB.Modules.Help.Resources {
+namespace WS.WEB.Translations {
     using System;
     
     
@@ -22,24 +22,24 @@ namespace WS.WEB.Modules.Help.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Translations {
+    internal class Title {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Translations() {
+        internal Title() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WS.WEB.Modules.Help.Resources.Translations", typeof(Translations).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WS.WEB.Translations.Title", typeof(Title).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace WS.WEB.Modules.Help.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,29 +61,38 @@ namespace WS.WEB.Modules.Help.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Questions.
+        ///   Looks up a localized string similar to Web Standards Generator for Websites and PWAs.
         /// </summary>
-        public static string LinkFAQ {
+        internal static string AppSubtitle {
             get {
-                return ResourceManager.GetString("LinkFAQ", resourceCulture);
+                return ResourceManager.GetString("AppSubtitle", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Privacy Policies.
+        ///   Looks up a localized string similar to FAQ.
         /// </summary>
-        public static string LinkPrivacy {
+        internal static string FAQ {
             get {
-                return ResourceManager.GetString("LinkPrivacy", resourceCulture);
+                return ResourceManager.GetString("FAQ", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Terms of Use.
+        ///   Looks up a localized string similar to Help Center.
         /// </summary>
-        public static string LinkTerm {
+        internal static string HelpCenter {
             get {
-                return ResourceManager.GetString("LinkTerm", resourceCulture);
+                return ResourceManager.GetString("HelpCenter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Main.
+        /// </summary>
+        internal static string Main {
+            get {
+                return ResourceManager.GetString("Main", resourceCulture);
             }
         }
     }

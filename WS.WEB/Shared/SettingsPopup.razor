@@ -2,21 +2,21 @@
 
 <MudDialog Style="width: 100%">
     <DialogContent>
-        <MudText Class="mb-1" Style="font-size: 14px;">App Theme</MudText>
+        <MudText Class="mb-1" Style="font-size: 14px;">@Translations.Module.Help.AppTheme</MudText>
         <MudToggleGroup Value="DarkMode" ValueChanged="(bool vl) => DarkModeChanged(vl)" SelectionMode="SelectionMode.SingleSelection" Vertical="false" Color="Color.Primary">
             <MudToggleItem Value="false">
-                <MudIcon Icon="@Icons.Material.Filled.LightMode" Title="Light Mode" Class="me-1"></MudIcon>
-                Light Mode
+                <MudIcon Icon="@Icons.Material.Filled.LightMode" Title="@Translations.Module.Help.LightMode" Class="me-1"></MudIcon>
+                @Translations.Module.Help.LightMode
             </MudToggleItem>
             <MudToggleItem Value="true">
-                <MudIcon Icon="@Icons.Material.Filled.DarkMode" Title="Dark Mode" Class="me-1"></MudIcon>
-                Dark Mode
+                <MudIcon Icon="@Icons.Material.Filled.DarkMode" Title="@Translations.Module.Help.DarkMode" Class="me-1"></MudIcon>
+                @Translations.Module.Help.DarkMode
             </MudToggleItem>
         </MudToggleGroup>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="@(() => { MudDialog?.Close(); })">
-            Close
+            @Translations.Button.Close
         </MudButton>
     </DialogActions>
 </MudDialog>

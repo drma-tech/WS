@@ -120,4 +120,7 @@
   <data name="AppDescription" xml:space="preserve">
     <value>A toolkit that helps developers set up essential web standards like sitemaps, manifests, icons, SEO tags, and security files for modern websites and PWAs.</value>
   </data>
+  <data name="HelpCenter" xml:space="preserve">
+    <value>Get detailed guides, troubleshooting tips, FAQs, and contact support for {0}. Solve issues and discover features easily.</value>
+  </data>
 </root>

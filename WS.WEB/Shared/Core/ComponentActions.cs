@@ -23,7 +23,7 @@
         public T? CurrentInstance { get; set; }
         public Func<T?, bool> ExpressionEmpty { get; set; }
 
-        public string? MessageLoading { get; set; } = GlobalTranslations.CustomVisibilityLoading;
+        public string? MessageLoading { get; set; } = Translations.Notification.CustomVisibilityLoading;
         public string? MessageError { get; set; }
         public string? MessageWarning { get; set; }
 
@@ -51,7 +51,7 @@
         {
             if (status == RenderStatus.Loading)
             {
-                MessageLoading = msg ?? GlobalTranslations.CustomVisibilityLoading;
+                MessageLoading = msg ?? Translations.Notification.CustomVisibilityLoading;
             }
             else if (status == RenderStatus.Warning)
             {
@@ -63,7 +63,7 @@
             }
             else if (status == RenderStatus.Content && (Equals(instance, default(T)) || ExpressionEmpty(instance)) && CustomMessageWarning.NotEmpty())
             {
-                await ChangeStatus(RenderStatus.Warning, GlobalTranslations.CustomVisibilityNoData);
+                await ChangeStatus(RenderStatus.Warning, Translations.Notification.CustomVisibilityNoData);
                 return;
             }
 

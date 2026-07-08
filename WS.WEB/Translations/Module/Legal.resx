@@ -117,13 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="LinkFAQ" xml:space="preserve">
-    <value>Questions</value>
+  <data name="Credits" xml:space="preserve">
+    <value>Credits</value>
   </data>
-  <data name="LinkPrivacy" xml:space="preserve">
-    <value>Privacy Policies</value>
+  <data name="PrivacyPolicy" xml:space="preserve">
+    <value>Privacy Policy</value>
   </data>
-  <data name="LinkTerm" xml:space="preserve">
+  <data name="TermsUse" xml:space="preserve">
     <value>Terms of Use</value>
   </data>
 </root>

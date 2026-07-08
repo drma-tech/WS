@@ -19,7 +19,7 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other bigger devices
                         Company
                     </MudText>
                 </MudListSubheader>
-                <MudListItem Text="About us" Href=@($"/{Culture}/company/about-us") Class="py-0" Disabled="_blockedActions" />
+                <MudListItem Text="About us" Href=@($"/{Culture}/company/about-us") Class="py-0" Disabled="_blockedActions" rel="nofollow" />
                 <MudListItem Text="Website" Href="https://www.drma-tech.com" Target="_blank" rel="noopener" Class="py-0" />
             </MudList>
         </MudItem>
@@ -27,7 +27,7 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other bigger devices
             <MudList T="string" Dense="true" Gutters="false">
                 <MudListSubheader Gutters="false">
                     <MudText Color="Color.Secondary">
-                        Get the App
+                        @Translations.Module.Help.GetTheApp
                     </MudText>
                 </MudListSubheader>
                 @if (CurrentPlatform == Platform.webapp)
@@ -69,7 +69,7 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other bigger devices
                         </MudListItem>
                     }
                 }
-                <MudListItem Href=@($"/{Culture}/help#get-the-app") Class="py-0">
+                <MudListItem Href=@($"/{Culture}/help#get-the-app") Class="py-0" rel="nofollow">
                     <ChildContent>
                         <MudIcon Icon="@Icons.Material.Filled.Apps" Class="ma-0 me-1" Style="vertical-align: middle;" />
                         More
@@ -84,9 +84,9 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other bigger devices
                         Support
                     </MudText>
                 </MudListSubheader>
-                <MudListItem Text="Help Center" Href=@($"/{Culture}/help") Class="py-0" Disabled="_blockedActions" />
-                <MudListItem Text="Contact" Href="mailto:support@web-standards.com" Class="py-0" />
-                <MudListItem Text="FAQ" Href=@($"/{Culture}/help/faq") Class="py-0" Disabled="_blockedActions" />
+                <MudListItem Text="Help Center" Href=@($"/{Culture}/help") Class="py-0" Disabled="_blockedActions" rel="nofollow" />
+                <MudListItem Text="Contact" Href="mailto:support@web-standards.com" Class="py-0" rel="nofollow" />
+                <MudListItem Text="@Translations.Title.FAQ" Href=@($"/{Culture}/help/faq") Class="py-0" Disabled="_blockedActions" rel="nofollow" />
             </MudList>
         </MudItem>
         <MudItem xs="12" sm="3" md="2">
@@ -96,9 +96,9 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other bigger devices
                         Legal
                     </MudText>
                 </MudListSubheader>
-                <MudListItem Text="Terms of Use" Href="/en/legal/terms" Class="py-0" rel="nofollow" />
-                <MudListItem Text="Privacy Policy" Href="/en/legal/privacy" Class="py-0" rel="nofollow" />
-                <MudListItem Text="Credits" Href="/en/legal/credits" Class="py-0" rel="nofollow" />
+                <MudListItem Text="@Translations.Module.Legal.TermsUse" Href=@($"/{Culture}/legal/terms") Class="py-0" rel="nofollow" Disabled="_blockedActions" />
+                <MudListItem Text="@Translations.Module.Legal.PrivacyPolicy" Href=@($"/{Culture}/legal/privacy") Class="py-0" rel="nofollow" Disabled="_blockedActions" />
+                <MudListItem Text="@Translations.Module.Legal.Credits" Href=@($"/{Culture}/legal/credits") Class="py-0" rel="nofollow" Disabled="_blockedActions" />
             </MudList>
         </MudItem>
     </MudGrid>
