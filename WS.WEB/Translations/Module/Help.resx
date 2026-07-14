@@ -126,6 +126,9 @@
   <data name="GetTheApp" xml:space="preserve">
     <value>Get the App</value>
   </data>
+  <data name="HelpTitle" xml:space="preserve">
+    <value>Help</value>
+  </data>
   <data name="LightMode" xml:space="preserve">
     <value>Light Mode</value>
   </data>

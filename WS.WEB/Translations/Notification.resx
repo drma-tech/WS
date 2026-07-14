@@ -159,4 +159,7 @@
   <data name="PWAUpdaterText" xml:space="preserve">
     <value>A new version is available</value>
   </data>
+  <data name="Version" xml:space="preserve">
+    <value>Version</value>
+  </data>
 </root>

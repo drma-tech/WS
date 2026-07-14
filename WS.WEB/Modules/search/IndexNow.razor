@@ -170,6 +170,12 @@
         {
             try
             {
+                if (urls.Empty())
+                {
+                    await ShowWarning("Provide at least one URL to submit.");
+                    return;
+                }
+
                 var payload = new IndexNowModel { host = Host, key = Key, urlList = urls };
 
                 var response = await IndexNowApi.SendUrls(Api, payload, cts.Token);

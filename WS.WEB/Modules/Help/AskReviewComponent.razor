@@ -1,6 +1,7 @@
 ﻿@using WS.Shared.Enums
+@using Microsoft.JSInterop
 
-@inherits BaseComponentCore<AskReviewComponent>
+@inject IJSRuntime JsRuntime
 
 @if (CustomHeader != null)
 {
@@ -163,8 +164,7 @@ else //webapp
 @if (ShowOtherApps)
 {
     <MudDivider Class="@Css.Build().Medium("my")"></MudDivider>
-    <MudButton Disabled="CloseDisabled" Size="Size.Medium" Variant="Variant.Filled" FullWidth="true" Color="Color.Error" StartIcon="@Icons.Material.Filled.Close"
-               OnClick="@(() => { MudDialog!.Close(); })" Class="@Css.Build().Small("mb")">
+    <MudButton Disabled="CloseDisabled" Size="Size.Medium" Variant="Variant.Filled" FullWidth="true" Color="Color.Error" StartIcon="@Icons.Material.Filled.Close" OnClick="CloseClick" Class="@Css.Build().Small("mb")">
         @Translations.Button.Close
         @if (CloseDisabled)
         {
@@ -207,7 +207,7 @@ else //webapp
     {
         await base.OnInitializedAsync();
 
-        CurrentPlatform = await AppStateStatic.GetPlatform(JsRuntime, cts.Token);
+        CurrentPlatform = await AppStateStatic.GetPlatform(JsRuntime, CancellationToken.None);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -234,6 +234,11 @@ else //webapp
 
     private async Task Reviewed()
     {
-        await JsRuntime.Utils().SetStorage("store-reviewed", true, JavascriptContext.Default.Boolean, cts.Token);
+        await JsRuntime.Utils().SetStorage("store-reviewed", true, JavascriptContext.Default.Boolean, CancellationToken.None);
+    }
+
+    private void CloseClick()
+    {
+        MudDialog?.Close();
     }
 }

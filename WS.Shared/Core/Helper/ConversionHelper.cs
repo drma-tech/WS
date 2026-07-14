@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace WS.Shared.Core.Helper;
 
-public static class ParameterHelper
+public static class ConversionHelper
 {
     private static readonly JsonSerializerOptions IndentedOptions = new() { WriteIndented = true };
 
@@ -45,5 +45,32 @@ public static class ParameterHelper
     public static string ConvertFromBytesToBase64(this byte[] bytes)
     {
         return Convert.ToBase64String(bytes);
+    }
+
+    public static string ConvertFromStreamToBase64(this Stream stream)
+    {
+        if (stream.CanSeek) stream.Position = 0;
+
+        using var memoryStream = new MemoryStream();
+
+        stream.CopyTo(memoryStream);
+
+        return Convert.ToBase64String(memoryStream.ToArray());
+    }
+
+    public static async Task<string> ConvertFromStreamToBase64Async(this Stream stream)
+    {
+        if (stream.CanSeek) stream.Position = 0;
+
+        using var memoryStream = new MemoryStream();
+
+        await stream.CopyToAsync(memoryStream);
+
+        return Convert.ToBase64String(memoryStream.ToArray());
+    }
+
+    public static Stream ConvertFromBase64ToStream(this string base64)
+    {
+        return new MemoryStream(Convert.FromBase64String(base64));
     }
 }

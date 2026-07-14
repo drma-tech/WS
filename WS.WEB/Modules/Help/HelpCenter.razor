@@ -8,7 +8,7 @@
     <BodyFragment>
         <MudGrid Spacing="@Css.SpaceSmall">
             <MudItem xs="12" sm="6" md="4" lg="3">
-                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@(async () => { await JsRuntime.Window().InvokeVoidAsync("eval", "Userback && Userback.openForm('general', 'form');"); })">
+                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@FeedbackClick">
                     <MudIcon Class="me-2" Icon="@Icons.Material.Filled.Feedback"></MudIcon>
                     Feedback
                 </MudButton>
@@ -33,13 +33,13 @@
     <BodyFragment>
         <MudGrid Spacing="@Css.SpaceSmall">
             <MudItem xs="12" sm="6" md="4" lg="3">
-                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@(async () => { await JsRuntime.Utils().ShowCache(cts.Token); })">
+                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@ShowCacheClick">
                     <MudIcon Class="me-2" Icon="@Icons.Material.Filled.Memory"></MudIcon>
                     @Translations.Button.ShowCache
                 </MudButton>
             </MudItem>
             <MudItem xs="12" sm="6" md="4" lg="3">
-                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@(async () => { await JsRuntime.Utils().ClearAllStorage(); })">
+                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@ClearCacheClick">
                     <MudIcon Class="me-2" Icon="@Icons.Material.Filled.Clear"></MudIcon>
                     @Translations.Button.ClearCache
                 </MudButton>
@@ -147,5 +147,20 @@
         {
             CurrentPlatform = await AppStateStatic.GetPlatform(JsRuntime, cts.Token);
         }
+    }
+
+    private async Task FeedbackClick()
+    {
+        await JsRuntime.Window().InvokeVoidAsync("eval", "Userback && Userback.openForm('general', 'form');");
+    }
+
+    private async Task ShowCacheClick()
+    {
+        await JsRuntime.Utils().ShowCache(cts.Token);
+    }
+
+    private async Task ClearCacheClick()
+    {
+        await JsRuntime.Utils().ClearAllStorage();
     }
 }

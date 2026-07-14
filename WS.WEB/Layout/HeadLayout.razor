@@ -18,9 +18,9 @@
 
     <MudSpacer />
 
-    <MudIconButton Icon="@Icons.Material.Filled.Apps" Color="Color.Inherit" Class="me-1" OnClick="@(() => { _openApps = true; })" />
+    <MudIconButton Icon="@Icons.Material.Filled.Apps" Color="Color.Inherit" Class="me-1" OnClick="@AppsClick" />
 
-    <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { _openMenu = true; })" />
+    <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@MenuClick" />
 
 </MudAppBar>
 
@@ -30,15 +30,15 @@
     </MudDrawerHeader>
     <MudNavMenu>
         <MudNavLink Icon="@Icons.Material.Filled.Settings" OnClick="@OpenConfigurations">
-            Settings
+            @Translations.Module.Help.Settings
         </MudNavLink>
         <MudNavLink Icon="@Icons.Material.Filled.HelpCenter" Href=@($"/{Culture}/help") rel="nofollow">
-            Help Center
+            @Translations.Module.Help.HelpTitle
         </MudNavLink>
     </MudNavMenu>
     <MudSpacer></MudSpacer>
     <MudText Typo="Typo.caption" Align="Align.Center" Class="mb-2">
-        @($"Version: {AppStateStatic.Version}")
+        @($"{Translations.Notification.Version}: {AppStateStatic.Version}")
     </MudText>
 </MudDrawer>
 
@@ -75,7 +75,7 @@
     private int _processingCount = 0;
     private bool _processing => _processingCount > 0;
 
-    private string menuClass => AppStateStatic.Breakpoint == Breakpoint.Xs ? "icon-text-button" : "px-3";
+    private string menuClass => AppStateStatic.IsMobile ? "icon-text-button" : "px-3";
 
     protected readonly CancellationTokenSource cts = new();
 
@@ -125,6 +125,16 @@
         var uri = new Uri(Navigation.Uri);
 
         return string.Equals(uri.AbsolutePath, endpoint, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private void AppsClick()
+    {
+        _openApps = true;
+    }
+
+    private void MenuClick()
+    {
+        _openMenu = true;
     }
 
     void IDisposable.Dispose()

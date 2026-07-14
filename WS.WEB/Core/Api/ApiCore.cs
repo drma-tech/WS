@@ -197,6 +197,10 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
             {
                 return (O)(object)response;
             }
+            else if (responseTypeInfo == null)
+            {
+                throw new ArgumentNullException(nameof(responseTypeInfo), "Response type info must be provided for non-HttpResponseMessage types.");
+            }
 
             if (response.StatusCode == HttpStatusCode.NoContent) return default;
 
