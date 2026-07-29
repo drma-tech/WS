@@ -1,4 +1,4 @@
-﻿namespace WS.Shared.Models;
+﻿namespace WS.Shared.Core;
 
 public class Configurations
 {

@@ -47,4 +47,19 @@
 
 @code {
     private string Culture => Navigation.GetCulture();
+
+    protected override void OnInitialized()
+    {
+        AppStateStatic.HideAdvertising.Publish(true);
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            AppStateStatic.HideAdvertising.Publish(false);
+        }
+
+        base.Dispose(disposing);
+    }
 }

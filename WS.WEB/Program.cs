@@ -78,12 +78,34 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
     collection.AddPWAUpdater();
     collection.AddScoped<AppVersionHandler>();
 
-    collection.AddHttpClient("Local", c => { c.BaseAddress = new Uri(baseAddress); }); //json files and other assets, not the API.
+    var isLocal = baseAddress.Contains("localhost") || baseAddress.Contains("127.0.0.1");
+    Uri? webUri = null;
+    Uri? apiUri = null;
 
-    var apiOrigin = configuration["DownstreamApi:BaseUrl"] ??
-        (baseAddress.Contains("localhost") || baseAddress.Contains("127.0.0.1") ? throw new UnhandledException($"DownstreamApi:BaseUrl is null.") : $"{baseAddress}api/");
+    if (isLocal)
+    {
+        webUri = new Uri(baseAddress);
+        apiUri = new Uri(configuration["ApiBaseAddress"] ?? throw new UnhandledException("BaseUrl not defined"));
+    }
+    else
+    {
+        var builder = new UriBuilder(baseAddress);
 
-    collection.AddHttpClient("Anonymous", (service, options) => { options.BaseAddress = new Uri(apiOrigin); options.Timeout = TimeSpan.FromSeconds(30); })
+        //force apex domain
+        //if (builder.Host.StartsWith("www.", StringComparison.OrdinalIgnoreCase))
+        //{
+        //    builder.Host = builder.Host[4..];
+        //}
+
+        webUri = builder.Uri;
+        apiUri = new Uri(webUri, "api/");
+    }
+
+    //Local (json files and other assets, not the API)
+    collection.AddHttpClient("Local", c => { c.BaseAddress = webUri; });
+
+    //Anonymous
+    collection.AddHttpClient("Anonymous", (service, options) => { options.BaseAddress = apiUri; options.Timeout = TimeSpan.FromSeconds(30); })
         .AddHttpMessageHandler<AppVersionHandler>()
         .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
@@ -92,7 +114,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
 
 static void ConfigurePrerendering()
 {
-    const string loading = "loading";
+    const string loading = "prerendering";
 
     AppStateStatic.Version = loading;
     AppStateStatic.BrowserName = loading;

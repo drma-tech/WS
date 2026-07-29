@@ -215,4 +215,5 @@ public static class AppStateStatic
 
     public static TaskDispatcher ProcessingStarted { get; } = new();
     public static TaskDispatcher ProcessingFinished { get; } = new();
+    public static ActionDispatcher<bool> HideAdvertising { get; } = new();
 }

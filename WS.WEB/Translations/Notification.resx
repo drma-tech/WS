@@ -126,13 +126,13 @@
   <data name="CheckOurApps" xml:space="preserve">
     <value>Explore our other amazing apps:</value>
   </data>
-  <data name="CustomVisibilityInvalid" xml:space="preserve">
+  <data name="RenderControlInvalid" xml:space="preserve">
     <value>Invalid operation. Please try again.</value>
   </data>
-  <data name="CustomVisibilityLoading" xml:space="preserve">
+  <data name="RenderControlLoading" xml:space="preserve">
     <value>Loading...</value>
   </data>
-  <data name="CustomVisibilityNoData" xml:space="preserve">
+  <data name="RenderControlNoData" xml:space="preserve">
     <value>Data not available</value>
   </data>
   <data name="ExternalWebsiteNotice" xml:space="preserve">

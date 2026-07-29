@@ -88,33 +88,6 @@ namespace WS.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid operation. Please try again..
-        /// </summary>
-        internal static string CustomVisibilityInvalid {
-            get {
-                return ResourceManager.GetString("CustomVisibilityInvalid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loading....
-        /// </summary>
-        internal static string CustomVisibilityLoading {
-            get {
-                return ResourceManager.GetString("CustomVisibilityLoading", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Data not available.
-        /// </summary>
-        internal static string CustomVisibilityNoData {
-            get {
-                return ResourceManager.GetString("CustomVisibilityNoData", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to External Website Notice.
         /// </summary>
         internal static string ExternalWebsiteNotice {
@@ -183,6 +156,33 @@ namespace WS.WEB.Translations {
         internal static string PWAUpdaterText {
             get {
                 return ResourceManager.GetString("PWAUpdaterText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid operation. Please try again..
+        /// </summary>
+        internal static string RenderControlInvalid {
+            get {
+                return ResourceManager.GetString("RenderControlInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading....
+        /// </summary>
+        internal static string RenderControlLoading {
+            get {
+                return ResourceManager.GetString("RenderControlLoading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data not available.
+        /// </summary>
+        internal static string RenderControlNoData {
+            get {
+                return ResourceManager.GetString("RenderControlNoData", resourceCulture);
             }
         }
         

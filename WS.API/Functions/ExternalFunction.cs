@@ -27,7 +27,7 @@ public class ExternalFunction(IHttpClientFactory factory)
         var url = req.GetQueryParameters()["url"]?.ConvertFromBase64ToString() ?? throw new UnhandledException("url null");
         var client = factory.CreateClient("general");
 
-        var body = await req.GetPublicBody<IndexNowModel>(cancellationToken);
+        var body = await req.GetBody<IndexNowModel>(cancellationToken);
         var payload = JsonSerializer.Serialize(body);
 
         using var content = new StringContent(payload, System.Text.Encoding.UTF8, "application/json");

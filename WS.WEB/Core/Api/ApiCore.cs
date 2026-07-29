@@ -12,7 +12,14 @@ public enum ApiType
     Authenticated,
 }
 
-public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType type)
+/// <summary>
+///
+/// </summary>
+/// <param name="factory"></param>
+/// <param name="key">If data is modified by the user themselves, this key activates version control</param>
+/// <param name="extraKeys">keys of other APIs that can be modified by this API</param>
+/// <param name="type"></param>
+public abstract class ApiCore(IHttpClientFactory factory, string? key, string[] extraKeys, ApiType type)
 {
     protected HttpClient LocalHttp => factory.CreateClient("Local");
     protected HttpClient AnonymousHttp => factory.CreateClient("Anonymous");
@@ -33,9 +40,14 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
         CacheVersion = [];
     }
 
-    public static void SetNewVersion(string? key)
+    public static void SetNewVersion(string? key, string[] extraKeys)
     {
         if (key.NotEmpty()) CacheVersion[key] = RandomNumberGenerator.GetInt32(1, 999999);
+
+        foreach (var item in extraKeys)
+        {
+            CacheVersion[item] = RandomNumberGenerator.GetInt32(1, 999999);
+        }
     }
 
     private Dictionary<string, string> GetVersion()
@@ -100,14 +112,14 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
         }
     }
 
-    protected async Task<T?> GetAsync<T>(string uri, bool setNewVersion, ComponentActions<T?>? actions, CancellationToken cancellationToken)
+    protected async Task<T?> GetAsync<T>(string uri, bool setNewVersion, ComponentActions<T>? actions, CancellationToken cancellationToken)
     {
         try
         {
             if (actions != null) await actions.StartLoading(null);
             await AppStateStatic.ProcessingStarted.PublishAsync();
 
-            if (setNewVersion) SetNewVersion(key);
+            if (setNewVersion) SetNewVersion(key, extraKeys);
 
             T? result = default;
 
@@ -183,13 +195,38 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
         }
     }
 
-    protected async Task<O?> PostAsync<I, O>(string uri, I? obj, JsonTypeInfo<I?> requestTypeInfo, JsonTypeInfo<O?>? responseTypeInfo, CancellationToken cancellationToken)
+    protected async Task PostAsync(string uri, CancellationToken cancellationToken)
     {
         try
         {
             await AppStateStatic.ProcessingStarted.PublishAsync();
 
-            SetNewVersion(key);
+            SetNewVersion(key, extraKeys);
+
+            var response = await GetHttp(type).PostAsync(uri, null, cancellationToken);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return;
+            }
+
+            var content = await response.Content.ReadAsStringAsync(cancellationToken);
+
+            throw new NotificationException(content);
+        }
+        finally
+        {
+            await AppStateStatic.ProcessingFinished.PublishAsync();
+        }
+    }
+
+    protected async Task<O> PostAsync<I, O>(string uri, I? obj, JsonTypeInfo<I?> requestTypeInfo, JsonTypeInfo<O?>? responseTypeInfo, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await AppStateStatic.ProcessingStarted.PublishAsync();
+
+            SetNewVersion(key, extraKeys);
 
             var response = await GetHttp(type).PostAsJsonAsync(uri, obj, requestTypeInfo, cancellationToken);
 
@@ -202,9 +239,10 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
                 throw new ArgumentNullException(nameof(responseTypeInfo), "Response type info must be provided for non-HttpResponseMessage types.");
             }
 
-            if (response.StatusCode == HttpStatusCode.NoContent) return default;
-
-            if (response.IsSuccessStatusCode) return await response.Content.ReadFromJsonAsync(responseTypeInfo, cancellationToken);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync(responseTypeInfo, cancellationToken) ?? throw new NotificationException("Failed to read response content.");
+            }
 
             var content = await response.Content.ReadAsStringAsync(cancellationToken);
             throw new NotificationException(content);
@@ -215,21 +253,23 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
         }
     }
 
-    protected async Task<O?> PutAsync<I, O>(string uri, I? obj, JsonTypeInfo<I?> requestTypeInfo, JsonTypeInfo<O?> responseTypeInfo, CancellationToken cancellationToken)
+    protected async Task<O> PutAsync<I, O>(string uri, I? obj, JsonTypeInfo<I?> requestTypeInfo, JsonTypeInfo<O?> responseTypeInfo, CancellationToken cancellationToken)
     {
         try
         {
             await AppStateStatic.ProcessingStarted.PublishAsync();
 
-            SetNewVersion(key);
+            SetNewVersion(key, extraKeys);
 
             var response = await GetHttp(type).PutAsJsonAsync(uri, obj, requestTypeInfo, cancellationToken);
 
-            if (response.StatusCode == HttpStatusCode.NoContent) return default;
-
-            if (response.IsSuccessStatusCode) return await response.Content.ReadFromJsonAsync(responseTypeInfo, cancellationToken);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync(responseTypeInfo, cancellationToken) ?? throw new NotificationException("Failed to read response content.");
+            }
 
             var content = await response.Content.ReadAsStringAsync(cancellationToken);
+
             throw new NotificationException(content);
         }
         finally
@@ -238,21 +278,22 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
         }
     }
 
-    protected async Task<T?> DeleteAsync<T>(string uri, JsonTypeInfo<T?> typeInfo, CancellationToken cancellationToken)
+    protected async Task DeleteAsync(string uri, CancellationToken cancellationToken)
     {
         try
         {
             await AppStateStatic.ProcessingStarted.PublishAsync();
 
-            SetNewVersion(key);
+            SetNewVersion(key, extraKeys);
 
             var response = await GetHttp(type).DeleteAsync(uri, cancellationToken);
 
-            if (response.StatusCode == HttpStatusCode.NoContent) return default;
+            if (response.StatusCode == HttpStatusCode.NoContent) return;
 
-            if (response.IsSuccessStatusCode) return await response.Content.ReadFromJsonAsync(typeInfo, cancellationToken);
+            if (response.IsSuccessStatusCode) return;
 
             var content = await response.Content.ReadAsStringAsync(cancellationToken);
+
             throw new NotificationException(content);
         }
         finally
