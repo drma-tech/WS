@@ -3,7 +3,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace WS.API.Core
+namespace WS.WEB.Modules.Search.Core
 {
     public class NewSitemapGenerator(HttpClient http, string baseUrl)
     {

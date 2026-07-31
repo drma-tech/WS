@@ -35,14 +35,14 @@ public class ExternalFunction(IHttpClientFactory factory)
         return await client.PostAsync(url, content, cancellationToken);
     }
 
-    [Function("RunSitemap")]
-    public async Task RunSitemap(
-       [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "public/sitemap")] HttpRequestData req, CancellationToken cancellationToken)
-    {
-        var http = factory.CreateClient();
-        //var helper = new SitemapHelper(http, "https://streamingdiscovery.com/en", includeAlternates: false, noIndex: true, ignoreRel: ["nofollow"], ignoreTarget: [], maxDepth: 8);
-        var helper = new NewSitemapGenerator(http, "https://streamingdiscovery.com/en");
+    //[Function("RunSitemap")]
+    //public async Task RunSitemap(
+    //   [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "public/sitemap")] HttpRequestData req, CancellationToken cancellationToken)
+    //{
+    //    var http = factory.CreateClient();
+    //    //var helper = new SitemapHelper(http, "https://streamingdiscovery.com/en", includeAlternates: false, noIndex: true, ignoreRel: ["nofollow"], ignoreTarget: [], maxDepth: 8);
+    //    var helper = new NewSitemapGenerator(http, "https://streamingdiscovery.com/en");
 
-        var result = await helper.GenerateAsync(true, 8);
-    }
+    //    var result = await helper.GenerateAsync(true, 8);
+    //}
 }
