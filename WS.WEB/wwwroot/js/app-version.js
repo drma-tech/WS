@@ -1,1 +1,1 @@
-window.appVersion = '2026.07.29'
+window.appVersion = '2026.07.31'
