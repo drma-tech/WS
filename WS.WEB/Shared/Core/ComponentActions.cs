@@ -38,10 +38,10 @@
             ExpressionEmpty = expressionEmpty;
 
             StartLoading = async msg => await ChangeStatus(RenderStatus.Loading, msg);
-            FinishLoading = async obj => await ChangeStatus(RenderStatus.Content, null, obj);
+            FinishLoading = async obj => await ChangeStatus(RenderStatus.Content, msg: null, obj);
 
             StartProcessing = async msg => await ChangeStatus(RenderStatus.Loading, msg ?? "Processing...");
-            FinishProcessing = async obj => await ChangeStatus(RenderStatus.Content, null, obj);
+            FinishProcessing = async obj => await ChangeStatus(RenderStatus.Content, msg: null, obj);
 
             ShowWarning = async msg => await ChangeStatus(RenderStatus.Warning, msg);
             ShowError = async msg => await ChangeStatus(RenderStatus.Error, msg);

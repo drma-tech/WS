@@ -33,7 +33,7 @@ public static class HttpRequestDataExtensions
             response.StatusCode = HttpStatusCode.NoContent;
         }
 
-        if (maxAge.HasValue) response.Headers.Add("Cache-Control", $"public, max-age={(int)maxAge}");
+        if (maxAge.HasValue) response.Headers.Add("Cache-Control", string.Create(CultureInfo.InvariantCulture, $"public, max-age={(int)maxAge}"));
 
         return response;
     }
@@ -53,7 +53,7 @@ public static class HttpRequestDataExtensions
             response.StatusCode = HttpStatusCode.NoContent;
         }
 
-        if (maxAge.HasValue) response.Headers.Add("Cache-Control", $"public, max-age={(int)maxAge}");
+        if (maxAge.HasValue) response.Headers.Add("Cache-Control", string.Create(CultureInfo.InvariantCulture, $"public, max-age={(int)maxAge}"));
 
         return response;
     }
@@ -73,22 +73,22 @@ public static class HttpRequestDataExtensions
             response.StatusCode = HttpStatusCode.NoContent;
         }
 
-        if (maxAge.HasValue) response.Headers.Add("Cache-Control", $"public, max-age={(int)maxAge}");
+        if (maxAge.HasValue) response.Headers.Add("Cache-Control", string.Create(CultureInfo.InvariantCulture, $"public, max-age={(int)maxAge}"));
 
         return response;
     }
 
-    public static async Task<HttpResponseData> CreateResponse(this HttpRequestData req, HttpStatusCode status, string msg)
+    public static async Task<HttpResponseData> CreateResponse(this HttpRequestData req, HttpStatusCode status, string msg, CancellationToken cancellationToken)
     {
         var response = req.CreateResponse(status);
-        await response.WriteStringAsync(msg);
+        await response.WriteStringAsync(msg, cancellationToken);
         return response;
     }
 
-    public static async Task<HttpResponseData> CreateResponse<T>(this HttpRequestData req, HttpStatusCode status, T value)
+    public static async Task<HttpResponseData> CreateResponse<T>(this HttpRequestData req, HttpStatusCode status, T value, CancellationToken cancellationToken)
     {
         var response = req.CreateResponse(status);
-        await response.WriteAsJsonAsync(value);
+        await response.WriteAsJsonAsync(value, cancellationToken);
         return response;
     }
 
@@ -114,12 +114,12 @@ public static class HttpRequestDataExtensions
 
         var log = new LogModel
         {
-            Params = string.Join("|", valueCollection.AllKeys.Select(key => $"{key}={req.GetQueryParameters()[key!]}")),
+            Params = string.Join('|', valueCollection.AllKeys.Select(key => $"{key}={req.GetQueryParameters()[key!]}")),
             AppVersion = version,
-            Ip = req.GetUserIP(false),
+            Ip = req.GetUserIP(includePort: false),
         };
 
-        logger.LogError(ex, "params:{Custom_Params}, version:{Custom_AppVersion}, ip:{Custom_Ip}", log.Params, log.AppVersion, log.Ip);
+        logger.Error(ex, log.Params, log.AppVersion, log.Ip);
     }
 
     public static void LogWarning(this HttpRequestData req, string? message)
@@ -132,12 +132,12 @@ public static class HttpRequestDataExtensions
         var log = new LogModel
         {
             Message = message,
-            Params = string.Join("|", valueCollection.AllKeys.Select(key => $"{key}={req.GetQueryParameters()[key!]}")),
+            Params = string.Join('|', valueCollection.AllKeys.Select(key => $"{key}={req.GetQueryParameters()[key!]}")),
             AppVersion = version,
-            Ip = req.GetUserIP(false),
+            Ip = req.GetUserIP(includePort: false),
         };
 
-        logger.LogWarning("message:{Custom_Message}, params:{Custom_Params}, version:{Custom_AppVersion}, ip:{Custom_Ip}", log.Message, log.Params, log.AppVersion, log.Ip);
+        logger.Warning(log.Message, log.Params, log.AppVersion, log.Ip);
     }
 
     /// <summary>
@@ -152,7 +152,7 @@ public static class HttpRequestDataExtensions
             return true;
         }
 
-        if (version == "prerendering")
+        if (string.Equals(version, "prerendering", StringComparison.OrdinalIgnoreCase))
         {
             return false;
         }

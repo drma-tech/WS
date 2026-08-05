@@ -45,11 +45,9 @@ public static class ApiHelper
                 throw new InvalidDataException("invalid json", ex.InnerException ?? ex);
             }
         }
-        else
-        {
-            var content = await response.Content.ReadAsStringAsync(cancellationToken);
-            if (content.Empty()) content = response.ReasonPhrase ?? "Unknown error";
-            throw new UnhandledException(content);
-        }
+
+        var content = await response.Content.ReadAsStringAsync(cancellationToken);
+        if (content.Empty()) content = response.ReasonPhrase ?? "Unknown error";
+        throw new UnhandledException(content);
     }
 }

@@ -17,7 +17,7 @@ public static class ExtensionMethodsWeb
         return navigationManager.QueryString()[key];
     }
 
-    public static HashSet<T> ToHashSet<T>(this T? item) where T : struct
+    public static IReadOnlyCollection<T> ToCollection<T>(this T? item) where T : struct
     {
         if (item == null) return [];
         return [item.Value];
@@ -32,10 +32,8 @@ public static class ExtensionMethodsWeb
         {
             return lang;
         }
-        else
-        {
-            return null;
-        }
+
+        return null;
     }
 
     public static async Task<string> GetRouteLanguage(IJSRuntime js, string absolutePath)
@@ -46,9 +44,7 @@ public static class ExtensionMethodsWeb
         {
             return lang;
         }
-        else
-        {
-            return (await AppStateStatic.GetAppLanguage(js, CancellationToken.None)).ToString();
-        }
+
+        return (await AppStateStatic.GetAppLanguage(js, CancellationToken.None)).ToString();
     }
 }

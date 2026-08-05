@@ -12,6 +12,10 @@ window.addEventListener("error", function (event) {
         return;
     }
 
+    if (message.includes("ResizeObserver loop completed with undelivered notifications")) {
+        return;
+    }
+
     notification.showError(`error: ${message}`);
 });
 

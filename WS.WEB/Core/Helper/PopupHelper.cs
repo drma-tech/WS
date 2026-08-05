@@ -16,7 +16,7 @@ public static class PopupHelper
 
     public static async Task AskReviewPopup(this IDialogService service)
     {
-        await service.ShowAsync<AskReview>(string.Format(Translations.Module.Help.WriteReviewTitle, AppInfo.Title), Options(MaxWidth.Small, false, false));
+        await service.ShowAsync<AskReview>(Translations.Module.Help.WriteReviewTitle.CustomFormat(AppInfo.Title), Options(MaxWidth.Small, allowClose: false, showHeader: false));
     }
 
     public static DialogOptions Options(MaxWidth width, bool allowClose = true, bool showHeader = true)
@@ -28,7 +28,7 @@ public static class PopupHelper
             BackdropClick = allowClose,
             NoHeader = !showHeader,
             Position = DialogPosition.Center,
-            MaxWidth = width
+            MaxWidth = width,
         };
     }
 }

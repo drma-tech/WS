@@ -65,17 +65,17 @@ internal sealed class ApiMiddleware() : IFunctionsWorkerMiddleware
         {
             req?.LogError(ex);
 
-            if (ex.Message == "Not Found")
+            if (string.Equals(ex.Message, "Not Found", StringComparison.OrdinalIgnoreCase))
             {
                 return;
             }
 
-            if (ex.Message == "Bad Gateway")
+            if (string.Equals(ex.Message, "Bad Gateway", StringComparison.OrdinalIgnoreCase))
             {
                 return;
             }
 
-            if (ex.Message == "Too Many Requests")
+            if (string.Equals(ex.Message, "Too Many Requests", StringComparison.OrdinalIgnoreCase))
             {
                 return;
             }

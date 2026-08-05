@@ -6,7 +6,7 @@
 @inherits PageCore<Manifest>
 
 <HeadComponent Title="manifest.webmanifest generator" Description="Create a web app manifest to make your site installable as a PWA. Helps define name, icons, colors and launch behavior."
-         Url=@($"/{Culture}/manifest") Index="true"></HeadComponent>
+               Url=@($"/{Culture}/manifest") Index="true"></HeadComponent>
 
 <MudGrid Justify="Justify.Center">
     <MudItem xs="12" md="10">
@@ -21,7 +21,7 @@
         </MudToolBar>
     </MudItem>
     <MudItem xs="12" md="10">
-        <MudGrid Spacing="@Css.SpaceSmall">
+        <MudGrid Spacing="@CssHelper.SpaceSmall">
 
             <!-- Campos simples -->
             <MudItem xs="12" md="4">
@@ -289,12 +289,7 @@
 
         var json = await http.GetStringAsync(url);
 
-        var options = new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        };
-
-        Model = JsonSerializer.Deserialize<WebAppManifest>(json, options) ?? new();
+        Model = JsonSerializer.Deserialize<WebAppManifest>(json, ApiContext.Default.WebAppManifest) ?? new();
     }
 
     private void GenerateManifest()
@@ -316,7 +311,7 @@
         //     manifest.Add("icons", icons);
         // }
 
-        PreviewJson = JsonSerializer.Serialize(Model, new JsonSerializerOptions { WriteIndented = true });
+        PreviewJson = JsonSerializer.Serialize(Model, ApiContext.Default.WebAppManifest);
     }
 
     private async Task DownloadManifest()
@@ -325,7 +320,7 @@
         {
             GenerateManifest();
             var content = PreviewJson ?? string.Empty;
-            await JsRuntime.Utils().DownloadFile("manifest.webmanifest", "application/manifest+json", content, cts.Token);
+            await JsRuntime.Utils().DownloadFile("manifest.webmanifest", "application/manifest+json", content, Cts.Token);
         }
         catch (Exception ex)
         {

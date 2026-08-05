@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using System.Globalization;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
@@ -261,7 +262,7 @@ namespace WS.WEB.Modules.Search.Core
                 .ToDictionary(p => p.Url!, StringComparer.OrdinalIgnoreCase);
         }
 
-        private Dictionary<string, List<(string Href, string? Hreflang)>> BuildGroups(Dictionary<string, PageData> pagesByUrl)
+        private static Dictionary<string, List<(string Href, string? Hreflang)>> BuildGroups(Dictionary<string, PageData> pagesByUrl)
         {
             // key: normalized path (without language prefix), value: list of variants (normalized href, hreflang)
             var groups = new Dictionary<string, List<(string Href, string? Hreflang)>>(StringComparer.OrdinalIgnoreCase);
@@ -417,7 +418,7 @@ namespace WS.WEB.Modules.Search.Core
             {
                 var el = new XElement(ns + "url",
                     new XElement(ns + "loc", Href),
-                    new XElement(ns + "lastmod", DateTime.UtcNow.ToString("yyyy-MM-dd"))
+                    new XElement(ns + "lastmod", DateTime.UtcNow.ToString("yyyy-MM-dd", CultureInfo.DefaultThreadCurrentCulture))
                 );
 
                 if (_includeAlternates)
@@ -449,8 +450,8 @@ namespace WS.WEB.Modules.Search.Core
     public class PageData
     {
         public string? Url { get; set; }
-        public List<string> Images { get; set; } = new();
-        public List<string> Videos { get; set; } = new();
+        public List<string> Images { get; set; } = [];
+        public List<string> Videos { get; set; } = [];
         public List<AlternateData>? Alternates { get; set; }
         public NewsData? News { get; set; }
     }

@@ -26,7 +26,7 @@ public interface ICosmosIdentity
 /// Every class inheriting from this base class must have an ID parameter that is strictly named `id`.
 /// </summary>
 /// <param name="id"></param>
-public abstract class CosmosDocument(ICosmosIdentity identity)
+public abstract class CosmosDocument(ICosmosIdentity identity) : EqualityBase<CosmosDocument>
 {
     [Json.JsonPropertyName("id")]
     [Nsoft.JsonProperty(PropertyName = "id")]

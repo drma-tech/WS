@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System.Globalization;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -6,11 +7,6 @@ namespace WS.Shared.Core.Helper;
 
 public static partial class StringHelper
 {
-    public static string Format(this string format, object? arg0, object? arg1 = null)
-    {
-        return string.Format(format, arg0, arg1);
-    }
-
     public static string RemoveSpecialCharacters(this string str, char[]? customExceptions = null, char? replace = null)
     {
         return RemoveSpecialCharacters(str.AsSpan(), customExceptions, replace).ToString();
@@ -34,7 +30,7 @@ public static partial class StringHelper
         var idx = 0;
         char[] exceptions = ['-'];
 
-        if (customExceptions != null) exceptions = exceptions.Union(customExceptions).ToArray();
+        if (customExceptions != null) exceptions = [.. exceptions.Union(customExceptions)];
 
         foreach (var c in str)
             if (char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || Array.Exists(exceptions, match => match == c))
@@ -51,7 +47,7 @@ public static partial class StringHelper
         return buffer[..idx];
     }
 
-    [GeneratedRegex(@"\p{Mn}", RegexOptions.Compiled)]
+    [GeneratedRegex(@"\p{Mn}", RegexOptions.Compiled, 1000)]
     private static partial Regex DiacriticsRegex();
 
     /// <summary>
@@ -146,13 +142,13 @@ public static partial class StringHelper
         return input.Normalize(NormalizationForm.FormC);
     }
 
-    private static readonly Regex UrlRegex = new(@"\b[a-z0-9-]{2,}\.(com|net|org|io|co|dev|app|me)\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-    private static readonly Regex ObfuscatedRegex = new(@"\b/([a-z0-9- ]{2,}\s*)((?:\.|\[\.]|\(.\))|\[\s*dot\s*\]|\(\s*dot\s*\)|\s*dot\s*)\s*(com|net|org|io|co|dev|app|me)/gm\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-    private static readonly Regex ShortLinkRegex = new(@"(bit\.ly|tinyurl|goo\.gl|t\.co)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-    private static readonly Regex MentionRegex = new(@"@\w+", RegexOptions.Compiled);
-    private static readonly Regex RepeatedCharSeqRegex = new(@"(.)\1{10,}", RegexOptions.Compiled);
-    private static readonly Regex SymbolSeqRegex = new(@"[^\p{L}\p{N}\s]{10,}", RegexOptions.Compiled);
-    private static readonly Regex EmojiRegex = new(@"\p{So}", RegexOptions.Compiled);
+    private static readonly Regex UrlRegex = new(@"\b[a-z0-9-]{2,}\.(com|net|org|io|co|dev|app|me)\b", RegexOptions.Compiled | RegexOptions.IgnoreCase, TimeSpan.FromSeconds(1));
+    private static readonly Regex ObfuscatedRegex = new(@"\b/([a-z0-9- ]{2,}\s*)((?:\.|\[\.]|\(.\))|\[\s*dot\s*\]|\(\s*dot\s*\)|\s*dot\s*)\s*(com|net|org|io|co|dev|app|me)/gm\b", RegexOptions.Compiled | RegexOptions.IgnoreCase, TimeSpan.FromSeconds(1));
+    private static readonly Regex ShortLinkRegex = new(@"(bit\.ly|tinyurl|goo\.gl|t\.co)", RegexOptions.Compiled | RegexOptions.IgnoreCase, TimeSpan.FromSeconds(1));
+    private static readonly Regex MentionRegex = new(@"@\w+", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+    private static readonly Regex RepeatedCharSeqRegex = new(@"(.)\1{10,}", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+    private static readonly Regex SymbolSeqRegex = new(@"[^\p{L}\p{N}\s]{10,}", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+    private static readonly Regex EmojiRegex = new(@"\p{So}", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 
     /// <summary>
     /// Heuristically determines whether a text is likely to be spam based on patterns such as URLs, repeated characters, excessive symbols, mentions, or emoji spam.
@@ -170,14 +166,14 @@ public static partial class StringHelper
         if (ShortLinkRegex.IsMatch(text)) return true;
         if (MentionRegex.IsMatch(text)) return true;
 
-        var words = Regex.Split(text, @"\W+").Where(w => w.Length > 2).ToArray();
-        if (words.GroupBy(w => w, StringComparer.OrdinalIgnoreCase).Any(g => g.Count() > 4)) return true;
+        var words = Regex.Split(text, @"\W+", RegexOptions.None, TimeSpan.FromSeconds(1)).Where(w => w.Length > 2).ToArray();
+        if (words.GroupBy(w => w, StringComparer.OrdinalIgnoreCase).Any(g => g.Skip(4).Any())) return true;
 
         if (RepeatedCharSeqRegex.IsMatch(text)) return true;
         if (SymbolSeqRegex.IsMatch(text)) return true;
-        if (EmojiRegex.Matches(text).Count > 5) return true;
+        if (EmojiRegex.Count(text) > 5) return true;
 
-        if (text.Count(c => c == '\n') > 10) return true;
+        if (text.Where(c => c == '\n').Skip(10).Any()) return true;
 
         return false;
     }
@@ -231,15 +227,15 @@ public static partial class StringHelper
 
         text = text.ToLowerInvariant().Trim();
 
-        if (text == "yesterday")
+        if (string.Equals(text, "yesterday", StringComparison.OrdinalIgnoreCase))
             return DateTime.UtcNow.AddDays(-1);
 
-        var match = Regex.Match(text, @"(\d+)\s+(second|minute|hour|day|week|month|year)s?\s+ago");
+        var match = TimePassed().Match(text);
 
         if (!match.Success)
             return null;
 
-        int value = int.Parse(match.Groups[1].Value);
+        int value = int.Parse(match.Groups[1].Value, NumberStyles.Integer, CultureInfo.InvariantCulture);
         string unit = match.Groups[2].Value;
 
         return unit switch
@@ -251,7 +247,10 @@ public static partial class StringHelper
             "week" => DateTime.UtcNow.AddDays(-(value * 7)),
             "month" => DateTime.UtcNow.AddMonths(-value),
             "year" => DateTime.UtcNow.AddYears(-value),
-            _ => throw new InvalidOperationException("Invalid unit")
+            _ => throw new InvalidOperationException("Invalid unit"),
         };
     }
+
+    [GeneratedRegex(@"(\d+)\s+(second|minute|hour|day|week|month|year)s?\s+ago", RegexOptions.None, 1000)]
+    private static partial Regex TimePassed();
 }

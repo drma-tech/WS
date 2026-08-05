@@ -27,7 +27,7 @@ public static class FunctionContextExtensions
     private static OutputBindingData<HttpResponseData>? GetHttpOutputBindingFromMultipleOutputBinding(this FunctionContext context)
     {
         // The output binding entry name will be "$return" only when the function return type is HttpResponseData
-        var httpOutputBinding = context.GetOutputBindings<HttpResponseData>().FirstOrDefault(b => b.BindingType == "http" && b.Name != "$return");
+        var httpOutputBinding = context.GetOutputBindings<HttpResponseData>().FirstOrDefault(b => string.Equals(b.BindingType, "http", StringComparison.OrdinalIgnoreCase) && !string.Equals(b.Name, "$return", StringComparison.OrdinalIgnoreCase));
 
         return httpOutputBinding;
     }

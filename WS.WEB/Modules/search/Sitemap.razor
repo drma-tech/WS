@@ -160,7 +160,7 @@
             ResultXml = await helper.GenerateAsync(IncludeAlternates, MaxDepth);
             await AppStateStatic.ProcessingFinished.PublishAsync();
 
-            await JsRuntime.Utils().DownloadFile("sitemap.xml", "application/xml", ResultXml, cts.Token);
+            await JsRuntime.Utils().DownloadFile("sitemap.xml", "application/xml", ResultXml, Cts.Token);
         }
         catch (Exception ex)
         {

@@ -4,11 +4,11 @@
 <HeadComponent Title="FAQ" Url=@($"/{Culture}/help/faq") Description="@($"Find answers about {AppInfo.Title}, including data privacy, file generation, features, accounts, and developer support.")" Index="false"></HeadComponent>
 <PageSectionComponent IsPageHeader="true" Title="FAQ" Description="@($"Find answers about {AppInfo.Title}, including data privacy, file generation, features, accounts, and developer support.")"></PageSectionComponent>
 
-<MudExpansionPanels Outlined="true" Elevation="0" Class="@Css.Build().Medium("mb")">
+<MudExpansionPanels Outlined="true" Elevation="0" Class="@CssHelper.Build().Medium("mb")">
     <MudExpansionPanel Disabled="true" HideIcon="true">
         <TitleContent>
             <div class="d-flex">
-                <MudIcon Color="Color.Primary" Icon="@Icons.Material.Filled.PrivacyTip" class="@Css.Build().Small("mr")"></MudIcon>
+                <MudIcon Color="Color.Primary" Icon="@Icons.Material.Filled.PrivacyTip" class="@CssHelper.Build().Small("mr")"></MudIcon>
                 <MudText Color="Color.Primary">Privacy & Data</MudText>
             </div>
         </TitleContent>
@@ -21,11 +21,11 @@
     </MudExpansionPanel>
 </MudExpansionPanels>
 
-<MudExpansionPanels Outlined="true" Elevation="0" Class="@Css.Build().Medium("mb")">
+<MudExpansionPanels Outlined="true" Elevation="0" Class="@CssHelper.Build().Medium("mb")">
     <MudExpansionPanel Disabled="true" HideIcon="true">
         <TitleContent>
             <div class="d-flex">
-                <MudIcon Color="Color.Primary" Icon="@Icons.Material.Filled.BuildCircle" class="@Css.Build().Small("mr")"></MudIcon>
+                <MudIcon Color="Color.Primary" Icon="@Icons.Material.Filled.BuildCircle" class="@CssHelper.Build().Small("mr")"></MudIcon>
                 <MudText Color="Color.Primary">Features</MudText>
             </div>
         </TitleContent>
@@ -41,11 +41,11 @@
     </MudExpansionPanel>
 </MudExpansionPanels>
 
-<MudExpansionPanels Outlined="true" Elevation="0" Class="@Css.Build().Medium("mb")">
+<MudExpansionPanels Outlined="true" Elevation="0" Class="@CssHelper.Build().Medium("mb")">
     <MudExpansionPanel Disabled="true" HideIcon="true">
         <TitleContent>
             <div class="d-flex">
-                <MudIcon Color="Color.Primary" Icon="@Icons.Material.Filled.AccountCircle" class="@Css.Build().Small("mr")"></MudIcon>
+                <MudIcon Color="Color.Primary" Icon="@Icons.Material.Filled.AccountCircle" class="@CssHelper.Build().Small("mr")"></MudIcon>
                 <MudText Color="Color.Primary">Accounts & Access</MudText>
             </div>
         </TitleContent>
@@ -58,11 +58,11 @@
     </MudExpansionPanel>
 </MudExpansionPanels>
 
-<MudExpansionPanels Outlined="true" Elevation="0" Class="@Css.Build().Medium("mb")">
+<MudExpansionPanels Outlined="true" Elevation="0" Class="@CssHelper.Build().Medium("mb")">
     <MudExpansionPanel Disabled="true" HideIcon="true">
         <TitleContent>
             <div class="d-flex">
-                <MudIcon Color="Color.Primary" Icon="@Icons.Material.Filled.HelpOutline" class="@Css.Build().Small("mr")"></MudIcon>
+                <MudIcon Color="Color.Primary" Icon="@Icons.Material.Filled.HelpOutline" class="@CssHelper.Build().Small("mr")"></MudIcon>
                 <MudText Color="Color.Primary">Usage & Support</MudText>
             </div>
         </TitleContent>

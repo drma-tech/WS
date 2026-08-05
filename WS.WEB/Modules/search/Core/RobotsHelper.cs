@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Text;
 
 namespace WS.WEB.Modules.Search.Core
 {
@@ -24,25 +25,25 @@ namespace WS.WEB.Modules.Search.Core
     {
         //https://www.rfc-editor.org/rfc/rfc9309
         //https://developers.google.com/search/docs/crawling-indexing/robots/robots_txt
-        public string Generate(RobotsConfig config)
+        public static string Generate(RobotsConfig config)
         {
             var sb = new StringBuilder();
 
             foreach (var rule in config.Rules)
             {
-                sb.AppendLine($"User-agent: {rule.UserAgent}");
+                sb.AppendLine(CultureInfo.DefaultThreadCurrentCulture, $"User-agent: {rule.UserAgent}");
 
                 foreach (var path in rule.Disallow)
-                    sb.AppendLine($"Disallow: {path}");
+                    sb.AppendLine(CultureInfo.DefaultThreadCurrentCulture, $"Disallow: {path}");
 
                 foreach (var path in rule.Allow)
-                    sb.AppendLine($"Allow: {path}");
+                    sb.AppendLine(CultureInfo.DefaultThreadCurrentCulture, $"Allow: {path}");
 
                 sb.AppendLine();
             }
 
             foreach (var sitemap in config.Sitemaps)
-                sb.AppendLine($"Sitemap: {sitemap}");
+                sb.AppendLine(CultureInfo.DefaultThreadCurrentCulture, $"Sitemap: {sitemap}");
 
             return sb.ToString();
         }

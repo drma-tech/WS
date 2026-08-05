@@ -3,11 +3,11 @@
     public enum Side
     {
         Left,
-        Right
+        Right,
     }
 
     public enum Template
     {
-        Back
+        Back,
     }
 }

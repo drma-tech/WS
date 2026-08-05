@@ -23,13 +23,13 @@
 <MudLayout>
     <HeadLayout></HeadLayout>
     <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="@Css.Build().Medium("my")">
+        <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="@CssHelper.Build().Medium("my")">
             <Beta></Beta>
             @Body
         </MudContainer>
         <FooterComponent></FooterComponent>
-        <MudDivider Class="@Css.Build().Small("my").Medium("mt")"></MudDivider>
-        <MudText Align="Align.Center" Class="@Css.Build().Small("mb")">
+        <MudDivider Class="@CssHelper.Build().Small("my").Medium("mt")"></MudDivider>
+        <MudText Align="Align.Center" Class="@CssHelper.Build().Small("mb")">
             © @AppInfo.Year-@DateTime.Now.Year - DRMA Tech.
         </MudText>
     </MudMainContent>
@@ -39,7 +39,7 @@
     private MudThemeProvider? _mudThemeProvider;
     private bool _darkMode = false;
     private string Culture => Navigation.GetCulture();
-    protected readonly CancellationTokenSource cts = new();
+    protected readonly CancellationTokenSource Cts = new();
 
     protected override void OnInitialized()
     {
@@ -52,7 +52,7 @@
             BufferedEvent.Register(nameof(ShowError), async (string msg) => { await ShowNotificationError(msg); });
 
             AppStateStatic.DarkModeChanged += dark => { _darkMode = dark; StateHasChanged(); };
-            AppStateStatic.BreakpointChanged.Subscribe(breakpoint => StateHasChanged(), cts.Token);
+            AppStateStatic.BreakpointChanged.Subscribe(breakpoint => StateHasChanged(), Cts.Token);
         }
         catch (Exception ex)
         {
@@ -78,10 +78,10 @@
 
             try
             {
-                await ApplyDarkMode(cts.Token);
-                await AskUSerForReview(cts.Token);
-                await RegisterSessionAccesses(cts.Token);
-                // await ShowOnBoardingPopup(cts.Token);
+                await ApplyDarkMode(Cts.Token);
+                await AskUSerForReview(Cts.Token);
+                await RegisterSessionAccesses(Cts.Token);
+                // await ShowOnBoardingPopup(Cts.Token);
             }
             catch (Exception ex)
             {
@@ -92,7 +92,7 @@
 
     private async Task ApplyDarkMode(CancellationToken cancellationToken)
     {
-        var darkMode = await AppStateStatic.GetDarkMode(JsRuntime, cts.Token);
+        var darkMode = await AppStateStatic.GetDarkMode(JsRuntime, Cts.Token);
 
         if (darkMode == null && _mudThemeProvider != null)
         {
@@ -194,8 +194,8 @@
 
     void IDisposable.Dispose()
     {
-        cts.Cancel();
-        cts.Dispose();
+        Cts.Cancel();
+        Cts.Dispose();
         GC.SuppressFinalize(this);
     }
 }

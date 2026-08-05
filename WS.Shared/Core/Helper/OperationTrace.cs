@@ -25,7 +25,7 @@ namespace WS.Shared.Core.Helper
             return new
             {
                 TotalMs = _total.ElapsedMilliseconds,
-                Steps = _steps
+                Steps = _steps,
             };
         }
 
@@ -40,7 +40,7 @@ namespace WS.Shared.Core.Helper
                 steps.Add(new ProfileStep
                 {
                     Name = name,
-                    ElapsedMs = _sw.ElapsedMilliseconds
+                    ElapsedMs = _sw.ElapsedMilliseconds,
                 });
             }
         }

@@ -30,14 +30,14 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, string[] 
         ApiType.Local => LocalHttp,
         ApiType.Anonymous => AnonymousHttp,
         ApiType.Authenticated => AuthenticatedHttp,
-        _ => throw new NotImplementedException()
+        _ => throw new NotSupportedException(),
     };
 
-    protected static Dictionary<string, int> CacheVersion { get; set; } = [];
+    protected static IDictionary<string, int> CacheVersion { get; set; } = new Dictionary<string, int>(StringComparer.Ordinal);
 
     public static void ResetCacheVersion()
     {
-        CacheVersion = [];
+        CacheVersion = new Dictionary<string, int>(StringComparer.Ordinal);
     }
 
     public static void SetNewVersion(string? key, string[] extraKeys)
@@ -52,9 +52,9 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, string[] 
 
     private Dictionary<string, string> GetVersion()
     {
-        if (!CacheVersion.TryGetValue(key!, out _)) CacheVersion[key!] = RandomNumberGenerator.GetInt32(1, 999999);
+        if (!CacheVersion.ContainsKey(key!)) CacheVersion[key!] = RandomNumberGenerator.GetInt32(1, 999999);
 
-        return new Dictionary<string, string> { { "v", CacheVersion[key!].ToString() } };
+        return new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) { { "v", CacheVersion[key!].ToString(System.Globalization.CultureInfo.InvariantCulture) } };
     }
 
     protected async Task<string?> GetStringAsync(string uri, CancellationToken cancellationToken)
@@ -155,14 +155,14 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, string[] 
         }
     }
 
-    protected async Task<HashSet<T>> GetListAsync<T>(string uri, ComponentActions<HashSet<T>>? actions, CancellationToken cancellationToken)
+    protected async Task<IEnumerable<T>> GetListAsync<T>(string uri, ComponentActions<IEnumerable<T>>? actions, CancellationToken cancellationToken)
     {
         try
         {
             if (actions != null) await actions.StartLoading(null);
             await AppStateStatic.ProcessingStarted.PublishAsync();
 
-            HashSet<T>? result = default;
+            IEnumerable<T>? result = default;
 
             if (type == ApiType.Authenticated && !AppStateStatic.IsAuthenticated)
             {
@@ -171,9 +171,9 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, string[] 
             else
             {
                 if (key.NotEmpty())
-                    result = await GetHttp(type).GetJsonFromApi<HashSet<T>>(uri.ConfigureParameters(GetVersion()), cancellationToken);
+                    result = await GetHttp(type).GetJsonFromApi<IEnumerable<T>>(uri.ConfigureParameters(GetVersion()), cancellationToken);
                 else
-                    result = await GetHttp(type).GetJsonFromApi<HashSet<T>>(uri, cancellationToken);
+                    result = await GetHttp(type).GetJsonFromApi<IEnumerable<T>>(uri, cancellationToken);
             }
 
             if (actions != null) await actions.FinishLoading(result);
@@ -203,7 +203,7 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, string[] 
 
             SetNewVersion(key, extraKeys);
 
-            var response = await GetHttp(type).PostAsync(uri, null, cancellationToken);
+            var response = await GetHttp(type).PostAsync(uri, content: null, cancellationToken);
 
             if (response.IsSuccessStatusCode)
             {
@@ -220,7 +220,7 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, string[] 
         }
     }
 
-    protected async Task<O> PostAsync<I, O>(string uri, I? obj, JsonTypeInfo<I?> requestTypeInfo, JsonTypeInfo<O?>? responseTypeInfo, CancellationToken cancellationToken)
+    protected async Task<TOut> PostAsync<TIn, TOut>(string uri, TIn? obj, JsonTypeInfo<TIn?> requestTypeInfo, JsonTypeInfo<TOut?>? responseTypeInfo, CancellationToken cancellationToken)
     {
         try
         {
@@ -230,9 +230,9 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, string[] 
 
             var response = await GetHttp(type).PostAsJsonAsync(uri, obj, requestTypeInfo, cancellationToken);
 
-            if (typeof(O) == typeof(HttpResponseMessage))
+            if (typeof(TOut) == typeof(HttpResponseMessage))
             {
-                return (O)(object)response;
+                return (TOut)(object)response;
             }
             else if (responseTypeInfo == null)
             {
@@ -253,7 +253,7 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, string[] 
         }
     }
 
-    protected async Task<O> PutAsync<I, O>(string uri, I? obj, JsonTypeInfo<I?> requestTypeInfo, JsonTypeInfo<O?> responseTypeInfo, CancellationToken cancellationToken)
+    protected async Task<TOut> PutAsync<TIn, TOut>(string uri, TIn? obj, JsonTypeInfo<TIn?> requestTypeInfo, JsonTypeInfo<TOut?> responseTypeInfo, CancellationToken cancellationToken)
     {
         try
         {

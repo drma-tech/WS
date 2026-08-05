@@ -175,10 +175,15 @@
                     await ShowWarning("Provide at least one URL to submit.");
                     return;
                 }
+                if (Api == null)
+                {
+                    await ShowError("IndexNow API is not configured.");
+                    return;
+                }
 
                 var payload = new IndexNowModel { host = Host, key = Key, urlList = urls };
 
-                var response = await IndexNowApi.SendUrls(Api, payload, cts.Token);
+                var response = await IndexNowApi.SendUrls(Api, payload, Cts.Token);
 
                 if (response?.StatusCode == System.Net.HttpStatusCode.OK)
                     await ShowSuccess(response?.ReasonPhrase ?? "Request sent");

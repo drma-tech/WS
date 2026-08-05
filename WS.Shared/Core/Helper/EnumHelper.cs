@@ -7,7 +7,7 @@ public static class EnumHelper
         return Enum.GetValues<T>();
     }
 
-    public static List<EnumFieldObject<T>> GetList<T>(bool translate = true) where T : struct, Enum
+    public static IEnumerable<EnumFieldObject<T>> GetList<T>(bool translate = true) where T : struct, Enum
     {
         var values = GetValues<T>();
         var result = new List<EnumFieldObject<T>>(values.Length);
@@ -22,17 +22,16 @@ public static class EnumHelper
 
     public static T ParseToEnum<T>(this string? value, T? fallback = null) where T : struct, Enum
     {
-        if (Enum.TryParse<T>(value, true, out var result) && Enum.IsDefined(result))
+        if (Enum.TryParse<T>(value, ignoreCase: true, out var result) && Enum.IsDefined(result))
         {
             return result;
         }
-        else if (fallback.HasValue)
+
+        if (fallback.HasValue)
         {
             return fallback.Value;
         }
-        else
-        {
-            throw new ArgumentException($"Invalid value for enum type {typeof(T).Name}: {value}");
-        }
+
+        throw new ArgumentException($"Invalid value: {value}", nameof(value));
     }
 }

@@ -10,7 +10,7 @@ namespace WS.WEB.Core.Api
     [JsonSerializable(typeof(AppLanguage?))]
     [JsonSerializable(typeof(HashSet<DateTime>))]
     [JsonSerializable(typeof(IndexNowModel))]
-    internal partial class JavascriptContext : JsonSerializerContext
+    internal sealed partial class JavascriptContext : JsonSerializerContext
     {
     }
 }

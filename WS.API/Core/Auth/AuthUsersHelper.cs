@@ -14,7 +14,7 @@ public static class AuthUsersHelper
                 return values.FirstOrDefault()?.Split(',')[0].Split(':')[0];
         }
 
-        if (Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") == "Development")
+        if (string.Equals(Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT"), "Development", StringComparison.OrdinalIgnoreCase))
         {
             return "127.0.0.1";
         }

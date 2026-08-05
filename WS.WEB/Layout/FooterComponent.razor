@@ -4,14 +4,14 @@
 
 @implements IDisposable
 
-@if (AppStateStatic.Breakpoint == Breakpoint.Sm) //mobile or tablet
+@if (AppStateStatic.Breakpoint <= Breakpoint.Sm) //mobile or tablet
 {
     //todo: smaller footer
 }
-else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other bigger devices
+else //other bigger devices
 {
-    <MudDivider Class="@Css.Build().Small("mb").Raw("mt-10")"></MudDivider>
-    <MudGrid Justify="Justify.Center" Style="overflow: auto;" Spacing="@Css.SpaceSmall">
+    <MudDivider Class="@CssHelper.Build().Small("mb").Raw("mt-10")"></MudDivider>
+    <MudGrid Justify="Justify.Center" Style="overflow: auto;" Spacing="@CssHelper.SpaceSmall">
         <MudItem xs="12" sm="3" md="2">
             <MudList T="string" Dense="true" Gutters="false">
                 <MudListSubheader Gutters="false">
@@ -116,25 +116,25 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other bigger devices
     private static readonly Random rnd = new Random();
     private bool _blockedActions => Navigation.Uri.Contains("register-user") || Navigation.Uri.Contains("ask-consent");
     private Platform? CurrentPlatform;
-    protected readonly CancellationTokenSource cts = new();
+    protected readonly CancellationTokenSource Cts = new();
 
     protected override void OnInitialized()
     {
-        AppStateStatic.BreakpointChanged.Subscribe(breakpoint => StateHasChanged(), cts.Token);
+        AppStateStatic.BreakpointChanged.Subscribe(breakpoint => StateHasChanged(), Cts.Token);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            CurrentPlatform = await AppStateStatic.GetPlatform(JsRuntime, cts.Token);
+            CurrentPlatform = await AppStateStatic.GetPlatform(JsRuntime, Cts.Token);
         }
     }
 
     void IDisposable.Dispose()
     {
-        cts.Cancel();
-        cts.Dispose();
+        Cts.Cancel();
+        Cts.Dispose();
         GC.SuppressFinalize(this);
     }
 }

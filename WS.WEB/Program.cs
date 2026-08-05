@@ -78,7 +78,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
     collection.AddPWAUpdater();
     collection.AddScoped<AppVersionHandler>();
 
-    var isLocal = baseAddress.Contains("localhost") || baseAddress.Contains("127.0.0.1");
+    var isLocal = baseAddress.Contains("localhost", StringComparison.OrdinalIgnoreCase) || baseAddress.Contains("127.0.0.1", StringComparison.OrdinalIgnoreCase);
     Uri? webUri = null;
     Uri? apiUri = null;
 
@@ -92,10 +92,10 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
         var builder = new UriBuilder(baseAddress);
 
         //force apex domain
-        //if (builder.Host.StartsWith("www.", StringComparison.OrdinalIgnoreCase))
-        //{
-        //    builder.Host = builder.Host[4..];
-        //}
+        if (builder.Host.StartsWith("www.", StringComparison.OrdinalIgnoreCase))
+        {
+            builder.Host = builder.Host[4..];
+        }
 
         webUri = builder.Uri;
         apiUri = new Uri(webUri, "api/");

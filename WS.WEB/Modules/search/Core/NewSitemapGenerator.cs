@@ -1,4 +1,5 @@
 using HtmlAgilityPack;
+using System.Globalization;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
@@ -13,7 +14,7 @@ namespace WS.WEB.Modules.Search.Core
         public async Task<string> GenerateAsync(bool includeAlternates = false, int maxDepth = 5)
         {
             var pages = await CrawlAsync(includeAlternates, maxDepth);
-            var json = System.Text.Json.JsonSerializer.Serialize(pages);
+            //var json = System.Text.Json.JsonSerializer.Serialize(pages);
             return BuildSitemap(pages, includeAlternates);
         }
 
@@ -52,14 +53,10 @@ namespace WS.WEB.Modules.Search.Core
                 if (!hasNoIndex)
                 {
                     var normalized = NormalizeFullUrl(url);
-                    if (!pages.ContainsKey(normalized))
+                    if (!pages.TryGetValue(normalized, out Page? existing))
                         pages[normalized] = new Page { Url = normalized, Alternates = alternates };
                     else
-                    {
-                        // merge alternates
-                        var existing = pages[normalized];
                         existing.Alternates.AddRange(alternates.Where(a => !existing.Alternates.Any(e => string.Equals(e.Href, a.Href, StringComparison.OrdinalIgnoreCase) && string.Equals(e.Hreflang, a.Hreflang, StringComparison.OrdinalIgnoreCase))));
-                    }
                 }
 
                 if (depth >= maxDepth) continue;
@@ -170,7 +167,7 @@ namespace WS.WEB.Modules.Search.Core
             {
                 var el = new XElement(ns + "url",
                     new XElement(ns + "loc", p.Url),
-                    new XElement(ns + "lastmod", DateTime.UtcNow.ToString("yyyy-MM-dd"))
+                    new XElement(ns + "lastmod", DateTime.UtcNow.ToString("yyyy-MM-dd", CultureInfo.DefaultThreadCurrentCulture))
                 );
 
                 if (includeAlternates && p.Alternates != null)

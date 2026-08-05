@@ -1,4 +1,6 @@
-﻿@inherits BaseComponentCore<NotFoundComponent>
+﻿@inject NavigationManager Navigation
+
+@implements IDisposable
 
 <PageTitle>404 - Not found</PageTitle>
 <HeadContent>
@@ -53,13 +55,8 @@
         AppStateStatic.HideAdvertising.Publish(true);
     }
 
-    protected override void Dispose(bool disposing)
+    public void Dispose()
     {
-        if (disposing)
-        {
-            AppStateStatic.HideAdvertising.Publish(false);
-        }
-
-        base.Dispose(disposing);
+        AppStateStatic.HideAdvertising.Publish(false);
     }
 }
