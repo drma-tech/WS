@@ -6,8 +6,8 @@ namespace WS.WEB.Modules.Search.Core
     public class RobotsRule
     {
         public string UserAgent { get; set; } = "*";
-        public List<string> Allow { get; set; } = [];
-        public List<string> Disallow { get; set; } = [];
+        public ICollection<string> Allow { get; set; } = [];
+        public ICollection<string> Disallow { get; set; } = [];
 
         public string? NewDisallow { get; set; }
         public string? NewAllow { get; set; }
@@ -17,8 +17,8 @@ namespace WS.WEB.Modules.Search.Core
 
     public class RobotsConfig
     {
-        public List<RobotsRule> Rules { get; set; } = [];
-        public List<string> Sitemaps { get; set; } = [];
+        public ICollection<RobotsRule> Rules { get; set; } = [];
+        public ICollection<string> Sitemaps { get; set; } = [];
     }
 
     public class RobotsHelper

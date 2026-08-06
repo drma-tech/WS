@@ -17,6 +17,7 @@ namespace WS.WEB.Modules.Search.Core
         private readonly Uri _baseUri = new(baseUrl);
         private readonly bool _includeAlternates = includeAlternates;
         private readonly List<PageData> _pages = [];
+        private static readonly char[] separator = [' '];
 
         private static bool IsLanguageSegment(string s)
         {
@@ -132,7 +133,7 @@ namespace WS.WEB.Modules.Search.Core
             foreach (var n in nodes)
             {
                 var rel = n.GetAttributeValue("rel", "");
-                if (!(rel ?? string.Empty).Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                if (!(rel ?? string.Empty).Split(separator, StringSplitOptions.RemoveEmptyEntries)
                         .Any(r => r.Equals("alternate", StringComparison.OrdinalIgnoreCase)))
                     continue;
 
@@ -144,7 +145,7 @@ namespace WS.WEB.Modules.Search.Core
                 try
                 {
                     var abs = new Uri(_baseUri, href).ToString();
-                    if (!list.Any(a => a.Href.Equals(abs, StringComparison.OrdinalIgnoreCase) && a.Hreflang.Equals(hreflang, StringComparison.OrdinalIgnoreCase)))
+                    if (!list.Exists(a => a.Href.Equals(abs, StringComparison.OrdinalIgnoreCase) && a.Hreflang.Equals(hreflang, StringComparison.OrdinalIgnoreCase)))
                         list.Add(new AlternateData { Hreflang = hreflang, Href = abs });
                 }
                 catch
@@ -170,10 +171,10 @@ namespace WS.WEB.Modules.Search.Core
 
                 href = href.Trim();
 
-                if (href == "." || href == "./" || href == ".." || href.StartsWith('#')) continue;
+                if (string.Equals(href, ".", StringComparison.Ordinal) || string.Equals(href, "./", StringComparison.Ordinal) || string.Equals(href, "..", StringComparison.Ordinal) || href.StartsWith('#')) continue;
                 if (!Uri.TryCreate(_baseUri, href, out var abs)) continue;
-                if (abs.Host != _baseUri.Host) continue;
-                if (abs.Scheme != Uri.UriSchemeHttp && abs.Scheme != Uri.UriSchemeHttps) continue;
+                if (!string.Equals(abs.Host, _baseUri.Host, StringComparison.OrdinalIgnoreCase)) continue;
+                if (!string.Equals(abs.Scheme, Uri.UriSchemeHttp, StringComparison.OrdinalIgnoreCase) && !string.Equals(abs.Scheme, Uri.UriSchemeHttps, StringComparison.OrdinalIgnoreCase)) continue;
                 if (ignoreRel != null && ignoreRel.Any(r => rel.Contains(r, StringComparison.OrdinalIgnoreCase))) continue;
                 if (ignoreTarget != null && ignoreTarget.Any(t => target.Contains(t, StringComparison.OrdinalIgnoreCase))) continue;
 
@@ -257,7 +258,7 @@ namespace WS.WEB.Modules.Search.Core
         {
             return _pages
                 .Where(p => !string.IsNullOrWhiteSpace(p.Url))
-                .GroupBy(p => p.Url)
+                .GroupBy(p => p.Url, StringComparer.OrdinalIgnoreCase)
                 .Select(g => g.First())
                 .ToDictionary(p => p.Url!, StringComparer.OrdinalIgnoreCase);
         }

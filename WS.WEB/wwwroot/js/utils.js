@@ -388,7 +388,7 @@ export const interop = {
         }
 
         return false;
-    }
+    },
 };
 
 if (!window.appConfig.isBot) {

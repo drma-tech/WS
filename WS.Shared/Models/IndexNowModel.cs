@@ -4,6 +4,6 @@
     {
         public string? host { get; set; }
         public string? key { get; set; }
-        public HashSet<string> urlList { get; set; } = [];
+        public ISet<string> urlList { get; set; } = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
     }
 }

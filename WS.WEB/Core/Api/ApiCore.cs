@@ -2,6 +2,7 @@
 using System.Net.Http.Json;
 using System.Security.Cryptography;
 using System.Text.Json.Serialization.Metadata;
+using WS.WEB.Shared;
 
 namespace WS.WEB.Core.Api;
 
@@ -65,6 +66,7 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, string[] 
 
             if (key.NotEmpty())
                 return await GetHttp(type).GetStringAsync(uri.ConfigureParameters(GetVersion()), cancellationToken);
+
             return await GetHttp(type).GetStringAsync(uri, cancellationToken);
         }
         finally
@@ -73,7 +75,24 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, string[] 
         }
     }
 
-    protected async Task<byte[]> GetBytesAsync(string uri, ComponentActions<byte[]>? actions, CancellationToken cancellationToken)
+    protected async Task<bool> GetBoolAsync(string uri, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await AppStateStatic.ProcessingStarted.PublishAsync();
+
+            if (key.NotEmpty())
+                return await GetHttp(type).GetJsonFromApi<bool>(uri.ConfigureParameters(GetVersion()), cancellationToken);
+
+            return await GetHttp(type).GetJsonFromApi<bool>(uri, cancellationToken);
+        }
+        finally
+        {
+            await AppStateStatic.ProcessingFinished.PublishAsync();
+        }
+    }
+
+    protected async Task<byte[]> GetBytesAsync(string uri, RenderControlState<byte[]>? actions, CancellationToken cancellationToken)
     {
         try
         {
@@ -112,7 +131,7 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, string[] 
         }
     }
 
-    protected async Task<T?> GetAsync<T>(string uri, bool setNewVersion, ComponentActions<T>? actions, CancellationToken cancellationToken)
+    protected async Task<T?> GetAsync<T>(string uri, bool setNewVersion, RenderControlState<T>? actions, CancellationToken cancellationToken) where T : class
     {
         try
         {
@@ -155,7 +174,7 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, string[] 
         }
     }
 
-    protected async Task<IEnumerable<T>> GetListAsync<T>(string uri, ComponentActions<IEnumerable<T>>? actions, CancellationToken cancellationToken)
+    protected async Task<IEnumerable<T>> GetListAsync<T>(string uri, RenderControlState<IEnumerable<T>>? actions, CancellationToken cancellationToken)
     {
         try
         {
@@ -234,7 +253,8 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, string[] 
             {
                 return (TOut)(object)response;
             }
-            else if (responseTypeInfo == null)
+
+            if (responseTypeInfo == null)
             {
                 throw new ArgumentNullException(nameof(responseTypeInfo), "Response type info must be provided for non-HttpResponseMessage types.");
             }

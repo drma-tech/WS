@@ -125,10 +125,10 @@ namespace WS.WEB.Modules.Search.Core
                 if (string.IsNullOrWhiteSpace(href)) continue;
                 if (href.StartsWith('#') || href.StartsWith("mailto:", StringComparison.OrdinalIgnoreCase) || href.StartsWith("tel:", StringComparison.OrdinalIgnoreCase)) continue;
                 var target = a.GetAttributeValue("target", "");
-                if (target == "_blank") continue;
+                if (string.Equals(target, "_blank", StringComparison.OrdinalIgnoreCase)) continue;
                 if (!Uri.TryCreate(_baseUri, href, out var abs)) continue;
                 if (!string.Equals(abs.Host, _baseUri.Host, StringComparison.OrdinalIgnoreCase)) continue;
-                if (abs.Scheme != Uri.UriSchemeHttp && abs.Scheme != Uri.UriSchemeHttps) continue;
+                if (!string.Equals(abs.Scheme, Uri.UriSchemeHttp, StringComparison.OrdinalIgnoreCase) && !string.Equals(abs.Scheme, Uri.UriSchemeHttps, StringComparison.OrdinalIgnoreCase)) continue;
 
                 list.Add(abs.ToString());
             }

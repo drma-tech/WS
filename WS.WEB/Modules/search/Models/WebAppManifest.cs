@@ -28,7 +28,7 @@ namespace WS.WEB.Modules.Search.Models
         public string? Display { get; set; } = "standalone";
 
         [JsonPropertyName("display_override")]
-        public List<string> DisplayOverride { get; set; } = [];
+        public ICollection<string> DisplayOverride { get; set; } = [];
 
         [JsonPropertyName("iarc_rating_id")]
         public string? IarcRatingId { get; set; }
@@ -37,11 +37,11 @@ namespace WS.WEB.Modules.Search.Models
         public bool PreferRelatedApplications { get; set; }
 
         [JsonPropertyName("related_applications")]
-        public List<RelatedApplication> RelatedApplications { get; set; } = [];
+        public ICollection<RelatedApplication> RelatedApplications { get; set; } = [];
 
-        public List<string> Categories { get; set; } = [];
-        public List<Icon> Icons { get; set; } = [];
-        public List<Screenshot> Screenshots { get; set; } = [];
+        public ICollection<string> Categories { get; set; } = [];
+        public ICollection<Icon> Icons { get; set; } = [];
+        public ICollection<Screenshot> Screenshots { get; set; } = [];
 
         [JsonPropertyName("launch_handler")]
         public LaunchHandler LaunchHandler { get; set; } = new();
@@ -76,6 +76,6 @@ namespace WS.WEB.Modules.Search.Models
     public class LaunchHandler
     {
         [JsonPropertyName("client_mode")]
-        public List<string> ClientMode { get; set; } = [];
+        public ICollection<string> ClientMode { get; set; } = [];
     }
 }

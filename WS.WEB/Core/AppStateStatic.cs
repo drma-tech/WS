@@ -159,8 +159,8 @@ public static class AppStateStatic
         {
             return language;
         }
-        else
-            return fallback;
+
+        return fallback;
     }
 
     public static string GetCulture(this NavigationManager navigation)
