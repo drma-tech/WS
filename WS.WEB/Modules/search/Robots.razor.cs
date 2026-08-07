@@ -9,26 +9,20 @@ namespace WS.WEB.Modules.Search
         [Parameter][SupplyParameterFromQuery(Name = "language")] public string? Language { get; set; }
         [Parameter][SupplyParameterFromQuery(Name = "platform")] public string? Platform { get; set; }
 
-        public string? Domain { get; set; } = "https://www.mywebsite.com";
+        public static string? Domain { get; set; } = "https://www.mywebsite.com";
 
         private MudDynamicTabs? DynamicTabs;
         private int UserIndex;
 
-        public RobotsConfig Config { get; set; } = new();
+        public RobotsConfig Config { get; set; } = new()
+        {
+            Rules = [new RobotsRule { UserAgent = "*",
+                Allow = ["/"],
+                Disallow = ["/admin/"], }],
+            Sitemaps = [$"{Domain}/sitemap.xml"],
+        };
 
         public string? SitemapRoute { get; set; }
-
-        protected override void OnInitialized()
-        {
-            var rules = new RobotsRule()
-            {
-                UserAgent = "*",
-                Allow = ["/"],
-                Disallow = ["/admin/"],
-            };
-            Config.Rules.Add(rules);
-            Config.Sitemaps.Add($"{Domain}/sitemap.xml");
-        }
 
         public void AddTab(Guid id)
         {
