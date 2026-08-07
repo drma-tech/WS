@@ -6,7 +6,7 @@ namespace WS.WEB.Core;
 
 public static class AppStateStatic
 {
-     public static bool IsAuthenticated { get; set; }
+    public static bool IsAuthenticated { get; set; }
 
     public static Size Size { get; set; } = Size.Small;
     public static Breakpoint Breakpoint { get; set; } = Breakpoint.Xs;
@@ -103,15 +103,12 @@ public static class AppStateStatic
 
     #region AppLanguage
 
-    public static string[] SupportedLanguages => ["en"];
-    public static string[] SitemapTranslations => ["en"];
-
     private static AppLanguage? _appLanguage;
     private static readonly SemaphoreSlim _appLanguageSemaphore = new(1, 1);
 
     public static bool IsValidLanguage(this string? lang)
     {
-        return SupportedLanguages.Contains(lang);
+        return ConfigurationsStatic.SupportedLanguages.Contains(lang);
     }
 
     public static async Task<AppLanguage> GetAppLanguage(IJSRuntime js, CancellationToken cancellationToken)

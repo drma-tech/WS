@@ -12,7 +12,7 @@ public static class FunctionContextExtensions
 
         var response = req!.CreateResponse(statusCode);
 
-        await response.WriteStringAsync(message);
+        await response.WriteStringAsync(message, cancellationToken: context.CancellationToken);
 
         var invocationResult = context.GetInvocationResult();
 

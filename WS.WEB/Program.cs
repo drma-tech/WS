@@ -91,12 +91,6 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
     {
         var builder = new UriBuilder(baseAddress);
 
-        //force apex domain
-        if (builder.Host.StartsWith("www.", StringComparison.OrdinalIgnoreCase))
-        {
-            builder.Host = builder.Host[4..];
-        }
-
         webUri = builder.Uri;
         apiUri = new Uri(webUri, "api/");
     }
@@ -105,7 +99,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
     collection.AddHttpClient("Local", c => { c.BaseAddress = webUri; });
 
     //Anonymous
-    collection.AddHttpClient("Anonymous", (service, options) => { options.BaseAddress = apiUri; options.Timeout = TimeSpan.FromSeconds(30); })
+    collection.AddHttpClient("Anonymous", (service, options) => { options.BaseAddress = apiUri; options.Timeout = TimeSpan.FromSeconds(15); })
         .AddHttpMessageHandler<AppVersionHandler>()
         .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 

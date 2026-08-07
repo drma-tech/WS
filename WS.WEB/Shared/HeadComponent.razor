@@ -24,7 +24,7 @@
     {
         if (FixedAlternateLanguage.Empty())
         {
-            foreach (var lang in AppStateStatic.SitemapTranslations)
+            foreach (var lang in ConfigurationsStatic.SitemapTranslations)
             {
                 <link rel="alternate" href="@GetUrlForLanguage(lang)" hreflang="@lang" />
             }
@@ -38,7 +38,7 @@
     <!-- x-default -->
     @if (Index)
     {
-        if (AppStateStatic.SitemapTranslations.Length > 0)
+        if (ConfigurationsStatic.SitemapTranslations.Length > 0)
         {
             <link rel="alternate" href="@GetUrlForLanguage(FixedAlternateLanguage ?? "en")" hreflang="x-default" />
         }
