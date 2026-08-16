@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Text;
 
-namespace WS.WEB.Modules.Search.Core
+namespace WS.WEB.Modules.Features.Core
 {
     public class RobotsRule
     {

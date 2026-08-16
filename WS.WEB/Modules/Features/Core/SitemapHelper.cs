@@ -4,7 +4,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace WS.WEB.Modules.Search.Core
+namespace WS.WEB.Modules.Features.Core
 {
     public class SitemapHelper(HttpClient http,
         string baseUrl,

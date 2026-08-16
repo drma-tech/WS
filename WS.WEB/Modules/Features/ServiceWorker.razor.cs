@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using System.Text;
 
-namespace WS.WEB.Modules.Search
+namespace WS.WEB.Modules.Features
 {
     public partial class ServiceWorker
     {

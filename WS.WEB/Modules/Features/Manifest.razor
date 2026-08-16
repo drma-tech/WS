@@ -1,8 +1,6 @@
 @page "/{culture}/manifest"
 
-@using System.Text.Json
-@using HtmlAgilityPack
-@using WS.WEB.Modules.Search.Models
+@using WS.WEB.Modules.Features.Models
 @inherits PageCore<Manifest>
 
 <HeadComponent Title="manifest.webmanifest generator" Description="Create a web app manifest to make your site installable as a PWA. Helps define name, icons, colors and launch behavior."
@@ -101,7 +99,7 @@
                 <MudText Typo="Typo.h6">Icons</MudText>
                 <MudTextField T="string" Label="Icon URL" @bind-Text="NewIcon"
                               Adornment="Adornment.End" AdornmentIcon="@MudBlazor.Icons.Material.Filled.Add"
-                              OnAdornmentClick="@(() => { if(!string.IsNullOrWhiteSpace(NewIcon)) { Model.Icons.Add(new WS.WEB.Modules.Search.Models.Icon { Src = NewIcon }); NewIcon = string.Empty; } })" />
+                              OnAdornmentClick="@(() => { if(!string.IsNullOrWhiteSpace(NewIcon)) { Model.Icons.Add(new WS.WEB.Modules.Features.Models.Icon { Src = NewIcon }); NewIcon = string.Empty; } })" />
                 <MudList T="string">
                     @foreach (var ico in Model.Icons)
                     {

@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using WS.WEB.Modules.Search.Models;
+using WS.WEB.Modules.Features.Models;
 
 namespace WS.WEB.Core.Api
 {

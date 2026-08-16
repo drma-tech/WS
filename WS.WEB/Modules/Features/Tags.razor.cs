@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 
-namespace WS.WEB.Modules.Search
+namespace WS.WEB.Modules.Features
 {
     public partial class Tags
     {

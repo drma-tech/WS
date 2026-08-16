@@ -3,7 +3,7 @@ using MudBlazor;
 using System.Xml.Linq;
 using WS.Shared.Models;
 
-namespace WS.WEB.Modules.Search
+namespace WS.WEB.Modules.Features
 {
     public partial class IndexNow
     {

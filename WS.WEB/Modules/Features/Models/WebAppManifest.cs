@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace WS.WEB.Modules.Search.Models
+namespace WS.WEB.Modules.Features.Models
 {
     public class WebAppManifest
     {

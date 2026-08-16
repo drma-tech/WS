@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace SD.WEB.Core.Helper
+namespace WS.WEB.Core.Helper
 {
     /// <summary>
     /// Lightweight TaskHelper that ensures a single running task per key/context.

@@ -1,6 +1,6 @@
 ﻿using WS.Shared.Models;
 
-namespace WS.WEB.Modules.Search.Core
+namespace WS.WEB.Modules.Features.Core
 {
     public class IndexNowApi(IHttpClientFactory factory) : ApiExternal(factory)
     {

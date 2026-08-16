@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using WS.WEB.Modules.Search.Core;
+using WS.WEB.Modules.Features.Core;
 
-namespace WS.WEB.Modules.Search
+namespace WS.WEB.Modules.Features
 {
     public partial class Sitemap
     {

@@ -2,9 +2,9 @@ using HtmlAgilityPack;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using System.Text.Json;
-using WS.WEB.Modules.Search.Models;
+using WS.WEB.Modules.Features.Models;
 
-namespace WS.WEB.Modules.Search
+namespace WS.WEB.Modules.Features
 {
     public partial class Manifest
     {
