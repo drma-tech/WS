@@ -11,7 +11,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
-		<PackageReference Include="Meziantou.Analyzer" Version="3.0.151">
+		<PackageReference Include="Meziantou.Analyzer" Version="3.0.158">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>

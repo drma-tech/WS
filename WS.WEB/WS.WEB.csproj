@@ -17,7 +17,7 @@
 		<PackageReference Include="Humanizer.Core" Version="3.0.10" />
 		<PackageReference Include="Humanizer.Core.es" Version="3.0.10" />
 		<PackageReference Include="Humanizer.Core.pt" Version="3.0.10" />
-		<PackageReference Include="Meziantou.Analyzer" Version="3.0.151">
+		<PackageReference Include="Meziantou.Analyzer" Version="3.0.158">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>

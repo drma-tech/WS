@@ -1,0 +1,19 @@
+﻿@inherits FieldBase
+@typeparam TValue
+
+@if (Name.NotEmpty())
+{
+    <MudChip T="string" Size="AppStateStatic.Size" Variant="Variant.Filled" Class="ms-0 me-1">
+        @Name
+    </MudChip>
+}
+@foreach (var item in Values)
+{
+    <MudChip T="string" Size="AppStateStatic.Size" Variant="Variant.Outlined" Class="ms-0 me-1">
+        @item
+    </MudChip>
+}
+
+@code {
+    [Parameter] public IEnumerable<TValue> Values { get; set; } = [];
+}

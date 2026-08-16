@@ -4,11 +4,11 @@ namespace WS.WEB.Shared
 {
     public partial class RenderControl<T> where T : class
     {
-        [Parameter][EditorRequired] public RenderControlState<T> Actions { get; set; } = null!;
+        [Parameter][EditorRequired] public RenderControlState<T> State { get; set; } = null!;
         [Parameter][EditorRequired] public RenderFragment<T> ChildContent { get; set; } = null!;
 
         [Parameter] public string? Class { get; set; }
-        [Parameter] public string? LoadingHeight { get; set; } = "230px";
+        [Parameter] public string? LoadingHeight { get; set; } = "100px";
 
         [Parameter] public bool PrivateFeature { get; set; }
         [Parameter] public bool IsAuthenticated { get; set; }
@@ -20,7 +20,7 @@ namespace WS.WEB.Shared
 
         protected override void OnInitialized()
         {
-            Actions.OnStateChanged += StateHasChanged;
+            State.OnStateChanged += StateHasChanged;
         }
     }
 }

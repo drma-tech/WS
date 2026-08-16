@@ -1,46 +1,30 @@
 ﻿@typeparam T where T : class
 
 <div class="@Class">
-    @if (Actions.CurrentStatus == RenderControlStatus.Loading)
+    @if (State.CurrentStatus == RenderControlStatus.Loading)
     {
         <div style="position: relative;">
             <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="@LoadingHeight" Animation="Animation.Wave" />
             <span style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-weight: 500;">
-                @Actions.MessageLoading
+                @State.MessageLoading
             </span>
         </div>
     }
-    else if (Actions.CurrentStatus == RenderControlStatus.Error)
+    else if (State.CurrentStatus == RenderControlStatus.Error)
     {
         <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.BugReport" Style="text-align: justify;">
-            @(Actions.MessageError ?? Translations.Notification.RenderControlInvalid)
+            @(State.MessageError ?? Translations.Notification.RenderControlInvalid)
         </MudAlert>
     }
-    @* else if (PremiumFeature && !IsPremium)
-    {
-        <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Diamond" Style="text-align: justify;">
-            <span class="me-2" style="font-weight: bold;">@Translations.Notification.PremiumFeature</span>
-            @if (!string.IsNullOrEmpty(Actions.CustomPremiumDescription))
-            {
-                @Actions.CustomPremiumDescription
-            }
-        </MudAlert>
-    }
-    else if (PrivateFeature && !IsAuthenticated)
-    {
-        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Lock" Style="text-align: justify;">
-            @Translations.Module.Auth.UnauthenticatedUser
-        </MudAlert>
-    } *@
-    else if (Actions.CurrentStatus == RenderControlStatus.Warning)
+    else if (State.CurrentStatus == RenderControlStatus.Warning)
     {
         <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Warning" Style="text-align: justify;">
-            @(Actions.MessageWarning ?? Translations.Notification.RenderControlNoData)
+            @(State.MessageWarning ?? Translations.Notification.RenderControlNoData)
         </MudAlert>
     }
     else //Content
     {
-        @if (Actions.CurrentInstance == null || Actions.ExpressionEmpty(Actions.CurrentInstance))
+        @if (State.CurrentInstance == null || State.ExpressionEmpty(State.CurrentInstance))
         {
             if (HideIfEmpty)
             {
@@ -55,7 +39,7 @@
         }
         else
         {
-            @ChildContent(Actions.CurrentInstance)
+            @ChildContent(State.CurrentInstance)
         }
     }
 </div>

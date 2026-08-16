@@ -251,6 +251,13 @@ public static partial class StringHelper
         };
     }
 
+    public static DateTime? GetDate(this string? value)
+    {
+        if (!string.IsNullOrEmpty(value) && DateTime.TryParse(value, CultureInfo.InvariantCulture, out _))
+            return DateTime.Parse(value, CultureInfo.InvariantCulture);
+        return null;
+    }
+
     [GeneratedRegex(@"(\d+)\s+(second|minute|hour|day|week|month|year)s?\s+ago", RegexOptions.None, 1000)]
     private static partial Regex TimePassed();
 }

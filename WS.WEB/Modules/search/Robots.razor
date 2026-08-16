@@ -25,7 +25,7 @@
     <MudItem xs="6" md="5">
         <MudText Typo="Typo.h6">User Agents</MudText>
         <MudPaper Elevation="0" Outlined="true" Class="pa-2 mb-3">
-            <MudDynamicTabs @ref="@DynamicTabs" @bind-ActivePanelIndex="@UserIndex" Outlined="true" Elevation="0" MinimumTabWidth="100px"
+            <MudDynamicTabs @ref="@DynamicTabs" @bind-ActivePanelIndex="@UserIndex" Outlined="true" Elevation="0" MinimumTabWidth="60px"
                             AddTab="@AddTabCallback" CloseTab="@CloseTabCallback"
                             AddIconToolTip="Click to add a user agent" CloseIconToolTip="Close user agent. All data will be lost">
                 @foreach (var item in Config.Rules)

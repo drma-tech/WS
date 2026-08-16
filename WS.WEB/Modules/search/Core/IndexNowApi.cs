@@ -7,7 +7,7 @@ namespace WS.WEB.Modules.Search.Core
         public async Task<HttpResponseMessage?> SendUrls(string api, IndexNowModel payload, CancellationToken cancellationToken)
         {
             return await base.PostAsync<IndexNowModel, HttpResponseMessage>($"public/external/indexnow?url=" + api.ConvertFromStringToBase64(), payload, 
-                JavascriptContext.Default.IndexNowModel, null, cancellationToken);
+                JavascriptContext.Default.IndexNowModel, null, null, cancellationToken);
         }
     }
 }
