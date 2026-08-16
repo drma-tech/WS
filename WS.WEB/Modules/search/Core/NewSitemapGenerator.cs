@@ -56,7 +56,7 @@ namespace WS.WEB.Modules.Search.Core
                     if (!pages.TryGetValue(normalized, out Page? existing))
                         pages[normalized] = new Page { Url = normalized, Alternates = alternates };
                     else
-                        existing.Alternates.AddRange(alternates.Where(a => !existing.Alternates.Any(e => string.Equals(e.Href, a.Href, StringComparison.OrdinalIgnoreCase) && string.Equals(e.Hreflang, a.Hreflang, StringComparison.OrdinalIgnoreCase))));
+                        existing.Alternates.AddRange(alternates.Where(a => !existing.Alternates.Exists(e => string.Equals(e.Href, a.Href, StringComparison.OrdinalIgnoreCase) && string.Equals(e.Hreflang, a.Hreflang, StringComparison.OrdinalIgnoreCase))));
                 }
 
                 if (depth >= maxDepth) continue;

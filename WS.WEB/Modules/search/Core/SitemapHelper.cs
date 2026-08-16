@@ -10,8 +10,8 @@ namespace WS.WEB.Modules.Search.Core
         string baseUrl,
         bool includeAlternates = false,
         bool noIndex = true,
-        List<string>? ignoreRel = null,
-        List<string>? ignoreTarget = null,
+        IEnumerable<string>? ignoreRel = null,
+        IEnumerable<string>? ignoreTarget = null,
         int maxDepth = 3)
     {
         private readonly Uri _baseUri = new(baseUrl);
@@ -157,7 +157,7 @@ namespace WS.WEB.Modules.Search.Core
             return list;
         }
 
-        private List<string> ExtractLinks(HtmlDocument doc)
+        private IEnumerable<string> ExtractLinks(HtmlDocument doc)
         {
             var nodes = doc.DocumentNode.SelectNodes("//a[@href]") ?? new HtmlNodeCollection(null);
             var result = new List<string>();
@@ -180,7 +180,7 @@ namespace WS.WEB.Modules.Search.Core
 
                 result.Add(abs.ToString());
             }
-            return result.Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+            return result.Distinct(StringComparer.OrdinalIgnoreCase);
         }
 
         // Normalize url for visit uniqueness: strip language prefix from path to avoid crawling every language variant
@@ -206,7 +206,7 @@ namespace WS.WEB.Modules.Search.Core
             }
         }
 
-        private static void EnqueueLinks(Queue<(string url, int depth)> queue, HashSet<string> visited, List<string> links, int depth)
+        private static void EnqueueLinks(Queue<(string url, int depth)> queue, HashSet<string> visited, IEnumerable<string> links, int depth)
         {
             foreach (var link in links)
             {
@@ -339,7 +339,7 @@ namespace WS.WEB.Modules.Search.Core
                 var normHref = NormalizeHref(href);
 
                 // avoid duplicates by normalized href + hreflang
-                if (!list.Any(v => NormalizeHref(v.Href).Equals(normHref, StringComparison.OrdinalIgnoreCase)
+                if (!list.Exists(v => NormalizeHref(v.Href).Equals(normHref, StringComparison.OrdinalIgnoreCase)
                                    && string.Equals((v.Hreflang ?? string.Empty).Trim(), (normH ?? string.Empty).Trim(), StringComparison.OrdinalIgnoreCase)))
                 {
                     list.Add((normHref, normH));
@@ -451,9 +451,9 @@ namespace WS.WEB.Modules.Search.Core
     public class PageData
     {
         public string? Url { get; set; }
-        public List<string> Images { get; set; } = [];
-        public List<string> Videos { get; set; } = [];
-        public List<AlternateData>? Alternates { get; set; }
+        public IEnumerable<string> Images { get; set; } = [];
+        public IEnumerable<string> Videos { get; set; } = [];
+        public IEnumerable<AlternateData>? Alternates { get; set; }
         public NewsData? News { get; set; }
     }
 

@@ -12,14 +12,17 @@
 		<AnalysisLevel>latest-recommended</AnalysisLevel>
 	</PropertyGroup>
 	<ItemGroup>
+		<None Include="..\.editorconfig" Link=".editorconfig" />
+	</ItemGroup>
+	<ItemGroup>
 		<PackageReference Include="BlazorWasmPreRendering.Build" Version="8.0.1" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
 		<PackageReference Include="Humanizer.Core" Version="3.0.10" />
 		<PackageReference Include="Humanizer.Core.es" Version="3.0.10" />
 		<PackageReference Include="Humanizer.Core.pt" Version="3.0.10" />
 		<PackageReference Include="Meziantou.Analyzer" Version="3.0.158">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.11">
 			<TreatAsUsed>true</TreatAsUsed>

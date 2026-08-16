@@ -70,7 +70,7 @@ namespace WS.WEB.Modules.Search
                 ["name"] = Title,
                 ["url"] = PageUrl,
                 ["description"] = Description,
-                ["publisher"] = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase) { ["@type"] = "Organization", ["name"] = SiteName }
+                ["publisher"] = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase) { ["@type"] = "Organization", ["name"] = SiteName },
             };
             if (!string.IsNullOrWhiteSpace(ImageUrl)) jsonLd["image"] = ImageUrl;
 
