@@ -1,33 +1,82 @@
 ﻿@inherits FieldBase
 @typeparam TValue
 
-@if (Name.NotEmpty())
-{
-    <MudChip T="string" Size="AppStateStatic.Size" Variant="Variant.Filled" Class="ms-0 me-1">
-        @Name
-    </MudChip>
-}
-@if (Value is bool resultB)
-{
-    <MudChip T="string" Size="AppStateStatic.Size" Variant="Variant.Outlined" Class="ms-0 me-1">
-        <MudIcon Icon="@(resultB ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.Cancel)" Color="@(resultB ? Color.Success : Color.Error)"
-                 Style="@($"margin-inline: -{(AppStateStatic.IsMobile ? 4 : 6)}px;")"></MudIcon>
-        @if (IncludeBoolText)
+<span class="@Class" style="@Style">
+    @if (Name.NotEmpty())
+    {
+        <MudChip T="string" Size="Size" Variant="Variant.Filled" Class="mx-0" Color="ColorName" Href="@NameHref" OnClick="NameClick">
+            @Name
+        </MudChip>
+    }
+    @if (Value != null)
+    {
+        @if (Value is bool resultB)
         {
-            <span class="mud-chip-content ms-2">
-                @(resultB ? Translations.Notification.Yes : Translations.Notification.No)
-            </span>
+            <MudChip T="string" Size="Size" Variant="Variant.Outlined" Class="@ValueChipClass" Style="@ValueChipStyle" Color="ColorValue" Href="@ValueHref">
+                <MudIcon Icon="@(resultB ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.Cancel)" Color="@(resultB ? Color.Success : Color.Error)"
+                         Class="me-1" Style="@($"margin-left: -{(AppStateStatic.IsMobile ? 4 : 6)}px; font-size: 20px;")"></MudIcon>
+                @if (IncludeBoolText)
+                {
+                    @(resultB ? Translations.Notification.Yes : Translations.Notification.No)
+                }
+            </MudChip>
         }
-    </MudChip>
-}
-else
-{
-    <MudChip T="string" Size="AppStateStatic.Size" Variant="Variant.Outlined" Class="ms-0 me-1">
-        @Value
-    </MudChip>
-}
+        else
+        {
+            <MudChip T="string" Size="Size" Variant="Variant.Outlined" Class="@ValueChipClass" Style="@ValueChipStyle" Color="ColorValue" Href="@ValueHref" OnClick="ValueClick">
+                @if (Icon.NotEmpty())
+                {
+                    <MudTooltip Text="@IconTooltip">
+                        <MudIcon Icon="@Icon" Class="me-1" Style="@($"margin-left: -{(AppStateStatic.IsMobile ? 4 : 6)}px; font-size: 20px;")"></MudIcon>
+                    </MudTooltip>
+                }
+                @if (Image.NotEmpty())
+                {
+                    <MudImage Src="@Image" Class="me-1" Style="@ImageStyle"></MudImage>
+                }
+                @if (Value is null)
+                {
+                    @FallbackValue
+                }
+                else
+                {
+                    <MudTooltip Text="@ValueTooltip">
+                        @Value
+                    </MudTooltip>
+                }
+                @if (ButtonClick.HasDelegate)
+                {
+                    <MudTooltip Text="@ButtonTooltip">
+                        <MudIconButton Icon="@ButtonIcon" OnClick="ButtonClick" Size="Size.Small" Color="ColorButton"></MudIconButton>
+                    </MudTooltip>
+                }
+            </MudChip>
+        }
+    }
+</span>
 
 @code {
     [Parameter] public TValue? Value { get; set; }
+    [Parameter] public string? FallbackValue { get; set; } = "N/A";
     [Parameter] public bool IncludeBoolText { get; set; } = true;
+
+    [Parameter] public Color ColorName { get; set; } = Color.Default;
+    [Parameter] public Color ColorValue { get; set; } = Color.Default;
+
+    [Parameter] public string? NameHref { get; set; }
+    [Parameter] public string? ValueHref { get; set; }
+
+    [Parameter] public EventCallback NameClick { get; set; }
+    [Parameter] public EventCallback ValueClick { get; set; }
+
+    [Parameter] public string? ValueChipClass { get; set; } = "ms-1 me-0";
+    [Parameter] public string? ValueChipStyle { get; set; }
+
+    [Parameter] public EventCallback ButtonClick { get; set; }
+    [Parameter] public Color ColorButton { get; set; } = Color.Default;
+    [Parameter] public string? ButtonIcon { get; set; }
+
+    [Parameter] public string? IconTooltip { get; set; }
+    [Parameter] public string? ValueTooltip { get; set; }
+    [Parameter] public string? ButtonTooltip { get; set; }
 }

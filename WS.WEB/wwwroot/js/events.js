@@ -109,9 +109,15 @@ window.addEventListener("unhandledrejection", function (event) {
 window.addEventListener("securitypolicyviolation", (event) => {
     const obj = {
         violatedDirective: event.violatedDirective,
+        effectiveDirective: event.effectiveDirective,
         blockedURI: event.blockedURI,
         sourceFile: event.sourceFile,
         lineNumber: event.lineNumber,
+        columnNumber: event.columnNumber,
+        originalPolicy: event.originalPolicy,
+        disposition: event.disposition,
+        documentURI: event.documentURI,
+        statusCode: event.statusCode,
         url: location.href,
     };
 

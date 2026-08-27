@@ -3,7 +3,8 @@
 <MudDialog Style="width: 100%">
     <DialogContent>
         <MudText Class="mb-1" Style="font-size: 14px;">@Translations.Module.Help.AppTheme</MudText>
-        <MudToggleGroup Value="DarkMode" ValueChanged="(bool vl) => DarkModeChanged(vl)" SelectionMode="SelectionMode.SingleSelection" Vertical="false" Color="Color.Primary">
+        <MudToggleGroup T="bool" Value="DarkMode" ValueChanged="@DarkModeChanged" SelectionMode="SelectionMode.SingleSelection"
+                        Vertical="false" Color="Color.Primary">
             <MudToggleItem Value="false">
                 <MudIcon Icon="@Icons.Material.Filled.LightMode" Title="@Translations.Module.Help.LightMode" Class="me-1"></MudIcon>
                 @Translations.Module.Help.LightMode

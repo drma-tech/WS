@@ -8,20 +8,20 @@
         Error,
     }
 
-    public sealed class RenderControlState<T> where T : class
+    public sealed class RenderControlState<T>
     {
         public Func<string?, Task> StartLoading { get; set; }
-        public Func<T?, Task> FinishLoading { get; set; }
+        public Func<T, Task> FinishLoading { get; set; }
 
         public Func<string?, Task> StartProcessing { get; set; }
-        public Func<T?, Task> FinishProcessing { get; set; }
+        public Func<T, Task> FinishProcessing { get; set; }
 
         public Func<string?, Task> ShowWarning { get; set; }
         public Func<string?, Task> ShowError { get; set; }
 
-        public RenderControlStatus CurrentStatus { get; set; } = RenderControlStatus.Loading;
-        public T? CurrentInstance { get; set; }
-        public Func<T?, bool> ExpressionEmpty { get; set; }
+        public RenderControlStatus Status { get; set; } = RenderControlStatus.Loading;
+        public T Instance { get; set; }
+        public Func<T, bool> ExpressionEmpty { get; set; }
 
         public string? MessageLoading { get; set; } = Translations.Notification.RenderControlLoading;
         public string? MessageError { get; set; }
@@ -33,21 +33,22 @@
 
         public Action? OnStateChanged { get; set; }
 
-        public RenderControlState(Func<T?, bool> expressionEmpty)
+        public RenderControlState(T initialValue, Func<T, bool> expressionEmpty)
         {
+            Instance = initialValue;
             ExpressionEmpty = expressionEmpty;
 
-            StartLoading = async msg => await ChangeStatus(RenderControlStatus.Loading, msg);
-            FinishLoading = async obj => await ChangeStatus(RenderControlStatus.Content, msg: null, obj);
+            StartLoading = async msg => await ChangeStatus(RenderControlStatus.Loading, initialValue, msg);
+            FinishLoading = async obj => await ChangeStatus(RenderControlStatus.Content, obj, msg: null);
 
-            StartProcessing = async msg => await ChangeStatus(RenderControlStatus.Loading, msg ?? "Processing...");
-            FinishProcessing = async obj => await ChangeStatus(RenderControlStatus.Content, msg: null, obj);
+            StartProcessing = async msg => await ChangeStatus(RenderControlStatus.Loading, initialValue, msg ?? "Processing...");
+            FinishProcessing = async obj => await ChangeStatus(RenderControlStatus.Content, obj, msg: null);
 
-            ShowWarning = async msg => await ChangeStatus(RenderControlStatus.Warning, msg);
-            ShowError = async msg => await ChangeStatus(RenderControlStatus.Error, msg);
+            ShowWarning = async msg => await ChangeStatus(RenderControlStatus.Warning, initialValue, msg);
+            ShowError = async msg => await ChangeStatus(RenderControlStatus.Error, initialValue, msg);
         }
 
-        private async Task ChangeStatus(RenderControlStatus status, string? msg = null, T? instance = default)
+        private async Task ChangeStatus(RenderControlStatus status, T instance, string? msg = null)
         {
             if (status == RenderControlStatus.Loading)
             {
@@ -63,12 +64,12 @@
             }
             else if (status == RenderControlStatus.Content && (Equals(instance, default(T)) || ExpressionEmpty(instance)) && CustomMessageWarning.NotEmpty())
             {
-                await ChangeStatus(RenderControlStatus.Warning, Translations.Notification.RenderControlNoData);
+                await ChangeStatus(RenderControlStatus.Warning, instance, Translations.Notification.RenderControlNoData);
                 return;
             }
 
-            CurrentStatus = status;
-            CurrentInstance = instance;
+            Status = status;
+            Instance = instance;
 
             OnStateChanged?.Invoke();
         }

@@ -2,10 +2,11 @@ using Microsoft.AspNetCore.Components;
 
 namespace WS.WEB.Shared
 {
-    public partial class RenderControl<T> where T : class
+    public partial class RenderControl<T>
     {
         [Parameter][EditorRequired] public RenderControlState<T> State { get; set; } = null!;
         [Parameter][EditorRequired] public RenderFragment<T> ChildContent { get; set; } = null!;
+        [Parameter] public RenderFragment<T?>? EmptyFragment { get; set; }
 
         [Parameter] public string? Class { get; set; }
         [Parameter] public string? LoadingHeight { get; set; } = "100px";

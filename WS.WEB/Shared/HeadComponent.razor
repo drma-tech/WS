@@ -2,7 +2,7 @@
 @inject NavigationManager Navigation
 @inject IJSRuntime Js
 
-<PageTitle>@TitleFull</PageTitle>
+<PageTitle>@(FixedTitle ? Title : TitleFull)</PageTitle>
 
 <HeadContent>
 

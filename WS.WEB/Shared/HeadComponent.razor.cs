@@ -26,6 +26,7 @@ namespace WS.WEB.Shared
         [Parameter] public bool Shared { get; set; }
 
         [Parameter] public string? FixedAlternateLanguage { get; set; }
+        [Parameter] public bool FixedTitle { get; set; }
 
         public string? Culture => AppStateStatic.GetCulture(Navigation);
         private string? TitleFull => $"{Title} | {AppInfo.Title}";

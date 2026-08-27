@@ -1,19 +1,54 @@
 ﻿@inherits FieldBase
 @typeparam TValue
 
-@if (Name.NotEmpty())
+@if ((Values == null || Values.Empty()) && HideIfEmpty)
 {
-    <MudChip T="string" Size="AppStateStatic.Size" Variant="Variant.Filled" Class="ms-0 me-1">
-        @Name
-    </MudChip>
+
 }
-@foreach (var item in Values)
+else
 {
-    <MudChip T="string" Size="AppStateStatic.Size" Variant="Variant.Outlined" Class="ms-0 me-1">
-        @item
-    </MudChip>
+    <span class="@Class" style="@Style">
+        @if (Name.NotEmpty())
+        {
+            <MudChip T="string" Size="Size" Variant="Variant.Filled" Class="mx-0" Color="ColorName">
+                @Name
+            </MudChip>
+        }
+        @if (Values == null || Values.Empty())
+        {
+            <MudChip T="string" Size="Size" Variant="Variant.Outlined" Class="@ValueChipClass" Style="@ValueChipStyle" Color="ColorValue">
+                @FallbackValue
+            </MudChip>
+        }
+        else
+        {
+            @foreach (var item in Values)
+            {
+                <MudChip T="string" Size="Size" Variant="Variant.Outlined" Class="@ValueChipClass" Style="@ValueChipStyle" Color="ColorValue">
+                    @item
+                </MudChip>
+            }
+        }
+    </span>
 }
 
 @code {
     [Parameter] public IEnumerable<TValue> Values { get; set; } = [];
+    [Parameter] public string? FallbackValue { get; set; } = "N/A";
+
+    [Parameter] public Color ColorName { get; set; } = Color.Default;
+    [Parameter] public Color ColorValue { get; set; } = Color.Default;
+
+    [Parameter] public string? ValueChipClass { get; set; }
+    [Parameter] public string? ValueChipStyle { get; set; }
+
+    [Parameter] public bool HideIfEmpty { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (ValueChipClass.Empty())
+        {
+            ValueChipClass = Name.NotEmpty() ? "ms-1 me-0" : "ms-0 me-1";
+        }
+    }
 }
