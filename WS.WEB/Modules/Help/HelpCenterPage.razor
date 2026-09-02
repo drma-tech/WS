@@ -1,5 +1,5 @@
 ﻿@page "/{culture}/help"
-@inherits PageCore<HelpCenter>
+@inherits PageCore<HelpCenterPage>
 
 <HeadComponent Title="@Translations.Title.HelpCenter" Description="@Translations.Description.HelpCenter.CustomFormat(AppInfo.Title)" Url=@($"/{Culture}/help") Index="true"></HeadComponent>
 <PageSectionComponent IsPageHeader="true" Title="@Translations.Title.HelpCenter" Description="@Translations.Description.HelpCenter.CustomFormat(AppInfo.Title)"></PageSectionComponent>

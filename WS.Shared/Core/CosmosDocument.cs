@@ -50,5 +50,11 @@ public abstract class CosmosDocument(ICosmosIdentity identity) : EqualityBase<Co
 
     [Json.JsonIgnore]
     [Nsoft.JsonIgnore]
-    public ICosmosIdentity Identity { get; } = identity;
+    public ICosmosIdentity Identity { get; private set; } = identity;
+
+    public void ChangeIdentity(ICosmosIdentity identity)
+    {
+        Identity = identity;
+        Id = identity.Id;
+    }
 }

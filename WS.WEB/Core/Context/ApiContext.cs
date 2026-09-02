@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using WS.WEB.Modules.Features.Models;
 
-namespace WS.WEB.Core.Api
+namespace WS.WEB.Core.Context
 {
     [JsonSourceGenerationOptions(PropertyNameCaseInsensitive = true)]
     [JsonSerializable(typeof(WebAppManifest))]

@@ -1,6 +1,6 @@
 ﻿using Microsoft.JSInterop;
 
-namespace WS.WEB.Core.Helper.Javascript
+namespace WS.WEB.Core.Javascript
 {
     public static class JsModuleLoader
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.JSInterop;
 
-namespace WS.WEB.Core.Helper.Javascript
+namespace WS.WEB.Core.Javascript
 {
     public class ServicesJs(IJSRuntime js) : JsModuleBase(js, "./js/services.js")
     {

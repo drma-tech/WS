@@ -1,4 +1,4 @@
-﻿namespace WS.WEB.Core.Api
+﻿namespace WS.WEB.Api.Core
 {
     public sealed class AppVersionHandler() : DelegatingHandler
     {

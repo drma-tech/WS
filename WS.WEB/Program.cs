@@ -7,6 +7,7 @@ using Polly;
 using Polly.Extensions.Http;
 using System.Globalization;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
+using WS.WEB.Api.Core;
 using WS.WEB.Modules.Features.Core;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);

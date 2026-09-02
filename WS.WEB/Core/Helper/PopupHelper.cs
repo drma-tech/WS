@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using WS.WEB.Modules.Help;
-using WS.WEB.Shared;
 
 namespace WS.WEB.Core.Helper;
 
@@ -16,7 +15,7 @@ public static class PopupHelper
 
     public static async Task AskReviewPopup(this IDialogService service)
     {
-        await service.ShowAsync<AskReview>(Translations.Module.Help.WriteReviewTitle.CustomFormat(AppInfo.Title), Options(MaxWidth.Small, allowClose: false, showHeader: false));
+        await service.ShowAsync<AskReviewPopup>(Translations.Module.Help.WriteReviewTitle.CustomFormat(AppInfo.Title), Options(MaxWidth.Small, allowClose: false, showHeader: false));
     }
 
     public static DialogOptions Options(MaxWidth width, bool allowClose = true, bool showHeader = true)

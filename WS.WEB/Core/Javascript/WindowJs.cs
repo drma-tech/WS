@@ -1,7 +1,7 @@
 ﻿using Microsoft.JSInterop;
 using System.Diagnostics.CodeAnalysis;
 
-namespace WS.WEB.Core.Helper.Javascript
+namespace WS.WEB.Core.Javascript
 {
     public class WindowJs(IJSRuntime js)
     {

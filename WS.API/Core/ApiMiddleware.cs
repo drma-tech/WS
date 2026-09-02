@@ -1,8 +1,8 @@
 ﻿using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Middleware;
-using WS.API.Core.Auth;
 using System.Diagnostics;
 using System.Net;
+using WS.API.Core.Auth;
 
 namespace WS.API.Core;
 
@@ -61,15 +61,7 @@ internal sealed class ApiMiddleware : IFunctionsWorkerMiddleware
         {
             await context.SetHttpResponseStatusCode(HttpStatusCode.BadRequest, ex.Message);
         }
-        catch (TaskCanceledException)
-        {
-            // ignored
-        }
-        catch (OperationCanceledException)
-        {
-            // ignored
-        }
-        catch (ObjectDisposedException)
+        catch (Exception ex) when (ex is TaskCanceledException || ex is OperationCanceledException || ex is ObjectDisposedException)
         {
             // ignored
         }

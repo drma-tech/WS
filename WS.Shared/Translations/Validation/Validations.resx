@@ -120,7 +120,10 @@
   <data name="DomainDeactivated" xml:space="preserve">
     <value>This domain has been deactivated. If you are accessing via an app (Windows, Android, Apple, etc.), please update it. If using a browser, please access the site without the 'www'.</value>
   </data>
+  <data name="MaintenanceMode" xml:space="preserve">
+    <value>We are currently undergoing maintenance. Please try again in a few minutes.</value>
+  </data>
   <data name="OutdatedVersion" xml:space="preserve">
-    <value>An outdated version has been detected ({0}}). Please update to the latest version to continue using the platform. If you cannot update, try clearing your browser or app cache and reopen it.</value>
+    <value>An outdated version has been detected ({0}). Please update to the latest version to continue using the platform. If you cannot update, try clearing your browser or app cache and reopen it.</value>
   </data>
 </root>

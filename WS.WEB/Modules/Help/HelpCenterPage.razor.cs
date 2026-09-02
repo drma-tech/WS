@@ -1,6 +1,6 @@
 namespace WS.WEB.Modules.Help
 {
-    public partial class HelpCenter
+    public partial class HelpCenterPage
     {
         private WS.Shared.Enums.Platform? CurrentPlatform;
 

@@ -161,9 +161,9 @@ namespace WS.WEB.Layout
         }
 
         [JSInvokable]
-        public static void SupabaseAuthChanged(string? token)
+        public static void ClerkAuthChanged(string? token)
         {
-            _ = BufferedEvent.Invoke(nameof(SupabaseAuthChanged), token);
+            _ = BufferedEvent.Invoke(nameof(ClerkAuthChanged), token);
         }
 
         private bool isDisposed;

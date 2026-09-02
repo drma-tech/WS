@@ -73,4 +73,20 @@ public static class ExtensionMethods
         var json = JsonSerializer.Serialize(instance);
         return JsonSerializer.Deserialize<T>(json) ?? throw new InvalidOperationException("Clone failed");
     }
+
+    public static T? ElementAtIndex<T>(this IEnumerable<T>? source, int index) where T : class
+    {
+        if (source == null || index < 0) return null;
+
+        if (source is IList<T> list) return index < list.Count ? list[index] : null;
+
+        var i = 0;
+        foreach (var item in source)
+        {
+            if (i == index) return item;
+            i++;
+        }
+
+        return null;
+    }
 }
