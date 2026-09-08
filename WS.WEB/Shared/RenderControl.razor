@@ -1,23 +1,7 @@
 ﻿@typeparam T
 
 <div class="@Class">
-    @if (PremiumFeature && !IsPremium)
-    {
-        <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Diamond" Style="text-align: justify;">
-            <span class="me-2" style="font-weight: bold;">@Translations.Notification.PremiumFeature</span>
-            @if (!string.IsNullOrEmpty(State.CustomPremiumDescription))
-            {
-                @State.CustomPremiumDescription
-            }
-        </MudAlert>
-    }
-    else if (PrivateFeature && !IsAuthenticated)
-    {
-        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Lock" Style="text-align: justify;">
-            @Translations.Module.Auth.UnauthenticatedUser
-        </MudAlert>
-    }
-    else if (State.Status == RenderControlStatus.Loading)
+    @if (State.Status == RenderControlStatus.Loading)
     {
         <div style="position: relative;">
             <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="@LoadingHeight" Animation="Animation.Wave" />
