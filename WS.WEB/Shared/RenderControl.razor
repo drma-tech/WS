@@ -1,7 +1,23 @@
 ﻿@typeparam T
 
 <div class="@Class">
-    @if (State.Status == RenderControlStatus.Loading)
+    @if (PremiumFeature && !IsPremium)
+    {
+        <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Diamond" Style="text-align: justify;">
+            <span class="me-2" style="font-weight: bold;">@Translations.Notification.PremiumFeature</span>
+            @if (!string.IsNullOrEmpty(State.CustomPremiumDescription))
+            {
+                @State.CustomPremiumDescription
+            }
+        </MudAlert>
+    }
+    else if (PrivateFeature && !IsAuthenticated)
+    {
+        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Lock" Style="text-align: justify;">
+            @Translations.Module.Auth.UnauthenticatedUser
+        </MudAlert>
+    }
+    else if (State.Status == RenderControlStatus.Loading)
     {
         <div style="position: relative;">
             <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="@LoadingHeight" Animation="Animation.Wave" />
@@ -12,13 +28,13 @@
     }
     else if (State.Status == RenderControlStatus.Error)
     {
-        <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.BugReport" Style="text-align: justify;">
+        <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.BugReport" Style="text-align: justify;">
             @(State.MessageError ?? Translations.Notification.RenderControlInvalid)
         </MudAlert>
     }
     else if (State.Status == RenderControlStatus.Warning)
     {
-        <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Warning" Style="text-align: justify;">
+        <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Warning" Style="text-align: justify;">
             @(State.MessageWarning ?? Translations.Notification.RenderControlNoData)
         </MudAlert>
     }
@@ -36,7 +52,7 @@
             }
             else
             {
-                <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Warning" Style="text-align: justify;">
+                <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Warning" Style="text-align: justify;">
                     @Translations.Notification.RenderControlNoData
                 </MudAlert>
             }

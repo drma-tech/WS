@@ -19,9 +19,9 @@
         public Func<string?, Task> ShowWarning { get; set; }
         public Func<string?, Task> ShowError { get; set; }
 
-        public RenderControlStatus Status { get; set; } = RenderControlStatus.Loading;
-        public T Instance { get; set; }
-        public Func<T, bool> ExpressionEmpty { get; set; }
+        public RenderControlStatus Status { get; private set; } = RenderControlStatus.Loading;
+        public T Instance { get; private set; }
+        public Func<T, bool> ExpressionEmpty { get; private set; }
 
         public string? MessageLoading { get; set; } = Translations.Notification.RenderControlLoading;
         public string? MessageError { get; set; }
@@ -48,8 +48,20 @@
             ShowError = async msg => await ChangeStatus(RenderControlStatus.Error, initialValue, msg);
         }
 
+        public void ChangeInstance(T instance)
+        {
+            Instance = instance;
+            OnStateChanged?.Invoke();
+        }
+
         private async Task ChangeStatus(RenderControlStatus status, T instance, string? msg = null)
         {
+            //If data is already being displayed, ignore new "loading" status request.
+            if (Status == RenderControlStatus.Content && status == RenderControlStatus.Loading && (!Equals(Instance, default(T)) && !ExpressionEmpty(Instance)))
+            {
+                return;
+            }
+
             if (status == RenderControlStatus.Loading)
             {
                 MessageLoading = msg ?? Translations.Notification.RenderControlLoading;

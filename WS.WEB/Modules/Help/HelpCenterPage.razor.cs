@@ -26,5 +26,10 @@ namespace WS.WEB.Modules.Help
         {
             await JsRuntime.Utils().ClearAllStorage();
         }
+
+        private void AppLanguageClick(AppLanguage lang)
+        {
+            Navigation.NavigateTo($"/{lang}/help", forceLoad: true);
+        }
     }
 }

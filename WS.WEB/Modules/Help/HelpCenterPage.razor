@@ -48,6 +48,22 @@
     </BodyFragment>
 </PageSectionComponent>
 
+<PageSectionComponent Title="App Language">
+    <BodyFragment>
+        <MudGrid Spacing="@CssHelper.SpaceSmall">
+            @foreach (var lang in EnumHelper.GetList<AppLanguage>().Where(p => ConfigurationsStatic.SitemapTranslations.Contains(p.Value.ToString())))
+            {
+                <MudItem xs="12" sm="6" md="4" lg="3">
+                    <MudButton Variant="Variant.Filled" FullWidth="true" Href="@($"/{lang.Value.ToString()}/help")" OnClick="@(() => AppLanguageClick(lang.Value))">
+                        <MudIcon Class="me-2" Icon="@Icons.Material.Filled.Translate"></MudIcon>
+                        @lang.Name
+                    </MudButton>
+                </MudItem>
+            }
+        </MudGrid>
+    </BodyFragment>
+</PageSectionComponent>
+
 <PageSectionComponent Title="Legal & Privacy">
     <BodyFragment>
         <MudGrid Spacing="@CssHelper.SpaceSmall">

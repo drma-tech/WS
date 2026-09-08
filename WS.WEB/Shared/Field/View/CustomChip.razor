@@ -8,20 +8,20 @@
             @Name
         </MudChip>
     }
-    @if (Value != null)
+    @if (Value is bool resultB)
     {
-        @if (Value is bool resultB)
-        {
-            <MudChip T="string" Size="Size" Variant="Variant.Outlined" Class="@ValueChipClass" Style="@ValueChipStyle" Color="ColorValue" Href="@ValueHref">
-                <MudIcon Icon="@(resultB ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.Cancel)" Color="@(resultB ? Color.Success : Color.Error)"
-                         Class="me-1" Style="@($"margin-left: -{(AppStateStatic.IsMobile ? 4 : 6)}px; font-size: 20px;")"></MudIcon>
-                @if (IncludeBoolText)
-                {
-                    @(resultB ? Translations.Notification.Yes : Translations.Notification.No)
-                }
-            </MudChip>
-        }
-        else
+        <MudChip T="string" Size="Size" Variant="Variant.Outlined" Class="@ValueChipClass" Style="@ValueChipStyle" Color="ColorValue" Href="@ValueHref">
+            <MudIcon Icon="@(resultB ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.Cancel)" Color="@(resultB ? Color.Success : Color.Error)"
+                     Class="me-1" Style="@($"margin-left: -{(AppStateStatic.IsMobile ? 4 : 6)}px; font-size: 20px;")"></MudIcon>
+            @if (IncludeBoolText)
+            {
+                @(resultB ? Translations.Notification.Yes : Translations.Notification.No)
+            }
+        </MudChip>
+    }
+    else
+    {
+        @if (_valueWasProvided)
         {
             <MudChip T="string" Size="Size" Variant="Variant.Outlined" Class="@ValueChipClass" Style="@ValueChipStyle" Color="ColorValue" Href="@ValueHref" OnClick="ValueClick">
                 @if (Icon.NotEmpty())
@@ -79,4 +79,13 @@
     [Parameter] public string? IconTooltip { get; set; }
     [Parameter] public string? ValueTooltip { get; set; }
     [Parameter] public string? ButtonTooltip { get; set; }
+
+    private bool _valueWasProvided;
+
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        _valueWasProvided = parameters.TryGetValue(nameof(Value), out TValue? value);
+
+        return base.SetParametersAsync(parameters);
+    }
 }
