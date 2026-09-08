@@ -48,7 +48,7 @@
     </BodyFragment>
 </PageSectionComponent>
 
-<PageSectionComponent Title="App Language">
+<PageSectionComponent Title="@Translations.Module.Help.AppLanguage">
     <BodyFragment>
         <MudGrid Spacing="@CssHelper.SpaceSmall">
             @foreach (var lang in EnumHelper.GetList<AppLanguage>().Where(p => ConfigurationsStatic.SitemapTranslations.Contains(p.Value.ToString())))

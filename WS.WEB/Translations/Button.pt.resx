@@ -117,76 +117,85 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AppLanguage" xml:space="preserve">
-    <value>App Language</value>
+  <data name="Add" xml:space="preserve">
+    <value>Adicionar</value>
   </data>
-  <data name="AppLanguageDesc" xml:space="preserve">
-    <value>Translates the app interface. Partial translations may apply for some languages.</value>
+  <data name="AddWishlist" xml:space="preserve">
+    <value>Adicionar à lista de desejos</value>
   </data>
-  <data name="AppTheme" xml:space="preserve">
-    <value>App Theme</value>
+  <data name="All" xml:space="preserve">
+    <value>Todos</value>
   </data>
-  <data name="ContentLanguage" xml:space="preserve">
-    <value>Content Language</value>
+  <data name="Back" xml:space="preserve">
+    <value>Voltar</value>
   </data>
-  <data name="ContentLanguageDesc" xml:space="preserve">
-    <value>Translates titles, descriptions, posters, and other content from movies or TV shows.</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancelar</value>
   </data>
-  <data name="DarkMode" xml:space="preserve">
-    <value>Dark Mode</value>
+  <data name="ClearCache" xml:space="preserve">
+    <value>Limpar cache</value>
   </data>
-  <data name="GetTheApp" xml:space="preserve">
-    <value>Get the App</value>
+  <data name="Close" xml:space="preserve">
+    <value>Fechar</value>
   </data>
-  <data name="HelpTitle" xml:space="preserve">
-    <value>Help</value>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirmar</value>
   </data>
-  <data name="LightMode" xml:space="preserve">
-    <value>Light Mode</value>
+  <data name="ContinueWebsite" xml:space="preserve">
+    <value>Continuar para o site</value>
   </data>
-  <data name="MorefromDRMATech" xml:space="preserve">
-    <value>More from DRMA Tech</value>
+  <data name="Follow" xml:space="preserve">
+    <value>Seguir</value>
   </data>
-  <data name="Region" xml:space="preserve">
-    <value>Region</value>
+  <data name="LoadMore" xml:space="preserve">
+    <value>Carregar mais</value>
   </data>
-  <data name="RegionDesc" xml:space="preserve">
-    <value>Filter platforms and content by region.</value>
+  <data name="Login" xml:space="preserve">
+    <value>Conecte-se</value>
   </data>
-  <data name="Settings" xml:space="preserve">
-    <value>Settings</value>
+  <data name="Logout" xml:space="preserve">
+    <value>Sair</value>
   </data>
-  <data name="Step1Subtitle" xml:space="preserve">
-    <value>Explore hundreds of thousands of movies and series from over 800 streaming platforms in 140 countries, your entire streaming life in one place.</value>
+  <data name="MySubscription" xml:space="preserve">
+    <value>Minha assinatura</value>
   </data>
-  <data name="Step1Title" xml:space="preserve">
-    <value>Discover a world of entertainment.</value>
+  <data name="Next" xml:space="preserve">
+    <value>Próximo</value>
   </data>
-  <data name="Step2Subtitle" xml:space="preserve">
-    <value>Search, follow, and keep up with your favorite platforms, movies, series, and artists, all in real time.</value>
+  <data name="Ok" xml:space="preserve">
+    <value>OK</value>
   </data>
-  <data name="Step2Title" xml:space="preserve">
-    <value>Stay in the know.</value>
+  <data name="ReadMore" xml:space="preserve">
+    <value>Leia mais</value>
   </data>
-  <data name="Step3Subtitle" xml:space="preserve">
-    <value>Create personal lists to track what you’re watching and what’s next on your list.</value>
+  <data name="Recent" xml:space="preserve">
+    <value>Recente</value>
   </data>
-  <data name="Step3Title" xml:space="preserve">
-    <value>Keep your universe organized.</value>
+  <data name="Remove" xml:space="preserve">
+    <value>Remover</value>
   </data>
-  <data name="Step4Subtitle" xml:space="preserve">
-    <value>Create your account and unlock your personalized streaming experience.</value>
+  <data name="RemoveAdvertising" xml:space="preserve">
+    <value>Remover publicidade</value>
   </data>
-  <data name="Step4Title" xml:space="preserve">
-    <value>Join for free.</value>
+  <data name="RemoveCollection" xml:space="preserve">
+    <value>Remover coleção</value>
   </data>
-  <data name="WelcomeTo" xml:space="preserve">
-    <value>Welcome to {0}</value>
+  <data name="RemoveWishlist" xml:space="preserve">
+    <value>Remover da lista de desejos</value>
   </data>
-  <data name="WriteReviewSubtitle" xml:space="preserve">
-    <value>Rate the app and share it with your friends!</value>
+  <data name="Share" xml:space="preserve">
+    <value>Compartilhar</value>
   </data>
-  <data name="WriteReviewTitle" xml:space="preserve">
-    <value>Help {0} grow!</value>
+  <data name="ShowCache" xml:space="preserve">
+    <value>Mostrar cache</value>
+  </data>
+  <data name="Unfollow" xml:space="preserve">
+    <value>Deixar de seguir</value>
+  </data>
+  <data name="UnlockBenefits" xml:space="preserve">
+    <value>Desbloquear benefícios</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Atualizar</value>
   </data>
 </root>

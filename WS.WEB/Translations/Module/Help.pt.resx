@@ -118,75 +118,75 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AppLanguage" xml:space="preserve">
-    <value>App Language</value>
+    <value>Idioma do App</value>
   </data>
   <data name="AppLanguageDesc" xml:space="preserve">
-    <value>Translates the app interface. Partial translations may apply for some languages.</value>
+    <value>Traduz a interface do aplicativo. Traduções parciais podem ser aplicadas em alguns idiomas.</value>
   </data>
   <data name="AppTheme" xml:space="preserve">
-    <value>App Theme</value>
+    <value>Tema do App</value>
   </data>
   <data name="ContentLanguage" xml:space="preserve">
-    <value>Content Language</value>
+    <value>Idioma do Conteúdo</value>
   </data>
   <data name="ContentLanguageDesc" xml:space="preserve">
-    <value>Translates titles, descriptions, posters, and other content from movies or TV shows.</value>
+    <value>Traduz títulos, descrições, pôsteres e outros conteúdos de filmes ou séries.</value>
   </data>
   <data name="DarkMode" xml:space="preserve">
-    <value>Dark Mode</value>
+    <value>Modo Escuro</value>
   </data>
   <data name="GetTheApp" xml:space="preserve">
-    <value>Get the App</value>
+    <value>Baixe o aplicativo</value>
   </data>
   <data name="HelpTitle" xml:space="preserve">
-    <value>Help</value>
+    <value>Ajuda</value>
   </data>
   <data name="LightMode" xml:space="preserve">
-    <value>Light Mode</value>
+    <value>Modo Claro</value>
   </data>
   <data name="MorefromDRMATech" xml:space="preserve">
-    <value>More from DRMA Tech</value>
+    <value>Mais de DRMA Tech</value>
   </data>
   <data name="Region" xml:space="preserve">
-    <value>Region</value>
+    <value>Região</value>
   </data>
   <data name="RegionDesc" xml:space="preserve">
-    <value>Filter platforms and content by region.</value>
+    <value>Filtra plataformas e conteúdo por região.</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Settings</value>
+    <value>Configurações</value>
   </data>
   <data name="Step1Subtitle" xml:space="preserve">
-    <value>Explore hundreds of thousands of movies and series from over 800 streaming platforms in 140 countries, your entire streaming life in one place.</value>
+    <value>Explore centenas de milhares de filmes e séries de mais de 800 plataformas de streaming em 140 países, toda a sua vida de streaming em um só lugar.</value>
   </data>
   <data name="Step1Title" xml:space="preserve">
-    <value>Discover a world of entertainment.</value>
+    <value>Descubra um mundo de entretenimento.</value>
   </data>
   <data name="Step2Subtitle" xml:space="preserve">
-    <value>Search, follow, and keep up with your favorite platforms, movies, series, and artists, all in real time.</value>
+    <value>Pesquise, siga e acompanhe suas plataformas, filmes, séries e artistas favoritos, tudo em tempo real.</value>
   </data>
   <data name="Step2Title" xml:space="preserve">
-    <value>Stay in the know.</value>
+    <value>Fique por dentro.</value>
   </data>
   <data name="Step3Subtitle" xml:space="preserve">
-    <value>Create personal lists to track what you’re watching and what’s next on your list.</value>
+    <value>Crie listas pessoais para acompanhar o que você está assistindo e o que vem a seguir na sua lista.</value>
   </data>
   <data name="Step3Title" xml:space="preserve">
-    <value>Keep your universe organized.</value>
+    <value>Mantenha seu universo organizado.</value>
   </data>
   <data name="Step4Subtitle" xml:space="preserve">
-    <value>Create your account and unlock your personalized streaming experience.</value>
+    <value>Crie sua conta e desbloqueie sua experiência de streaming personalizada.</value>
   </data>
   <data name="Step4Title" xml:space="preserve">
-    <value>Join for free.</value>
+    <value>Cadastre-se gratuitamente.</value>
   </data>
   <data name="WelcomeTo" xml:space="preserve">
-    <value>Welcome to {0}</value>
+    <value>Bem-vindo a {0}</value>
   </data>
   <data name="WriteReviewSubtitle" xml:space="preserve">
-    <value>Rate the app and share it with your friends!</value>
+    <value>Avalie o aplicativo e compartilhe com seus amigos!</value>
   </data>
   <data name="WriteReviewTitle" xml:space="preserve">
-    <value>Help {0} grow!</value>
+    <value>Ajude {0} a crescer!</value>
   </data>
 </root>
