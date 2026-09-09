@@ -20,6 +20,6 @@ public abstract class ApiExternal(IHttpClientFactory factory) : ApiCore(key: nul
         where TIn : class
         where TOut : class
     {
-        return await PostAsync(factory.CreateClient(), endpoint, obj, requestTypeInfo, responseTypeInfo, states, cancellationToken);
+        return await PostAsync(AnonymousHttp, endpoint, obj, requestTypeInfo, responseTypeInfo, states, cancellationToken);
     }
 }
