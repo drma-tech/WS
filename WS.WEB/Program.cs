@@ -13,16 +13,27 @@ using WS.WEB.Modules.Features.Core;
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 var userDomain = new Uri(builder.HostEnvironment.BaseAddress).Host;
 
+//var ignoredErrors = new[]
+//{
+//    "failed to fetch",
+//};
+
 builder.UseSentry(options =>
 {
     options.Dsn = "https://8ab8efd6c3c6bb26d8d7bdb5a557a911@o4510938040041472.ingest.us.sentry.io/4510942895276032";
     options.DiagnosticLevel = SentryLevel.Warning;
-    options.Environment = builder.HostEnvironment.Environment;
+    options.Environment = builder.HostEnvironment.Environment.ToLowerInvariant();
 
     options.TracePropagationTargets = []; //Disable tracing because it breaks communication with external APIs.
 
     options.SetBeforeSend(evt =>
     {
+        //var errorText = $"{evt.Message?.Formatted} {evt.Exception}";
+        //if (ignoredErrors.Any(error => errorText.Contains(error, StringComparison.OrdinalIgnoreCase)))
+        //{
+        //    return null;
+        //}
+
         const string error = "error";
 
         evt.Release = $"ws-blazor@{AppStateStatic.Version ?? error}";

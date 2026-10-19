@@ -24,7 +24,9 @@
 
 <MudDrawer @bind-Open="@_openMenu" Anchor="Anchor.Right" Elevation="1" Variant="@DrawerVariant.Temporary" OverlayAutoClose="true" Width="275px">
     <MudDrawerHeader>
-        <MudText Typo="Typo.h6" Color="Color.Primary">@AppInfo.Title</MudText>
+        <MudText Typo="Typo.inherit" Color="Color.Primary" Style="font-size: 20px;">
+            @AppInfo.Title
+        </MudText>
     </MudDrawerHeader>
     <MudNavMenu>
         <MudNavLink Icon="@Icons.Material.Filled.Settings" OnClick="@OpenConfigurations">
@@ -42,13 +44,15 @@
 
 <MudDrawer @bind-Open="@_openApps" Anchor="Anchor.Right" Elevation="1" Variant="@DrawerVariant.Temporary" OverlayAutoClose="true" Width="275px">
     <MudDrawerHeader>
-        <MudText Typo="Typo.h6" Color="Color.Primary"> @Translations.Module.Help.MorefromDRMATech</MudText>
+        <MudText Typo="Typo.inherit" Color="Color.Primary" Style="font-size: 20px;">
+            @Translations.Module.Help.MorefromDRMATech
+        </MudText>
     </MudDrawerHeader>
     @foreach (var product in AppInfo.Products)
     {
         <MudDivider Style="flex-grow: unset;"></MudDivider>
         <div style="padding: 8px 16px 0px 16px; display: flex; align-items: center;">
-            <MudImage Src=@product.Logo Style="width: 40px;" Class="me-2"></MudImage>
+            <MudImage Src=@product.Logo Style="width: 40px;" Class="me-2" Alt="@product.Title"></MudImage>
             <div>
                 <MudText Style="font-size: 14px;" Color="Color.Secondary">
                     @product.Title

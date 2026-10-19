@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor;
 
@@ -5,6 +6,8 @@ namespace WS.WEB.Layout
 {
     public partial class MainLayout : IDisposable
     {
+        [Parameter][SupplyParameterFromQuery(Name = "printscreen")] public bool Printscreen { get; set; } = false;
+
         private MudThemeProvider? _mudThemeProvider;
         private bool _darkMode;
         protected CancellationTokenSource Cts { get; } = new();
@@ -70,9 +73,19 @@ namespace WS.WEB.Layout
                 await JsRuntime.Utils().SetStorage("dark-mode", darkMode ?? false, JavascriptContext.Default.Boolean, cancellationToken);
             }
 
+            if (Printscreen)
+            {
+                darkMode = true;
+            }
+
             AppStateStatic.ChangeDarkMode(darkMode ?? false);
         }
 
+        /// <summary>
+        /// asks for a review after the third visit, every 24 hours
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         private async Task AskUSerForReview(CancellationToken cancellationToken)
         {
             var accesses = await JsRuntime.Utils().GetStorage("session-accesses", JavascriptContext.Default.HashSetDateTime, cancellationToken) ?? [];
@@ -101,6 +114,11 @@ namespace WS.WEB.Layout
             }
         }
 
+        /// <summary>
+        /// log all app access locally (in the browser) with a 2-hour delay
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         private async Task RegisterSessionAccesses(CancellationToken cancellationToken)
         {
             var accesses = await JsRuntime.Utils().GetStorage("session-accesses", JavascriptContext.Default.HashSetDateTime, cancellationToken) ?? [];
@@ -129,7 +147,7 @@ namespace WS.WEB.Layout
 
         //private async Task ShowOnBoardingPopup(CancellationToken cancellationToken)
         //{
-        //    if (Navigation.Uri.Contains("printscreen", StringComparison.OrdinalIgnoreCase))
+        //    if (Printscreen)
         //    {
         //        return;
         //    }

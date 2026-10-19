@@ -100,6 +100,10 @@ public abstract class ApiCore(string? key, string[] extraKeys)
             }
             throw;
         }
+        catch (OperationCanceledException)
+        {
+            return [];
+        }
         catch (Exception ex)
         {
             foreach (var state in states)
@@ -148,6 +152,10 @@ public abstract class ApiCore(string? key, string[] extraKeys)
             }
             throw;
         }
+        catch (OperationCanceledException)
+        {
+            return default;
+        }
         catch (Exception ex)
         {
             foreach (var state in states)
@@ -192,6 +200,10 @@ public abstract class ApiCore(string? key, string[] extraKeys)
                 await state.ShowWarning(ex.Message);
             }
             throw;
+        }
+        catch (OperationCanceledException)
+        {
+            return [];
         }
         catch (Exception ex)
         {
