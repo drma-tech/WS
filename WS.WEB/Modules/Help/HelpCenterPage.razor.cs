@@ -14,7 +14,7 @@ namespace WS.WEB.Modules.Help
 
         private async Task FeedbackClick()
         {
-            await JsRuntime.Window().InvokeVoidAsync("eval", "Userback && Userback.openForm('general', 'form');");
+            await JsRuntime.Window().InvokeVoidAsync("eval", Cts.Token, "Userback && Userback.openForm('general', 'form');");
         }
 
         private async Task ShowCacheClick()

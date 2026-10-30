@@ -57,7 +57,7 @@
         private async Task ChangeStatus(RenderControlStatus status, T instance, string? msg = null)
         {
             //If data is already being displayed, ignore new "loading" status request.
-            if (Status == RenderControlStatus.Content && status == RenderControlStatus.Loading && (!Equals(Instance, default(T)) && !ExpressionEmpty(Instance)))
+            if (Status == RenderControlStatus.Content && status == RenderControlStatus.Loading && !Equals(Instance, default(T)) && !ExpressionEmpty(Instance))
             {
                 return;
             }

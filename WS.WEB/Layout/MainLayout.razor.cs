@@ -106,11 +106,11 @@ namespace WS.WEB.Layout
 
             if (accesses.Count >= 3 && isOddAccess && !reviewed && !isTooSoon)
             {
-                _ = Task.Run(async () =>
+                Task.Run(async () =>
                 {
                     await Task.Delay(5000, cancellationToken); //delay of 5 seconds
                     await DialogService.AskReviewPopup();
-                }, cancellationToken);
+                }, cancellationToken).FireAndForget();
             }
         }
 
@@ -175,13 +175,13 @@ namespace WS.WEB.Layout
         [JSInvokable]
         public static void ShowError(string error)
         {
-            _ = BufferedEvent.Invoke(nameof(ShowError), error);
+            BufferedEvent.Invoke(nameof(ShowError), error).FireAndForget();
         }
 
         [JSInvokable]
         public static void ClerkAuthChanged(string? token)
         {
-            _ = BufferedEvent.Invoke(nameof(ClerkAuthChanged), token);
+            BufferedEvent.Invoke(nameof(ClerkAuthChanged), token).FireAndForget();
         }
 
         private bool isDisposed;

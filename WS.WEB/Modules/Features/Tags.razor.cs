@@ -94,7 +94,7 @@ namespace WS.WEB.Modules.Features
 
             try
             {
-                await JsRuntime.Window().InvokeVoidAsync("navigator.clipboard.writeText", Preview);
+                await JsRuntime.Window().InvokeVoidAsync("navigator.clipboard.writeText", Cts.Token, Preview);
                 await ShowInfo("Copied to clipboard");
             }
             catch (Exception ex)
