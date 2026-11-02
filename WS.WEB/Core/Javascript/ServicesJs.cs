@@ -6,7 +6,7 @@ namespace WS.WEB.Core.Javascript
     {
         public Task InitGoogleAnalytics(string version, CancellationToken cancellationToken) => InvokeVoid("services.initGoogleAnalytics", cancellationToken, version);
 
-        public Task InitUserBack(string version, CancellationToken cancellationToken) => InvokeVoid("services.initUserBack", cancellationToken, version);
+        public Task InitUserJot(CancellationToken cancellationToken) => InvokeVoid("services.initUserJot", cancellationToken);
 
         public Task InitAdSense(string adClient, string adSlot, string containerId, CancellationToken cancellationToken) => InvokeVoid("services.initAdSense", cancellationToken, adClient, adSlot, containerId);
 

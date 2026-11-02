@@ -49,30 +49,36 @@ export const services = {
             if (attempts >= maxAttempts) clearInterval(clarityCheckInterval);
         }, 5000);
     },
-    initUserBack(version) {
+    initUserJot() {
         if (window.appConfig?.isBot === true) return;
         if (window.appConfig?.blazorSupported !== true) return;
 
         const browserLang = navigator.language || navigator.userLanguage;
 
-        window.Userback = window.Userback || {};
+        window.uj ||= new Proxy(
+            {},
+            {
+                get: (_, property) =>
+                    property == "then"
+                        ? 0
+                        : (...args) => {
+                            (window.$ujq ||= []).push([property, ...args]);
+                        }
+            }
+        );
+        window.uj.init(window.appConfig?.servicesConfig?.UserJotToken, {
+            widget: {
+                position: 'left', // 'left' or 'right'
+                theme: 'auto', // 'auto', 'light', or 'dark'
+            },
+            locale: storage.getLocalStorage("app-language") ?? browserLang.slice(0, 2),
+        });
 
-        window.Userback.access_token = window.appConfig?.servicesConfig?.UserBackToken;
-
-        window.Userback.widget_settings = {
-            language: storage.getLocalStorage("language") ?? browserLang.slice(0, 2),
-            logo: location.origin + "/icon/icon-71.png",
-        };
-        window.Userback.custom_data = {
-            platform: storage.getLocalStorage("platform"),
-            app_version: version,
-        };
-
-        (function (d) {
-            let s = d.createElement('script'); s.async = true;
-            s.src = 'https://static.userback.io/widget/v1.js';
-            (d.head || d.body).appendChild(s);
-        })(document);
+        const script = document.createElement("script");
+        script.type = "module";
+        script.async = true;
+        script.src = "https://cdn.userjot.com/sdk/v3/uj.js";
+        (document.head || document.body).appendChild(script);
     },
     initAdSense(adClient, adSlot, containerId) {
         if (window.appConfig?.isBot === true) return;

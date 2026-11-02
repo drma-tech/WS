@@ -8,20 +8,27 @@ public static class FunctionContextExtensions
 {
     public static async Task SetHttpResponseStatusCode(this FunctionContext context, HttpStatusCode statusCode, string message)
     {
-        var req = await context.GetHttpRequestDataAsync();
+        try
+        {
+            var req = await context.GetHttpRequestDataAsync();
 
-        var response = req!.CreateResponse(statusCode);
+            var response = req!.CreateResponse(statusCode);
 
-        await response.WriteStringAsync(message, cancellationToken: context.CancellationToken);
+            await response.WriteStringAsync(message, cancellationToken: context.CancellationToken);
 
-        var invocationResult = context.GetInvocationResult();
+            var invocationResult = context.GetInvocationResult();
 
-        var httpOutputBindingFromMultipleOutputBindings = GetHttpOutputBindingFromMultipleOutputBinding(context);
+            var httpOutputBindingFromMultipleOutputBindings = GetHttpOutputBindingFromMultipleOutputBinding(context);
 
-        if (httpOutputBindingFromMultipleOutputBindings is not null)
-            httpOutputBindingFromMultipleOutputBindings.Value = response;
-        else
-            invocationResult.Value = response;
+            if (httpOutputBindingFromMultipleOutputBindings is not null)
+                httpOutputBindingFromMultipleOutputBindings.Value = response;
+            else
+                invocationResult.Value = response;
+        }
+        catch (Exception ex) when (ex is TaskCanceledException || ex is OperationCanceledException || ex is ObjectDisposedException)
+        {
+            // ignored
+        }
     }
 
     private static OutputBindingData<HttpResponseData>? GetHttpOutputBindingFromMultipleOutputBinding(this FunctionContext context)

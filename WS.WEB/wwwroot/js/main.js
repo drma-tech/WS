@@ -55,7 +55,7 @@ const disableServiceWorker = testBrowserVersion(
 const servicesConfig = {
     AnalyticsCode: "G-4BSYH92X9W",
     ClarityKey: "sy4x3c9jsc",
-    UserBackToken: "A-A2J4M5NKCbDp1QyQe7ogemmmq",
+    UserJotToken: "cmvzdxcjg00ce0ktby7wzwqg0",
     SentryDsn: "https://8ab8efd6c3c6bb26d8d7bdb5a557a911@o4510938040041472.ingest.us.sentry.io/4510942895276032",
 };
 
